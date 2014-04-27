@@ -35,7 +35,7 @@ dead:
 
 #define set_x(type_, name) \
 YASL_BOOL YASLvar_set_##name(YASLvar* var, type_ v_##name) {\
-    if (var->type == YASLvar_##name) {\
+    if (var->type == YASLvar_type_##name) {\
         var->v_##name = v_##name;\
         return YASL_TRUE;\
     }\
@@ -50,7 +50,7 @@ set_x(YASLscope, scope);
 
 YASL_BOOL YASLvar_set(YASLvar* var, YASLvar* other) {
 #define ycase(type)\
-    case YASLvar_##type:\
+    case YASLvar_type_##type:\
         return YASLvar_set_##type(var, other->v_##type);\
 
     switch(other->type) {
@@ -193,9 +193,9 @@ void YASLcommand_destroy(YASLcommand* command) {
 }
 
 void YASLcommand_run(YASLcommand* command) {
-    if (command->type == YASLcommand_assign) {
+    if (command->type == YASLcommand_type_assign) {
         if (!YASLvar_set(command->lhs->var, command->rhs->var)) {
-            YASLvarpair_set(command->lhs->var, command->rhs->var); // TODO: IMPLEMENT THIS!
+            //YASLvarpair_set(command->lhs->var, command->rhs->var); // TODO: IMPLEMENT THIS!
         }
     }
 }

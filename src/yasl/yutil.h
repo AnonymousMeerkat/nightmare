@@ -27,16 +27,22 @@
 }
 
 
-#define ylist_new(type, name) {\
+#define ylist(type) \
     struct {\
         type* data;\
         YASL_SIZE e_size;\
         YASL_SIZE size;\
-    } name;\
-\
+    }
+
+#define ylist_init(type, name) {\
     name.e_size = sizeof(type);\
     yrlist_new(sizeof(type));\
     yrlist_init(name.data, sizeof(type), name.size);\
+}
+
+#define ylist_new(type, name) {\
+    ylist(type) name;\
+    ylist_init(type, name);\
 }
 
 #define ylist_destroy(name) {\

@@ -51,8 +51,8 @@ struct YASLtable {
 };
 
 enum YASLcommand_type {
-    YASLcommand_assign = 0,
-    YASLcommand_run = 1
+    YASLcommand_type_assign = 0,
+    YASLcommand_type_run = 1
 };
 
 struct YASLcommand {
@@ -70,11 +70,11 @@ struct YASLscope {
 };
 
 enum YASLvar_type {
-    YASLvar_bool = 0,
-    YASLvar_float = 1,
-    YASLvar_string  = 2,
-    YASLvar_list = 3,
-    YASLvar_scope = 4
+    YASLvar_type_bool = 0,
+    YASLvar_type_float = 1,
+    YASLvar_type_string  = 2,
+    YASLvar_type_list = 3,
+    YASLvar_type_scope = 4
 };
 
 struct YASLvar {

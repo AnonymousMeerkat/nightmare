@@ -8,6 +8,7 @@
 #else
 #  define START_HEAD
 #  define END_HEAD
+#  include <stdbool.h>
 #endif
 
 #endif

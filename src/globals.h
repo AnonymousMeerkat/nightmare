@@ -5,7 +5,7 @@
 
 START_HEAD
 
-/***** TYPES *****/
+// Types
 
 enum renderer {
     OPENGL1 = 0,
@@ -19,30 +19,31 @@ enum renderer {
     MANTLE = 20
 };
 
-/***** FUNCTIONS *****/
+// Functions
 
 void globals_init();
 void globals_destroy();
 
-/***** WINDOW *****/
+// Window
 
 short win_x;
 short win_y;
 short win_width;
 short win_height;
+char* win_title;
 
-/***** LOGGING *****/
+// Logging
 
 short info_indent;
 short debug_indent;
 short error_indent;
 
-/***** RENDERING *****/
+// Rendering
 
 short fps;
 enum renderer renderer;
 
-/***** GAME *****/
+// Game
 
 END_HEAD
 
