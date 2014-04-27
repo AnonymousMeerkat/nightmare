@@ -69,6 +69,7 @@ nextevent:
             type = WM_MOUSE_BUTTON;
             break;
         default:
+            goto nextevent;
             break;
     };
 
@@ -118,6 +119,7 @@ nextevent:
             };
             break;
         default:
+            goto nextevent;
             break;
     }
 
