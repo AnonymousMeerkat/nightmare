@@ -12,6 +12,11 @@ int debug(const char* fmt, ...);
 int error(const char* fmt, ...);
 void newline();
 
+#define indent(type, func) \
+type##_indent++;\
+func;\
+type##_indent--
+
 END_HEAD
 
 #endif

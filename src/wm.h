@@ -6,21 +6,29 @@
 #include "compat.h"
 #include "pos.h"
 #include "yasl/yutil.h"
+#include "types.h"
 
 START_HEAD
 
 typedef struct wm_event wm_event;
 
 typedef struct {
-    bool (*init)(int argc, char** argv);
+    // Init stuff
+    bool (*init)();
     bool (*destroy)();
 
+    // Window stuff
     bool (*create_window)();
     bool (*destroy_window)();
 
     void (*swap_buffers)();
 
+    // Event stuff
     bool (*next_event)(wm_event* event);
+
+    // Time stuff
+    uint (*get_millis)();
+    void (*sleep)(uint millis);
 } wm_s;
 
 enum wm_event_type {
@@ -74,7 +82,7 @@ struct wm_event {
 wm_event wm_event_new(enum wm_event_type type);
 
 
-bool wm_init(int argc, char** argv);
+bool wm_init();
 bool wm_destroy();
 
 extern wm_s wm;

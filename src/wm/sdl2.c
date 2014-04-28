@@ -11,7 +11,7 @@ wm_s wm_sdl2;
 SDL_Window* sdl2_window;
 SDL_GLContext sdl2_glcontext;
 
-bool sdl2_init(int argc, char** argv) {
+bool sdl2_init() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         return false;
     }
@@ -171,6 +171,14 @@ nextevent:
     return true;
 }
 
+uint sdl2_get_millis() {
+    return SDL_GetTicks();
+}
+
+void sdl2_sleep(uint millis) {
+    SDL_Delay(millis);
+}
+
 
 void wm_sdl2_init() {
     wm_sdl2.init = sdl2_init;
@@ -182,4 +190,7 @@ void wm_sdl2_init() {
     wm_sdl2.swap_buffers = sdl2_swap_buffers;
 
     wm_sdl2.next_event = sdl2_next_event;
+
+    wm_sdl2.get_millis = sdl2_get_millis;
+    wm_sdl2.sleep = sdl2_sleep;
 }

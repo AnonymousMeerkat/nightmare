@@ -11,8 +11,12 @@ void globals_init() {
     debug_indent = 0;
     error_indent = 0;
 
+    running = true;
+    delta = 0;
+    lasttime = 0;
+    currtime = 0;
+    lastsecond = 0;
     fps = 0;
-    renderer = 0; // Currently OPENGL1, but we don't give a shit about what it is
 }
 
 void globals_destroy() {

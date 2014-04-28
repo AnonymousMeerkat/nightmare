@@ -3,26 +3,19 @@
 
 #include "compat.h"
 
+#include "types.h"
+
 START_HEAD
-
-// Types
-
-enum renderer {
-    OPENGL1 = 0,
-    OPENGL2 = 1,
-
-    DX9 = 10,
-    DX10 = 11,
-    DX11 = 12,
-    DX12 = 13,
-
-    MANTLE = 20
-};
 
 // Functions
 
 void globals_init();
 void globals_destroy();
+
+// Init
+
+int init_argc;
+char** init_argv;
 
 // Window
 
@@ -38,12 +31,14 @@ short info_indent;
 short debug_indent;
 short error_indent;
 
-// Rendering
-
-short fps;
-enum renderer renderer;
-
 // Game
+
+bool running;
+uint delta;
+uint lasttime;
+uint currtime;
+uint lastsecond;
+uint fps;
 
 END_HEAD
 

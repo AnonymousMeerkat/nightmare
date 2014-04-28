@@ -3,6 +3,8 @@
 #include "wm/sdl.h"
 #include "wm/sdl2.h"
 
+#include "log.h"
+
 wm_s wm;
 
 wm_event wm_event_new(enum wm_event_type type) {
@@ -17,7 +19,7 @@ wm_event wm_event_new(enum wm_event_type type) {
 }
 
 
-bool wm_init(int argc, char** argv) {
+bool wm_init() {
     wm_sdl_init();
     wm_sdl2_init();
 
@@ -32,7 +34,7 @@ bool wm_init(int argc, char** argv) {
         error("No backend chosen!");
         return false;
     }
-    return wm.init(argc, argv);
+    return wm.init();
 }
 
 bool wm_destroy() {

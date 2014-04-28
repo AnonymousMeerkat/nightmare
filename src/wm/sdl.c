@@ -7,7 +7,7 @@
 
 wm_s wm_sdl;
 
-bool sdl_init(int argc, char** argv) {
+bool sdl_init() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         return false;
     }
@@ -24,6 +24,7 @@ bool sdl_create_window() {
     if (SDL_SetVideoMode(win_width, win_height, 8, SDL_OPENGL) == NULL) {
         return false;
     }
+    SDL_WM_SetCaption(win_title, NULL);
     return true;
 }
 
@@ -126,6 +127,14 @@ nextevent:
     return true;
 }
 
+uint sdl_get_millis() {
+    return SDL_GetTicks();
+}
+
+void sdl_sleep(uint millis) {
+    SDL_Delay(millis);
+}
+
 
 void wm_sdl_init() {
     wm_sdl.init = sdl_init;
@@ -137,4 +146,7 @@ void wm_sdl_init() {
     wm_sdl.swap_buffers = sdl_swap_buffers;
 
     wm_sdl.next_event = sdl_next_event;
+
+    wm_sdl.get_millis = sdl_get_millis;
+    wm_sdl.sleep = sdl_sleep;
 }
