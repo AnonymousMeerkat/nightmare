@@ -1,0 +1,39 @@
+Level format draft
+==================
+
+Here's the basic level format that I was thinking (tree'd):
+
+ponyville/
+├── 0.png
+├── 1.png
+├── info.yasl
+├── m1m.png
+├── m1.png
+└── m2.png
+
+Each .png represents a z level. 0 is where the player is (so 1 is in front). m1 is minus 1 (m2 is minus 2, obviously XD).
+M1 would be the background, while M2 would be the sub-background (so you can go into the background to hide).
+We can theoretically have unlimited z levels.
+
+m1m.png is minus 1 mask. For this, each object in it is color-coded. For example, a drawer would be #ff0000, another drawer would be #fe0000, etc... The colors don't matter as long as they're unique.
+
+info.yasl is the level info. It could be something like:
+
+
+    left = "scc", (If you go to the left of the level, you'll go to the 'scc' level)
+    right = "library", (I think you can get what's going on here xP)
+    m1m = { (Data for the minus 1 mask)
+        #ff0000 = { (This if for the '#ff0000' color. '#' is legal in a symbol name, btw)
+            type = "message" (message box or something),
+            message = "This drawer is empty"
+        },
+        #fe0000 = {
+            type = "message",
+            message = "You found a dirty sock!",
+            inventory = "dirtysock" (I'm just making stuff up here. This, in my made up world, adds the "dirtysock" item to your inventory. Dirtysock might be declared in a .yasl file too [i.e. not in-game])
+        },
+        #00ff00 = {
+            type = "hallucination", (Just doing random stuff here. We don't need to have this type)
+            duration = 5.5 (5.5 seconds, I guess)
+        }
+    }
