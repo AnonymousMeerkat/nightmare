@@ -1,6 +1,8 @@
 #include "globals.h"
 #include "log.h"
 #include "wm.h"
+#include "wrap/gl.h"
+#include "resource.h"
 #include "game.h"
 
 int main(int argc, char** argv) {
@@ -13,21 +15,33 @@ int main(int argc, char** argv) {
     globals_init();
 
     debug("Initializing window manager");
-    indent(debug, okay = wm_init(argc, argv));
+    indent(okay = wm_init(argc, argv));
 
     if (!okay) {
         error("Error initializing window manager!");
     }
 
     debug("Creating window");
-    indent(debug, okay = wm.create_window());
+    indent(okay = wm.create_window());
 
     if (!okay) {
         error("Error creating window!");
     }
 
+    debug("Initializing GLEW");
+    if (glewInit() != GLEW_OK) {
+        error("Error initializing GLEW!");
+    }
+
+    debug("Initializing paths");
+    indent(okay = rsc_init());
+
+    /*if (!okay) {
+        return;
+    }*/
+
     debug("Loading game");
-    indent(debug, okay = game_load());
+    indent(okay = game_load());
 
     if (!okay) {
         error("Error loading game!");
@@ -38,8 +52,11 @@ int main(int argc, char** argv) {
     game_run();
 
     // End
+    debug("Destroying paths");
+    indent(rsc_destroy());
+
     debug("Destroying window");
-    indent(debug, wm.destroy_window());
+    indent(wm.destroy_window());
 
     debug("Destroying window manager");
     wm_destroy();

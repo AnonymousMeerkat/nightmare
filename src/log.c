@@ -52,7 +52,7 @@ int _printf(FILE* f, const char* prepend, short indent, const char* append, cons
         va_list args;\
         va_start(args, fmt);\
 \
-        int ret = _printf(stream, prepend, name##_indent * 2, append, fmt, args);\
+        int ret = _printf(stream, prepend, log_indent * 2, append, fmt, args);\
 \
         va_end(args);\
 \

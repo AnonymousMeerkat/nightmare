@@ -3,18 +3,26 @@
 
 #include "compat.h"
 
+#include "misc.h"
+
 START_HEAD
 
-#define pos_float double
+#define pos_float float
 #define pos_int int
 
-typedef struct {
-    pos_float x, y;
-} Pos2f;
+STRUCT(Pos2f, {
+    pos_float x;
+    pos_float y;
+});
 
-typedef struct {
-    pos_int x, y;
-} Pos2i;
+static const Pos2f Pos2fblank;
+
+STRUCT(Pos2i, {
+    pos_int x;
+    pos_int y;
+});
+
+static const Pos2i Pos2iblank;
 
 END_HEAD
 

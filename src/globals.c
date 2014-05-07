@@ -1,5 +1,7 @@
 #include "globals.h"
 
+#include <stdlib.h> // For NULL ... ridiculous, right? XD
+
 void globals_init() {
     win_x = 0;
     win_y = 0;
@@ -7,9 +9,11 @@ void globals_init() {
     win_height = 600;
     win_title = "Silent Ponyville";
 
-    info_indent = 0;
-    debug_indent = 0;
-    error_indent = 0;
+    log_indent = 0;
+
+    rsc_path = "";
+
+    shader_image = NULL;
 
     running = true;
     delta = 0;

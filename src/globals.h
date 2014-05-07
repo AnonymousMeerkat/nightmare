@@ -4,6 +4,7 @@
 #include "compat.h"
 
 #include "types.h"
+#include "misc.h"
 
 START_HEAD
 
@@ -27,9 +28,22 @@ char* win_title;
 
 // Logging
 
-short info_indent;
-short debug_indent;
-short error_indent;
+short log_indent;
+
+// Resource
+
+char* rsc_path;
+
+// OpenGL
+
+GLKMatrix4 gl_projection;
+GLKMatrix4 gl_view;
+GLKMatrix4 gl_model;
+
+// Shader
+TS(Shader);
+
+Shader* shader_image;
 
 // Game
 

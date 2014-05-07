@@ -1,6 +1,8 @@
 #ifndef _SP_TYPES_H
 #define _SP_TYPES_H
 
+#include <GLKit/GLKMathTypes.h>
+
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
