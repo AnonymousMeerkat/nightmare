@@ -10,17 +10,25 @@
 #include "wrap/limits.h"
 #include <string.h>
 
+#ifdef WIN32
+#  include <windows.h>
+#endif
+
 bool rsc_init() {
     char exepath[PATH_MAX + 1];
+#ifdef WIN32
+    GetModuleFileName(GetModuleHandle(NULL), exepath, PATH_MAX);
+#else
     char* result = realpath("/proc/self/exe", exepath);
     if (!result) {
         error("Can't figure out self path!");
         return false;
     }
+#endif
     char* toppath = dirname(dirname(exepath));
     rsc_path = malloc(strlen(toppath) + 5);
     strcpy(rsc_path, toppath);
-    strcat(rsc_path, "/rsc");
+    strcat(rsc_path, SLASH "rsc");
     debug(rsc_path);
     return true;
 }
@@ -29,11 +37,19 @@ void rsc_destroy() {
     free(rsc_path);
 }
 
+char* rsc_join_paths(char* path1, char* path2) {
+    char* newpath = malloc(strlen(path1) + strlen(path2) + 2);
+    strcpy(newpath, path1);
+    strcat(newpath, SLASH);
+    strcat(newpath, path2);
+    return newpath;
+}
+
 // free() this path after its used!!
 char* rsc_get_path(char* simplepath) {
     char* newpath = malloc(strlen(rsc_path) + strlen(simplepath) + 2);
     strcpy(newpath, rsc_path);
-    strcat(newpath, "/");
+    strcat(newpath, SLASH);
     strcat(newpath, simplepath);
     return newpath;
 }
