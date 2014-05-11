@@ -82,6 +82,9 @@ void game_check_events() {
             case WM_QUIT:
                 running = false;
                 break;
+            case WM_KEYBOARD:
+                key_states[event.keyboard.key] = event.keyboard.state;
+                break;
             default:
                 break;
         }

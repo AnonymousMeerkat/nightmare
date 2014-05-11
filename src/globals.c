@@ -1,6 +1,36 @@
 #include "globals.h"
 
-#include <stdlib.h> // For NULL ... ridiculous, right? XD
+#include <stdlib.h>
+
+
+int init_argc;
+char** init_argv;
+
+short win_x;
+short win_y;
+short win_width;
+short win_height;
+char* win_title;
+
+short log_indent;
+
+char* rsc_path;
+
+GLKMatrix4 gl_projection;
+GLKMatrix4 gl_view;
+GLKMatrix4 gl_model;
+
+Shader* shader_image;
+
+bool key_states[256];
+
+bool running;
+uint delta;
+uint lasttime;
+uint currtime;
+uint lastsecond;
+uint fps;
+
 
 void globals_init() {
     win_x = 0;
@@ -24,6 +54,5 @@ void globals_init() {
 }
 
 void globals_destroy() {
-    // Wheeeeee!
     return; // Useless
 }

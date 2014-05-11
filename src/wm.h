@@ -65,7 +65,7 @@ struct wm_event {
         // Keyboard
 
         struct {
-            unsigned char key;
+            uchar key;
             bool state;
         } keyboard;
 

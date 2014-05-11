@@ -15,44 +15,48 @@ void globals_destroy();
 
 // Init
 
-int init_argc;
-char** init_argv;
+extern int init_argc;
+extern char** init_argv;
 
 // Window
 
-short win_x;
-short win_y;
-short win_width;
-short win_height;
-char* win_title;
+extern short win_x;
+extern short win_y;
+extern short win_width;
+extern short win_height;
+extern char* win_title;
 
 // Logging
 
-short log_indent;
+extern short log_indent;
 
 // Resource
 
-char* rsc_path;
+extern char* rsc_path;
 
 // OpenGL
 
-GLKMatrix4 gl_projection;
-GLKMatrix4 gl_view;
-GLKMatrix4 gl_model;
+extern GLKMatrix4 gl_projection;
+extern GLKMatrix4 gl_view;
+extern GLKMatrix4 gl_model;
 
 // Shader
 TS(Shader);
 
-Shader* shader_image;
+extern Shader* shader_image;
+
+// Input
+
+extern bool key_states[256];
 
 // Game
 
-bool running;
-uint delta;
-uint lasttime;
-uint currtime;
-uint lastsecond;
-uint fps;
+extern bool running;
+extern uint delta;
+extern uint lasttime;
+extern uint currtime;
+extern uint lastsecond;
+extern uint fps;
 
 END_HEAD
 
