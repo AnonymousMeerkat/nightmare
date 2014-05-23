@@ -7,22 +7,32 @@
 
 START_HEAD
 
-#define pos_float float
-#define pos_int int
+#define Posf float
+#define Posi int
 
 STRUCT(Pos2f, {
-    pos_float x;
-    pos_float y;
+    Posf x;
+    Posf y;
 });
 
 static const Pos2f Pos2fblank;
 
+static inline Pos2f pos2f(Posf x, Posf y) {
+    Pos2f ret = {x, y};
+    return ret;
+}
+
 STRUCT(Pos2i, {
-    pos_int x;
-    pos_int y;
+    Posi x;
+    Posi y;
 });
 
 static const Pos2i Pos2iblank;
+
+static inline Pos2i pos2i(Posi x, Posi y) {
+    Pos2i ret = {x, y};
+    return ret;
+}
 
 END_HEAD
 

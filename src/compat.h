@@ -11,4 +11,6 @@
 #  include <stdbool.h>
 #endif
 
+#define inline __inline__
+
 #endif

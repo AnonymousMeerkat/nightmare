@@ -158,14 +158,8 @@ void Image_unbind() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Image_draw(Image* image) {
-    glPushMatrix();
-    Shader_run(shader_image);
-    GLKVector4 sizef = GLKVector4Make(image->size.x, image->size.y, 1, 1);
+void Image_draw(Image* image, Pos2i pos) {
     Image_bind(image);
-    //glScale(image->size.x, image->size.y);
-    square_draw();
+    square_draw(shader_image, pos, image->size);
     Image_unbind();
-    Shader_stop();
-    glPopMatrix();
 }

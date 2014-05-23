@@ -1,5 +1,9 @@
 #include "square.h"
 
+#include "shader.h"
+#include "globals.h"
+#include <GLKit/GLKMath.h>
+
 GLuint square_id;
 
 GLuint vao;
@@ -58,7 +62,7 @@ void square_destroy() {
 }
 
 
-void square_draw() {
+void square_draw_shape() {
     glBindVertexArray(vao);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -68,4 +72,15 @@ void square_draw() {
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glBindVertexArray(0);
+}
+
+void square_draw(Shader* shader, Pos2i pos, Pos2i size) {
+    GLKMatrix4 model = gl_model;
+    gl_model = GLKMatrix4Translate(gl_model, pos.x, pos.y, 0);
+    gl_model = GLKMatrix4Scale(gl_model, size.x, size.y, 0);
+    Shader_run(shader);
+    Shader_set_int(shader, "flip", 0);
+    square_draw_shape();
+    Shader_stop();
+    gl_model = model;
 }

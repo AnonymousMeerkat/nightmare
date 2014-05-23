@@ -41,8 +41,6 @@ bool Shader_load(GLenum type, const GLchar* shader, GLuint* handle) {
 }
 
 Shader* Shader_new(char* vertex, char* fragment) {
-    int status;
-    bool okay;
     Shader* ret = NULL;
 
     debug("Creating shader program");
@@ -77,7 +75,7 @@ deletevertex:
 deleteshader:
     glDeleteProgram(shader->shader_handle);
 end:
-    return shader;
+    return ret;
 }
 
 void Shader_destroy(Shader* shader) {
@@ -87,6 +85,7 @@ void Shader_destroy(Shader* shader) {
     glDeleteShader(shader->fragment_handle);
     glDeleteShader(shader->vertex_handle);
     glDeleteProgram(shader->shader_handle);
+    free(shader);
 }
 
 
@@ -116,6 +115,10 @@ bool Shader_link(Shader* shader) {
     return ret;
 }
 
+
+void Shader_set_int(Shader* shader, char* name, int value) {
+    glUniform1i(glGetUniformLocation(shader->shader_handle, name), value);
+}
 
 void Shader_set_vec4(Shader* shader, char* name, GLKVector4 value) {
     glUniform4fv(glGetUniformLocation(shader->shader_handle, name), 1, value.v);

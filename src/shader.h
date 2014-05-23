@@ -22,6 +22,7 @@ void Shader_destroy(Shader* shader);
 void Shader_bind_attrib(Shader* shader, GLuint attrib, char* name);
 bool Shader_link(Shader* shader);
 
+void Shader_set_int(Shader* shader, char* name, int value);
 void Shader_set_vec4(Shader* shader, char* name, GLKVector4 vec);
 void Shader_set_mat4(Shader* shader, char* name, GLKMatrix4 matrix);
 

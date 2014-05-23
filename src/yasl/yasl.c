@@ -77,6 +77,8 @@ YASLlist* YASLlist_new() {
     return list;
 }
 
+void YASLlist_clear(YASLlist* list);
+
 void YASLlist_destroy(YASLlist* list) {
     YASLlist_clear(list);
     yrlist_destroy(list->data);

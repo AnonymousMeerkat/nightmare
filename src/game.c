@@ -9,11 +9,37 @@
 #include "resource.h"
 #include "image.h"
 #include "splu.h"
+#include "sprite.h"
+#include "spritesheet.h"
 
 #include "wrap/gl.h"
 #include <GLKit/GLKMath.h>
 
 Image* eevee;
+Spritesheet* sheet;
+sprite_framedata walk_data[] = {
+    {1, 100, 1},
+    {2, 100, 1},
+    {3, 100, 1},
+    {4, 100, 1},
+    {5, 100, 1},
+    {6, 100, 1},
+    {0,   0, 0}
+};
+sprite_framedata trot_data[] = {
+    {0, 100, 1},
+    {1, 100, 1},
+    {2, 100, 1},
+    {3, 100, 1},
+    {4, 100, 1},
+    {5, 100, 1},
+    {0,   0, 0}
+};
+spritesheet_data data[] = {
+    {"walk", walk_data, NULL},
+    {"trot", trot_data, NULL},
+    {NULL, NULL, NULL},
+};
 
 void game_update_time() {
     currtime = wm.get_millis();
@@ -51,10 +77,10 @@ bool game_load() {
     gl_projection = GLKMatrix4MakeOrtho(0.0f, win_width, win_height, 0.0f, -1, 1);
     gl_view = GLKMatrix4Identity;
     gl_model = GLKMatrix4Identity;
-    gl_model = GLKMatrix4Translate(gl_model, 200, 100, 0);
+    /*gl_model = GLKMatrix4Translate(gl_model, 200, 100, 0);
     gl_model = GLKMatrix4Scale(gl_model, 200, 100, 0);
     GLKMatrix4 test = splu_calc_mvp();
-    GLKVector4 test2 = GLKMatrix4MultiplyVector4(test, GLKVector4Make(1, 1, 0, 1));
+    GLKVector4 test2 = GLKMatrix4MultiplyVector4(test, GLKVector4Make(1, 1, 0, 1));*/
     debug("Loading square");
     square_init();
     debug("Loading shader");
@@ -64,6 +90,19 @@ bool game_load() {
     Shader_link(shader_image);
     debug("Loading image");
     eevee = rsc_load_image("eevee.png");
+    debug("Loading sprite");
+    sheet = rsc_load_spritesheet("player", data);
+    sheet->id = 1;
+
+    debug("FILES");
+    char** files = rsc_ls(RSC_JOIN_PATHS("glsl", "image"));
+    debug("OKIEEEE");
+    /*char* afile;
+    for (int i = 0; afile = files[i]; i++) {
+        debug("YEAH %s", files[i]);
+    }*/
+    rsc_ls_free(files);
+    debug("FREEEE");
 
     return true;
 }
@@ -71,7 +110,7 @@ bool game_load() {
 bool game_destroy() {
     square_destroy();
     Shader_destroy(shader_image);
-    Image_destroy(eevee);
+    Spritesheet_destroy(sheet);
     return true;
 }
 
@@ -101,7 +140,9 @@ void game_run() {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.0, 0.0, 0.0, 1.0);
 
-        Image_draw(eevee);
+        //Image_draw(eevee, pos2i(50, 50));
+        Spritesheet_update(sheet);
+        Spritesheet_draw(sheet, pos2i(50, 50));
 
         fps++;
         wm.swap_buffers();

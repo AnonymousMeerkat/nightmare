@@ -32,7 +32,7 @@ void Image_stoprecord();
 void Image_bind(Image* image);
 void Image_unbind();
 
-void Image_draw(Image* image);
+void Image_draw(Image* image, Pos2i pos);
 
 END_HEAD
 
