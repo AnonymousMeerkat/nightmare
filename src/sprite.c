@@ -35,6 +35,6 @@ void Sprite_update(Sprite* sprite) {
     sprite->id %= sprite->frame_count;
 }
 
-void Sprite_draw(Sprite* sprite, Pos2i pos) {
-    Image_draw(sprite->images[sprite->frames[sprite->id].image_id], pos);
+void Sprite_draw(Sprite* sprite, Pos2i pos, bool flip) {
+    Image_draw(sprite->images[sprite->frames[sprite->id].image_id], pos, flip);
 }

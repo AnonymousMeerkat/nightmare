@@ -8,6 +8,7 @@ START_HEAD
 #include "misc.h"
 #include "pos.h"
 #include "wrap/gl.h"
+#include "types.h"
 
 TS(Shader);
 
@@ -17,7 +18,7 @@ void square_init();
 void square_destroy();
 
 void square_draw_shape();
-void square_draw(Shader* shader, Pos2i pos, Pos2i size);
+void square_draw(Shader* shader, Pos2i pos, Pos2i size, bool flip);
 
 END_HEAD
 

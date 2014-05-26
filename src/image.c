@@ -4,6 +4,7 @@
 #include "globals.h"
 #include "square.h"
 #include "shader.h"
+#include "types.h"
 
 #include "wrap/gl.h"
 #include <FreeImage.h>
@@ -158,8 +159,8 @@ void Image_unbind() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Image_draw(Image* image, Pos2i pos) {
+void Image_draw(Image* image, Pos2i pos, bool flip) {
     Image_bind(image);
-    square_draw(shader_image, pos, image->size);
+    square_draw(shader_image, pos, image->size, flip);
     Image_unbind();
 }

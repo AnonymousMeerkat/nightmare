@@ -6,7 +6,6 @@
 Spritesheet* Spritesheet_new(spritesheet_data* sprites) {
     Spritesheet* sheet = malloc(sizeof(Spritesheet));
     sheet->sprites = sprites;
-    sheet->id = 0;
     return sheet;
 }
 
@@ -26,6 +25,6 @@ void Spritesheet_update(Spritesheet* sheet) {
     }
 }
 
-void Spritesheet_draw(Spritesheet* sheet, Pos2i pos) {
-    Sprite_draw(sheet->sprites[sheet->id].sprite, pos);
+void Spritesheet_draw(Spritesheet* sheet, size_t id, Pos2i pos, bool flip) {
+    Sprite_draw(sheet->sprites[id].sprite, pos, flip);
 }

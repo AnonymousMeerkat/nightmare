@@ -122,15 +122,15 @@ char* rsc_read_file(char* simplepath) {
     rewind (file);
 
     char* ret = malloc(file_size + 1);
-    memset(ret, 0, file_size);
+    memset(ret, 0, file_size + 1);
     size_t n_read = fread(ret, 1, file_size, file);
     if (n_read != file_size) {
         error("Error reading file!");
         return NULL;
     }
-    ret[file_size] = 0;
+    //ret[file_size] = 0;
     debug(ret);
     fclose(file);
-    ret = realloc(ret, strlen(ret)); // Save memory
+    //ret = realloc(ret, strlen(ret)); // Save memory
     return ret;
 }

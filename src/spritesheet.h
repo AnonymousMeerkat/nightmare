@@ -10,6 +10,7 @@ START_HEAD
 
 #include "sprite.h"
 #include "pos.h"
+#include "types.h"
 
 STRUCT(spritesheet_data, {
     char* name;
@@ -19,14 +20,13 @@ STRUCT(spritesheet_data, {
 
 STRUCT(Spritesheet, {
     spritesheet_data* sprites;
-    size_t id;
 });
 
 Spritesheet* Spritesheet_new(spritesheet_data* sprites);
 void Spritesheet_destroy(Spritesheet* sheet);
 
 void Spritesheet_update(Spritesheet* sheet);
-void Spritesheet_draw(Spritesheet* sheet, Pos2i pos);
+void Spritesheet_draw(Spritesheet* sheet, size_t id, Pos2i pos, bool flip);
 
 END_HEAD
 

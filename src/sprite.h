@@ -33,7 +33,7 @@ Sprite* Sprite_new(Image** images, sprite_framedata* frames);
 void Sprite_destroy(Sprite* sprite);
 
 void Sprite_update(Sprite* sprite);
-void Sprite_draw(Sprite* sprite, Pos2i pos);
+void Sprite_draw(Sprite* sprite, Pos2i pos, bool flip);
 
 END_HEAD
 

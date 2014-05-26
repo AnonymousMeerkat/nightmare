@@ -74,12 +74,12 @@ void square_draw_shape() {
     glBindVertexArray(0);
 }
 
-void square_draw(Shader* shader, Pos2i pos, Pos2i size) {
+void square_draw(Shader* shader, Pos2i pos, Pos2i size, bool flip) {
     GLKMatrix4 model = gl_model;
     gl_model = GLKMatrix4Translate(gl_model, pos.x, pos.y, 0);
     gl_model = GLKMatrix4Scale(gl_model, size.x, size.y, 0);
     Shader_run(shader);
-    Shader_set_int(shader, "flip", 0);
+    Shader_set_int(shader, "flip", flip);
     square_draw_shape();
     Shader_stop();
     gl_model = model;

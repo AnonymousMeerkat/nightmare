@@ -11,6 +11,7 @@
 #include "splu.h"
 #include "sprite.h"
 #include "spritesheet.h"
+#include "entity.h"
 
 #include "wrap/gl.h"
 #include <GLKit/GLKMath.h>
@@ -40,6 +41,7 @@ spritesheet_data data[] = {
     {"trot", trot_data, NULL},
     {NULL, NULL, NULL},
 };
+Entity* entity;
 
 void game_update_time() {
     currtime = wm.get_millis();
@@ -92,7 +94,11 @@ bool game_load() {
     eevee = rsc_load_image("eevee.png");
     debug("Loading sprite");
     sheet = rsc_load_spritesheet("player", data);
-    sheet->id = 1;
+    debug("Loading entity");
+    entity_info info = {
+        pos2i(50, 50), sheet, .04
+    };
+    entity = Entity_new(info);
 
     debug("FILES");
     char** files = rsc_ls(RSC_JOIN_PATHS("glsl", "image"));
@@ -111,6 +117,7 @@ bool game_destroy() {
     square_destroy();
     Shader_destroy(shader_image);
     Spritesheet_destroy(sheet);
+    Entity_destroy(entity);
     return true;
 }
 
@@ -131,6 +138,9 @@ void game_check_events() {
 }
 
 void game_run() {
+    int i = 0;
+    bool flip = 0;
+    //Entity_flip(entity);
     while (running) {
         game_update_time();
         game_update_fps();
@@ -140,9 +150,22 @@ void game_run() {
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.0, 0.0, 0.0, 1.0);
 
-        //Image_draw(eevee, pos2i(50, 50));
-        Spritesheet_update(sheet);
-        Spritesheet_draw(sheet, pos2i(50, 50));
+        //Image_draw(eevee, pos2i(50, 50), 0);
+        i += delta;
+        int ibefore = i;
+        i %= 1000;
+        if (i < ibefore) {
+            flip = !flip;
+        }
+        /*Spritesheet_update(sheet);
+        Spritesheet_draw(sheet, 1, pos2i(50, 50), 0);*/
+        if (key_states['a']) {
+            Entity_left(entity);
+        } else if (key_states['d']) {
+            Entity_right(entity);
+        }
+        Entity_update(entity);
+        Entity_draw(entity);
 
         fps++;
         wm.swap_buffers();
