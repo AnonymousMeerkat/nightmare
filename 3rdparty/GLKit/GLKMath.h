@@ -14,6 +14,6 @@
 #include <GLKit/GLKVector4.h>
 #include <GLKit/GLKQuaternion.h>
 
-#include <GLKit/GLKMatrixStack.h>
+//#include <GLKit/GLKMatrixStack.h>
 
 #include <GLKit/GLKMathUtils.h>
