@@ -23,11 +23,14 @@ find_package(FreeImage REQUIRED)
 
 set(LIBRARIES ${LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${FreeImage_LIBRARIES})
 
+set(WM_FOUND 0)
+
 find_package(SDL)
 
 if(SDL_FOUND)
     set(LIBRARIES ${LIBRARIES} ${SDL_LIBRARY})
     add_definitions(-DSDL_FOUND)
+    set(WM_FOUND 1)
 endif(SDL_FOUND)
 
 find_package(SDL2)
@@ -35,7 +38,12 @@ find_package(SDL2)
 if(SDL2_FOUND)
     set(LIBRARIES ${LIBRARIES} ${SDL2_LIBRARY})
     add_definitions(-DSDL2_FOUND)
-endif()
+    set(WM_FOUND 1)
+endif(SDL2_FOUND)
+
+if(NOT WM_FOUND)
+    message(FATAL_ERROR "Please install either SDL or SDL2!")
+endif(NOT WM_FOUND)
 
 # Include 3rd party libraries
 
@@ -43,11 +51,11 @@ include_directories(3rdparty)
 
 if(WIN32)
     include_directories(3rdparty/w32)
-endif()
+endif(WIN32)
 
 if(UNIX)
     set(LIBRARIES ${LIBRARIES} dl)
-endif()
+endif(UNIX)
 
 # Compile 3rd party libraries
 
