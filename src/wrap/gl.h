@@ -1,7 +1,7 @@
-#ifndef _SP_WRAP_GL_H
-#define _SP_WRAP_GL_H
+#ifndef _NME_WRAP_GL_H
+#define _NME_WRAP_GL_H
 
-#include "../compat.h"
+#include "../NCompat.h"
 
 START_HEAD
 
@@ -19,6 +19,8 @@ START_HEAD
 
 #define glTranslate(x, y) _glTranslate(x, y, 0)
 #define glScale(x, y) _glScale(x, y, 0)
+
+#undef _gl
 
 END_HEAD
 

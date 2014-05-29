@@ -1,68 +1,74 @@
-#include "globals.h"
-#include "log.h"
-#include "wm.h"
+#include "NGlobals.h"
+#include "NLog.h"
+#include "NWMan.h"
 #include "wrap/gl.h"
-#include "resource.h"
-#include "game.h"
+#include "NRsc.h"
+#include "NEngine.h"
 
 int main(int argc, char** argv) {
     int ret = 0;
 
     bool okay;
 
+    N_argc = argc;
+    N_argv = argv;
+
     // Load
-    debug("Initializing global variables");
-    globals_init();
+    Ndebug("Initializing global variables");
+    NGlobals_init();
 
-    debug("Initializing window manager");
-    indent(okay = wm_init(argc, argv));
-
-    if (!okay) {
-        error("Error initializing window manager!");
-    }
-
-    debug("Creating window");
-    indent(okay = wm.create_window());
+    Ndebug("Initializing window manager");
+    NINDENT(okay = NWMan_init(argc, argv));
 
     if (!okay) {
-        error("Error creating window!");
+        Nerror("Error initializing window manager!");
     }
 
-    debug("Initializing GLEW");
+    Ndebug("Creating window");
+    NINDENT(okay = N_WMan.create_window());
+
+    if (!okay) {
+        Nerror("Error creating window!");
+    }
+
+    Ndebug("Initializing GLEW");
     if (glewInit() != GLEW_OK) {
-        error("Error initializing GLEW!");
+        Nerror("Error initializing GLEW!");
     }
 
-    debug("Initializing paths");
-    indent(okay = rsc_init());
+    Ndebug("Initializing paths");
+    NINDENT(okay = NRsc_init());
 
     /*if (!okay) {
         return;
     }*/
 
-    debug("Loading game");
-    indent(okay = game_load());
+    Ndebug("Loading engine");
+    NINDENT(okay = NEngine_init());
 
     if (!okay) {
-        error("Error loading game!");
+        Nerror("Error loading engine!");
     }
 
     // Game
-    newline();
-    game_run();
+    Nnewline();
+    NEngine_run();
 
     // End
-    debug("Destroying paths");
-    indent(rsc_destroy());
+    Ndebug("Destroying engine");
+    NEngine_destroy();
 
-    debug("Destroying window");
-    indent(wm.destroy_window());
+    Ndebug("Destroying paths");
+    NINDENT(NRsc_destroy());
 
-    debug("Destroying window manager");
-    wm_destroy();
+    Ndebug("Destroying window");
+    NINDENT(N_WMan.destroy_window());
 
-    debug("Destroying global variables");
-    globals_destroy();
+    Ndebug("Destroying window manager");
+    NWMan_destroy();
+
+    Ndebug("Destroying global variables");
+    NGlobals_destroy();
 
     return ret;
 }

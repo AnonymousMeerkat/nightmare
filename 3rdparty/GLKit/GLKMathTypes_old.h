@@ -12,6 +12,13 @@
 extern "C" {
 #endif
 
+#if defined(__STRICT_ANSI__)
+struct _GLKMatrix2
+{
+    float m[4];
+};
+typedef struct _GLKMatrix2 GLKMatrix2;
+#else
 union _GLKMatrix2
 {
     struct
@@ -23,7 +30,15 @@ union _GLKMatrix2
     float m[4];
 };
 typedef union _GLKMatrix2 GLKMatrix2;
+#endif
 
+#if defined(__STRICT_ANSI__)
+struct _GLKMatrix3
+{
+    float m[9];
+};
+typedef struct _GLKMatrix3 GLKMatrix3;
+#else
 union _GLKMatrix3
 {
     struct
@@ -35,11 +50,19 @@ union _GLKMatrix3
     float m[9];
 };
 typedef union _GLKMatrix3 GLKMatrix3;
+#endif
 
 /*
  m30, m31, and m32 correspond to the translation values tx, ty, and tz, respectively.
  m[12], m[13], and m[14] correspond to the translation values tx, ty, and tz, respectively.
  */
+#if defined(__STRICT_ANSI__)
+struct _GLKMatrix4
+{
+    float m[16];
+} __attribute__((aligned(16)));
+typedef struct _GLKMatrix4 GLKMatrix4;
+#else
 union _GLKMatrix4
 {
     struct
@@ -52,7 +75,15 @@ union _GLKMatrix4
     float m[16];
 } __attribute__((aligned(16)));
 typedef union _GLKMatrix4 GLKMatrix4;
+#endif
 
+#if defined(__STRICT_ANSI__)
+struct _GLKVector2
+{
+    float v[2];
+};
+typedef struct _GLKVector2 GLKVector2;
+#else
 union _GLKVector2
 {
     struct { float x, y; };
@@ -60,7 +91,15 @@ union _GLKVector2
     float v[2];
 };
 typedef union _GLKVector2 GLKVector2;
+#endif
 
+#if defined(__STRICT_ANSI__)
+struct _GLKVector3
+{
+    float v[3];
+};
+typedef struct _GLKVector3 GLKVector3;
+#else
 union _GLKVector3
 {
     struct { float x, y, z; };
@@ -69,7 +108,15 @@ union _GLKVector3
     float v[3];
 };
 typedef union _GLKVector3 GLKVector3;
+#endif
 
+#if defined(__STRICT_ANSI__)
+struct _GLKVector4
+{
+    float v[4];
+} __attribute__((aligned(16)));
+typedef struct _GLKVector4 GLKVector4;
+#else
 union _GLKVector4
 {
     struct { float x, y, z, w; };
@@ -78,12 +125,20 @@ union _GLKVector4
     float v[4];
 } __attribute__((aligned(16)));
 typedef union _GLKVector4 GLKVector4;
+#endif
 
 /*
  x, y, and z represent the imaginary values.
  Vector v represents the imaginary values.
  q[0], q[1], and q[2] represent the imaginary values.
  */
+#if defined(__STRICT_ANSI__)
+struct _GLKQuaternion
+{
+    float q[4];
+} __attribute__((aligned(16)));
+typedef struct _GLKQuaternion GLKQuaternion;
+#else
 union _GLKQuaternion
 {
     struct { GLKVector3 v; float s; };
@@ -91,6 +146,7 @@ union _GLKQuaternion
     float q[4];
 } __attribute__((aligned(16)));
 typedef union _GLKQuaternion GLKQuaternion;
+#endif
 
 #ifdef __cplusplus
 }

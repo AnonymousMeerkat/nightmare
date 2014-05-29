@@ -1,5 +1,5 @@
-#ifndef _SP_WRAP_LIMITS_H
-#define _SP_WRAP_LIMITS_H
+#ifndef _NME_WRAP_LIMITS_H
+#define _NME_WRAP_LIMITS_H
 
 #ifdef __linux
 #  include <linux/limits.h>
