@@ -44,7 +44,7 @@ NSpritesheet_info _G_spritesheet_infos[] = {
 };
 NSpritesheet_info* G_spritesheet_infos = _G_spritesheet_infos;
 
-void Game_init(int argc, char** argv) {
+void Game_init() {
     Ndebug("Initing!");
 }
 

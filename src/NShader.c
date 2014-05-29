@@ -89,7 +89,7 @@ NShader* NShader_new(char* vertex, char* fragment, NShader_attrib* attribs) {
     ret = shader;
     goto end;
 
-deletefragment:
+//deletefragment:
     glDeleteShader(shader->fragment_handle);
 deletevertex:
     glDeleteShader(shader->vertex_handle);
