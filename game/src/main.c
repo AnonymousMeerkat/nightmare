@@ -1,6 +1,6 @@
 #include <Nightmare.h>
 
-NShader_attrib image_attribs[] = {
+/*NShader_attrib image_attribs[] = {
     {0, "vertex_position"},
     {1, "vertex_UV"}
 };
@@ -42,7 +42,7 @@ NSpritesheet_info _G_spritesheet_infos[] = {
     {"player", player_data},
     {NULL, NULL}
 };
-NSpritesheet_info* G_spritesheet_infos = _G_spritesheet_infos;
+NSpritesheet_info* G_spritesheet_infos = _G_spritesheet_infos;*/
 
 void Game_init() {
     Ndebug("Initing!");

@@ -1,9 +1,22 @@
+# CMake files
 *CMakeCache*
 *CMakeFiles*
 *Makefile
-*sublime-workspace
 *cmake_install*
-*nightmare
+/build
+
+# Other files
+*sublime-workspace
+
+# Generated files
 *libNWMan.a
 *libGLKit.a
 *libgame.a
+*rscdata.c
+
+# Executables
+/bin
+*nightmare
+*databuilder
+
+!/tools/databuilder
