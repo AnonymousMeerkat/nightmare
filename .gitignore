@@ -20,3 +20,6 @@
 *databuilder
 
 !/tools/databuilder
+
+# Game
+/game/*
