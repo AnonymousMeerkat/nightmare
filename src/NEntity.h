@@ -22,7 +22,8 @@ NENUM(NEntity_state, {
 NSTRUCT(NEntity_info, {
     NPos2i size;
     NSpritesheet* sheet;
-    NPosf speed;
+    NPosf walk_speed;
+    NPosf trot_speed;
 });
 
 NSTRUCT(NEntity, {
@@ -32,7 +33,8 @@ NSTRUCT(NEntity, {
     NEntity_state state;
     NSpritesheet* sheet;
 
-    NPosf speed;
+    NPosf walk_speed;
+    NPosf trot_speed;
     bool facing_left;
 
     // Functions
@@ -43,6 +45,9 @@ void NEntity_destroy(NEntity* entity);
 
 NPosi NEntity_distance(NEntity* entity, NEntity* other);
 
+void NEntity_still(NEntity* entity);
+void NEntity_walk(NEntity* entity);
+void NEntity_trot(NEntity* entity);
 void NEntity_flip(NEntity* entity);
 void NEntity_forward(NEntity* entity);
 void NEntity_left(NEntity* entity);

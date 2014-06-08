@@ -201,4 +201,9 @@ void NWMan_SDL2_init() {
 
     N_WMan_SDL2.get_millis = sdl2_get_millis;
     N_WMan_SDL2.sleep = sdl2_sleep;
+
+    N_WMan_SDL2.lshift_key = SDLK_LSHIFT;
+    N_WMan_SDL2.rshift_key = SDLK_RSHIFT;
+    N_WMan_SDL2.left_key = SDLK_LEFT;
+    N_WMan_SDL2.right_key = SDLK_RIGHT;
 }

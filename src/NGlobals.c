@@ -22,7 +22,7 @@ NShader** N_shaders;
 NImage** N_images;
 NSpritesheet** N_spritesheets;
 
-bool N_key_states[256];
+bool N_key_states[65536];
 
 NDLL* N_dll;
 void (*Ndll_init)(int argc, char** argv);

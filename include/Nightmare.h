@@ -12,6 +12,7 @@ START_HEAD
 #include "../src/NPorting.h"
 #include "../src/NGlobals.h"
 #include "../src/NLog.h"
+#include "../src/NWMan.h"
 #include "../src/NRsc.h"
 #include "../src/NShader.h"
 #include "../src/NSquare.h"
@@ -19,6 +20,7 @@ START_HEAD
 #include "../src/NSprite.h"
 #include "../src/NSpritesheet.h"
 #include "../src/NEntity.h"
+#include "../src/Game.h"
 
 END_HEAD
 

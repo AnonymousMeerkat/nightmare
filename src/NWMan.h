@@ -30,6 +30,12 @@ NSTRUCT(NWMan, {
     // Time stuff
     uint (*get_millis)();
     void (*sleep)(uint millis);
+
+    // Info
+    int rshift_key;
+    int lshift_key;
+    int left_key;
+    int right_key;
 });
 
 NENUM(NWMan_event_type, {
@@ -66,7 +72,7 @@ NSTRUCT(NWMan_event, {
         // Keyboard
 
         struct {
-            uchar key;
+            int key;
             bool state;
         } keyboard;
 

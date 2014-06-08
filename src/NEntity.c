@@ -3,14 +3,15 @@
 #include "NGlobals.h"
 #include <stdlib.h>
 
-#define en_ds ((float)N_delta) * entity->speed
+#define en_ds ((float)N_delta) * ((entity->state == NEntity_WALK) ? entity->walk_speed : entity->trot_speed)
 
 NEntity* NEntity_new(NEntity_info info) {
     NEntity* entity = malloc(sizeof(NEntity));
     entity->pos = NPos2f0;
     entity->size = info.size;
     entity->sheet = info.sheet;
-    entity->speed = info.speed;
+    entity->walk_speed = info.walk_speed;
+    entity->trot_speed = info.trot_speed;
 
     entity->state = 0;
     entity->facing_left = 0;
@@ -28,6 +29,18 @@ NPosi NEntity_distance(NEntity* entity, NEntity* other) {
     return abs(entity->pos.x - other->pos.x);
 }
 
+
+void NEntity_still(NEntity* entity) {
+    entity->state = NEntity_STILL;
+}
+
+void NEntity_walk(NEntity* entity) {
+    entity->state = NEntity_WALK;
+}
+
+void NEntity_trot(NEntity* entity) {
+    entity->state = NEntity_TROT;
+}
 
 void NEntity_flip(NEntity* entity) {
     entity->facing_left = !entity->facing_left;
@@ -59,11 +72,7 @@ void NEntity_move_towards(NEntity* entity, NEntity* other) {
     if ((entity->facing_left && diff > 0) || (!entity->facing_left && diff < 0)) {
         NEntity_flip(entity);
     } else if ((delta_speed = en_ds) > diff) {
-        if (entity->facing_left) {
-            entity->pos.x -= delta_speed;
-        } else {
-            entity->pos.x += delta_speed;
-        }
+        NEntity_forward(entity);
     } else {
         NEntity_forward(entity);
     }

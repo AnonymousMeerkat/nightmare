@@ -60,7 +60,7 @@ extern NSpritesheet** N_spritesheets;
 
 // Input
 
-extern bool N_key_states[256];
+extern bool N_key_states[65536];
 
 // Game.{dll|so}
 

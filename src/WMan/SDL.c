@@ -157,4 +157,9 @@ void NWMan_SDL_init() {
 
     var.get_millis = WMSDL_get_millis;
     var.sleep = WMSDL_sleep;
+
+    var.lshift_key = SDLK_LSHIFT;
+    var.rshift_key = SDLK_RSHIFT;
+    var.left_key = SDLK_LEFT;
+    var.right_key = SDLK_RIGHT;
 }
