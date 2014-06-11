@@ -2,6 +2,7 @@
 
 #include "NShader.h"
 #include "NGlobals.h"
+#include "NSplu.h"
 #include <GLKit/GLKMath.h>
 
 GLuint square_id;
@@ -74,13 +75,9 @@ void NSquare_draw_shape() {
     glBindVertexArray(0);
 }
 
-void NSquare_draw(NShader* shader, NPos2i pos, NPos2i size, bool flip) {
-    GLKMatrix4 gl_model = N_gl_model;
-    N_gl_model = GLKMatrix4Translate(N_gl_model, pos.x, pos.y, 0);
-    N_gl_model = GLKMatrix4Scale(N_gl_model, size.x, size.y, 0);
-    NShader_run(shader);
-    NShader_set_int(shader, "N_UV_flip", flip);
+void NSquare_draw(NPos2i pos, NPos2i size) {
+    N_gl_model = Nsplu_calc_rect(GLKpos2i(pos), GLKpos2i(size));
+    NShader_update_MVP(N_shader);
     NSquare_draw_shape();
-    NShader_stop();
-    N_gl_model = gl_model;
+    N_gl_model = GLKMatrix4Identity;
 }

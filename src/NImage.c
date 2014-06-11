@@ -24,9 +24,35 @@ NSTRUCT(fbo_data, {
 });
 
 bool NImage_new_fbo(NImage* image) {
-    // Basically copied over from DBAB
+    fbo_data* data = malloc(sizeof(fbo_data));
+    image->size = N_win_size;
+    glGenFramebuffers(1, &data->fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, data->fbo);
+    /*glGenRenderbuffers(1, &data->rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, data->rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, N_win_size.x, N_win_size.y);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, data->rbo);*/
+    glBindTexture(GL_TEXTURE_2D, image->id);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, N_win_size.x, N_win_size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, image->id, 0);
+    NImage_unbind(image);
+    GLenum draw_bufs[] = { GL_COLOR_ATTACHMENT0 };
+    glDrawBuffers (1, draw_bufs);
+    image->data = data;
+    GLenum status;
+    if ((status = glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE) {
+        Nerror("Framebuffer error! %i", status);
+        return false;
+    }
+    glClear(GL_COLOR_BUFFER_BIT);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    return true;
+    /*// Basically copied over from DBAB
     glActiveTexture(GL_TEXTURE0);
-    glGenTextures(1, &image->id);
     NImage_bind(image);
     NImage_gl_parameters();
     fbo_data* data = malloc(sizeof(fbo_data));
@@ -47,7 +73,7 @@ bool NImage_new_fbo(NImage* image) {
         return false;
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    return true;
+    return true;*/
 }
 
 void NImage_destroy_fbo(NImage* image) {
@@ -144,6 +170,7 @@ void NImage_record(NImage* image) {
         return;
     }
     glBindFramebuffer(GL_FRAMEBUFFER, ((fbo_data*)image->data)->fbo);
+    //glViewport(0, 0, N_win_size.x, N_win_size.y);
 }
 
 void NImage_stoprecord() {
@@ -159,8 +186,13 @@ void NImage_unbind() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void NImage_draw(NImage* image, NPos2i pos, bool flip) {
+void NImage_draw(NImage* image, NPos2i pos, bool flip, float alpha) {
     NImage_bind(image);
-    NSquare_draw(N_shaders[N_SHADER_IMAGE], pos, image->size, flip);
+    NShader* shader = N_shaders[N_SHADER_IMAGE];
+    NShader_run(shader);
+    NShader_set_int(shader, "N_UV_flip", flip);
+    NShader_set_float(shader, "N_alpha", alpha);
+    NSquare_draw(pos, image->size);
+    NShader_stop();
     NImage_unbind();
 }

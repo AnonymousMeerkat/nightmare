@@ -18,7 +18,7 @@ void NSquare_init();
 void NSquare_destroy();
 
 void NSquare_draw_shape();
-void NSquare_draw(NShader* shader, NPos2i pos, NPos2i size, bool flip);
+void NSquare_draw(NPos2i pos, NPos2i size);
 
 END_HEAD
 

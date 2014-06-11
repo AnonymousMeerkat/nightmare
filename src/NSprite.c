@@ -38,5 +38,5 @@ void NSprite_update(NSprite* sprite) {
 }
 
 void NSprite_draw(NSprite* sprite, NPos2i pos, bool flip) {
-    NImage_draw(sprite->images[sprite->frames[sprite->id].image_id], pos, flip);
+    NImage_draw(sprite->images[sprite->frames[sprite->id].image_id], pos, flip, 1);
 }

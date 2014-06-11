@@ -29,7 +29,7 @@ extern "C" {
 #pragma mark Prototypes
 #pragma mark -
 
-extern const GLKMatrix4 GLKMatrix4Identity;
+//extern const GLKMatrix4 GLKMatrix4Identity;
 
 /*
  m30, m31, and m32 correspond to the translation values tx, ty, tz, respectively.

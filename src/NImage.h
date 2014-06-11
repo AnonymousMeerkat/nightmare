@@ -32,7 +32,7 @@ void NImage_stoprecord();
 void NImage_bind(NImage* image);
 void NImage_unbind();
 
-void NImage_draw(NImage* image, NPos2i pos, bool flip);
+void NImage_draw(NImage* image, NPos2i pos, bool flip, float alpha);
 
 END_HEAD
 

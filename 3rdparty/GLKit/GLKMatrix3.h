@@ -28,7 +28,7 @@ extern "C" {
 #pragma mark Prototypes
 #pragma mark -
 
-extern const GLKMatrix3 GLKMatrix3Identity;
+//extern const GLKMatrix3 GLKMatrix3Identity;
 
 static __inline__ GLKMatrix3 GLKMatrix3Make(float m00, float m01, float m02,
                                             float m10, float m11, float m12,

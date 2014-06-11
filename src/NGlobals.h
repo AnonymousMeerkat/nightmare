@@ -87,6 +87,8 @@ extern uint N_currtime;
 extern uint N_lastsecond;
 extern uint N_fps;
 
+extern NShader* N_shader;
+
 #else
 
 void NGlobals_set_size(NPos2i size);

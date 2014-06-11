@@ -85,6 +85,12 @@ int main(int argc, char** argv) {
 
     strcpy(FINAL, "#include <Nightmare.h>\n// AUTOMATICALLY GENERATED\n// DO NOT MODIFY!\n\n");
 
+    const char* title = json_string_value(json_object_get(root, "title"));
+    char TITLE_TEMP[BUFSIZE];
+    sprintf(TITLE_TEMP, "char* N_win_title = \"%s\";\n\n", title);
+
+    strcat(FINAL, TITLE_TEMP);
+
     char shader_attribs[DBUFSIZE];
     shader_attribs[0] = 0;
 

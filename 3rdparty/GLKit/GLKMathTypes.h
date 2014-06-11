@@ -92,6 +92,10 @@ union _GLKQuaternion
 } __attribute__((aligned(16)));
 typedef union _GLKQuaternion GLKQuaternion;
 
+extern const GLKMatrix3 GLKMatrix3Identity;
+extern const GLKMatrix4 GLKMatrix4Identity;
+extern const GLKQuaternion GLKQuaternionIdentity;
+
 #ifdef __cplusplus
 }
 #endif

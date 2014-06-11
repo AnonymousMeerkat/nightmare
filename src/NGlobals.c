@@ -8,7 +8,7 @@ char** N_argv;
 
 NPos2i N_win_pos;
 NPos2i N_win_size;
-char* N_win_title;
+//char* N_win_title;
 
 short N_indent;
 
@@ -39,11 +39,13 @@ uint N_currtime;
 uint N_lastsecond;
 uint N_fps;
 
+NShader* N_shader;
+
 
 void NGlobals_init() {
     N_win_pos = NPos2i0;
     N_win_size = Npos2i(800, 600);
-    N_win_title = "Nightmare Engine";
+    //N_win_title = "Nightmare Engine";
 
     N_indent = 0;
 
@@ -70,6 +72,8 @@ void NGlobals_init() {
     N_currtime = 0;
     N_lastsecond = 0;
     N_fps = 0;
+
+    N_shader = NULL;
 }
 
 void NGlobals_destroy() {

@@ -71,6 +71,8 @@ NShader* NShader_new(char* vertex, char* fragment, NShader_attrib* attribs) {
         glBindAttribLocation(shader->shader_handle, attribs[i].attrib, attribs[i].name);
     }
 
+    glBindFragDataLocation(shader->shader_handle, 0, "color");
+
     int status;
 
     Ndebug("Linking shader");
@@ -114,6 +116,14 @@ void NShader_set_int(NShader* shader, char* name, int value) {
     glUniform1i(glGetUniformLocation(shader->shader_handle, name), value);
 }
 
+void NShader_set_float(NShader* shader, char* name, float value) {
+    glUniform1f(glGetUniformLocation(shader->shader_handle, name), value);
+}
+
+void NShader_set_vec2(NShader* shader, char* name, GLKVector2 value) {
+    glUniform2fv(glGetUniformLocation(shader->shader_handle, name), 1, value.v);
+}
+
 void NShader_set_vec4(NShader* shader, char* name, GLKVector4 value) {
     glUniform4fv(glGetUniformLocation(shader->shader_handle, name), 1, value.v);
 }
@@ -122,12 +132,17 @@ void NShader_set_mat4(NShader* shader, char* name, GLKMatrix4 value) {
     glUniformMatrix4fv(glGetUniformLocation(shader->shader_handle, name), 1, GL_FALSE, value.m);
 }
 
+void NShader_update_MVP(NShader* shader) {
+    NShader_set_mat4(shader, "N_MVP", Nsplu_calc_mvp());
+}
+
 
 void NShader_run(NShader* shader) {
     glUseProgram(shader->shader_handle);
-    NShader_set_mat4(shader, "N_MVP", Nsplu_calc_mvp());
+    N_shader = shader;
 }
 
 void NShader_stop() {
     glUseProgram(0);
+    N_shader = NULL;
 }

@@ -14,6 +14,7 @@ START_HEAD
 #include "../src/NLog.h"
 #include "../src/NWMan.h"
 #include "../src/NRsc.h"
+#include "../src/NSplu.h"
 #include "../src/NShader.h"
 #include "../src/NSquare.h"
 #include "../src/NImage.h"
