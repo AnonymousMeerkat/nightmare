@@ -6,7 +6,7 @@
 START_HEAD
 
 #define GLEW_STATIC
-#include <GL/glew.h>
+#include <GL/gl3w.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 

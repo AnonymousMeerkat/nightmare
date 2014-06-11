@@ -31,9 +31,9 @@ int main(int argc, char** argv) {
         Nerror("Error creating window!");
     }
 
-    Ndebug("Initializing GLEW");
-    if (glewInit() != GLEW_OK) {
-        Nerror("Error initializing GLEW!");
+    Ndebug("Initializing OpenGL");
+    if (gl3wInit() || !gl3wIsSupported(3, 0)) {
+        Nerror("Error initializing OpenGL!");
     }
 
     Ndebug("Initializing paths");

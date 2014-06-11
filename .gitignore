@@ -11,6 +11,7 @@
 # Generated files
 *libNWMan.a
 *libGLKit.a
+*libgl3w.a
 *libgame.a
 *rscdata.c
 
