@@ -20,20 +20,19 @@ NWMan_event NWMan_event_new(NWMan_event_type type) {
 
 
 bool NWMan_init() {
-    NWMan_SDL_init();
-    NWMan_SDL2_init();
-
     Ndebug("Choosing WM backend");
-    if (SDL_FOUND) {
+#ifdef SDL_FOUND
         Ndebug("Chosen SDL");
+        NWMan_SDL_init();
         N_WMan = N_WMan_SDL;
-    } else if (SDL2_FOUND) {
+#elif defined(SDL2_FOUND)
         Ndebug("Chosen SDL2");
+        NWMan_SDL2_init();
         N_WMan = N_WMan_SDL2;
-    } else {
+#else
         Nerror("No backend chosen!");
         return false;
-    }
+#endif
     return N_WMan.init();
 }
 

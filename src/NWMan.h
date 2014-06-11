@@ -72,7 +72,7 @@ NSTRUCT(NWMan_event, {
         // Keyboard
 
         struct {
-            int key;
+            short key;
             bool state;
         } keyboard;
 

@@ -16,6 +16,7 @@
 
 #include "wrap/gl.h"
 #include <GLKit/GLKMath.h>
+#include <stdlib.h>
 
 void NEngine_update_time() {
     N_currtime = N_WMan.get_millis();
