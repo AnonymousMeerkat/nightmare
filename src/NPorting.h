@@ -11,7 +11,7 @@
 #  define FREEBSD
 #endif
 
-#if WIN32
+#ifdef WIN32
 #  define N_SLASH "\\"
 #else
 #  define N_SLASH "/"
