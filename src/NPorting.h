@@ -1,7 +1,7 @@
 #ifndef _NME_PORTING_H
 #define _NME_PORTING_H
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+#if (defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)) && !defined(WIN32)
 #  define WIN32
 #elif defined(__APPLE__) || defined(__MACH__)
 #  define MACOSX
