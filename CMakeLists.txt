@@ -17,6 +17,11 @@ add_definitions(-D_BSD_SOURCE)
 
 # Find libraries
 
+if(WIN32)
+    set(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};${PROJECT_SOURCE_DIR}/3rdparty/w32")
+    set(CMAKE_INCLUDE_PATH "${CMAKE_INCLUDE_PATH};${PROJECT_SOURCE_DIR}/3rdparty/w32")
+endif(WIN32)
+
 find_package(OpenGL REQUIRED) # No OpenGL? NO ENGINE! HAHAHAHAHA ... ha
 find_package(GLEW REQUIRED)
 find_package(FreeImage REQUIRED)
