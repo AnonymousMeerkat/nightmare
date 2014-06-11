@@ -3,12 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <getopt.h>
 
 #define error(...) fprintf(stderr, __VA_ARGS__)
 #define BUFSIZE 8192
-#define DBUFSIZE 819200
-#define DOCSIZE 2097152
 
 void showhelp(char* name) {
     printf("Usage: %s input output\n", name);
@@ -33,7 +30,6 @@ char* read_file(char* path) {
 int main(int argc, char** argv) {
     char* input = NULL;
     FILE* output = stdout;
-    int c;
 
     if (argc >= 3) {
         output = fopen(argv[2], "w");
@@ -85,7 +81,7 @@ int main(int argc, char** argv) {
     size_t index;
     json_t* value;
 
-    char FINAL[DOCSIZE];
+    char FINAL[BUFSIZE];
 
     strcpy(FINAL, "#include <Nightmare.h>\n// AUTOMATICALLY GENERATED\n// DO NOT MODIFY!\n\n");
 
@@ -95,7 +91,7 @@ int main(int argc, char** argv) {
 
     strcat(FINAL, TITLE_TEMP);
 
-    char shader_attribs[DBUFSIZE];
+    char shader_attribs[BUFSIZE];
     shader_attribs[0] = 0;
 
     char shader_infos[BUFSIZE];
