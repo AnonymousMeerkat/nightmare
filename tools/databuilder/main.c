@@ -11,7 +11,7 @@
 #define DOCSIZE 2097152
 
 void showhelp(char* name) {
-    printf("Usage: %s input -o output\n", name);
+    printf("Usage: %s input output\n", name);
 }
 
 char* read_file(char* path) {
@@ -35,7 +35,16 @@ int main(int argc, char** argv) {
     FILE* output = stdout;
     int c;
 
-    while ((c = getopt(argc, argv, "ho:")) != -1) {
+    if (argc >= 3) {
+        output = fopen(argv[2], "w");
+    }
+
+    if (argc < 2) {
+        showhelp(argv[0]);
+        return 1;
+    }
+
+    /*while ((c = getopt(argc, argv, "ho:")) != -1) {
         switch (c) {
             case 'h':
                 showhelp(argv[0]);
@@ -44,14 +53,9 @@ int main(int argc, char** argv) {
                 output = fopen(optarg, "w");
                 break;
         }
-    }
+    }*/
 
-    if (optind == argc) {
-        error("No input file\n");
-        return 1;
-    }
-
-    input = argv[optind];
+    input = argv[1];
 
     if (access(input, F_OK) == -1) {
         error("%s: No such file or directory\n", input);
