@@ -139,6 +139,8 @@ void NShader_update_MVP(NShader* shader) {
 
 void NShader_run(NShader* shader) {
     glUseProgram(shader->shader_handle);
+    NShader_set_int(shader, "N_time", N_currtime);
+    NShader_set_int(shader, "N_rand", rand());
     N_shader = shader;
 }
 

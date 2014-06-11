@@ -44,6 +44,8 @@ bool NEngine_init() {
 
     NEngine_gl_init();
 
+    srand(0);
+
     Ndebug("Initializing matrices");
     N_gl_projection = GLKMatrix4MakeOrtho(0.0f, N_win_size.x, N_win_size.y, 0.0f, -1, 1);
     N_gl_view = GLKMatrix4Identity;
