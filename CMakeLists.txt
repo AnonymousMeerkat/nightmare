@@ -69,7 +69,7 @@ include_directories(3rdparty/jansson/include)
 include_directories(3rdparty/gl3w/include)
 include_directories(3rdparty/lodepng)
 
-set(LIBRARIES ${LIBRARIES} gl3w GLKit lodepng)
+set(LIBRARIES ${LIBRARIES} GL gl3w GLKit lodepng)
 
 # Compile tools
 
