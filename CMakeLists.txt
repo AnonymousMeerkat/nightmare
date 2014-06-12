@@ -26,6 +26,10 @@ find_package(OpenGL REQUIRED) # No OpenGL? NO ENGINE! HAHAHAHAHA ... ha
 
 set(LIBRARIES ${LIBRARIES} ${OPENGL_LIBRARIES})
 
+if(WIN32)
+    set(LIBRARIES ${LIBRARIES} opengl32)
+endif(WIN32)
+
 set(WM_FOUND 0)
 
 find_package(SDL)
@@ -69,7 +73,7 @@ include_directories(3rdparty/jansson/include)
 include_directories(3rdparty/gl3w/include)
 include_directories(3rdparty/lodepng)
 
-set(LIBRARIES ${LIBRARIES} GL gl3w GLKit lodepng)
+set(LIBRARIES ${LIBRARIES} gl3w GLKit lodepng)
 
 # Compile tools
 
