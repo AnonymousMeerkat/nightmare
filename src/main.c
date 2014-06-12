@@ -29,11 +29,18 @@ int main(int argc, char** argv) {
 
     if (!okay) {
         Nerror("Error creating window!");
+        return 1;
     }
 
     Ndebug("Initializing OpenGL");
-    if (gl3wInit() || !gl3wIsSupported(3, 0)) {
+    if (gl3wInit()) {
         Nerror("Error initializing OpenGL!");
+        return 1;
+    }
+
+    if (!gl3wIsSupported(3, 0)) {
+        Nerror("OpenGL 3.0 not supported!");
+        return 1;
     }
 
     Ndebug("Initializing paths");
