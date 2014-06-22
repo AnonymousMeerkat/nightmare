@@ -191,16 +191,22 @@ void NRsc_free_shaders() {
     for (size_t i = 0; N_shaders[i]; i++) {
         NShader_destroy(N_shaders[i]);
     }
+    free(N_shaders);
+    N_shaders = NULL;
 }
 
 void NRsc_free_images() {
     for (size_t i = 0; N_images[i]; i++) {
         NImage_destroy(N_images[i]);
     }
+    free(N_images);
+    N_images = NULL;
 }
 
 void NRsc_free_spritesheets() {
     for (size_t i = 0; N_spritesheets[i]; i++) {
         NSpritesheet_destroy(N_spritesheets[i]);
     }
+    free(N_spritesheets);
+    N_spritesheets = NULL;
 }

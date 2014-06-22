@@ -26,6 +26,14 @@ find_package(OpenGL REQUIRED) # No OpenGL? NO ENGINE! HAHAHAHAHA ... ha
 
 set(WM_FOUND 0)
 
+find_package(X11)
+
+if(X11_FOUND)
+    set(LIBRARIES ${LIBRARIES} ${X11_LIBRARIES})
+    add_definitions(-DX11_FOUND)
+    set(WM_FOUND 1)
+endif(X11_FOUND)
+
 find_package(SDL)
 
 if(SDL_FOUND)

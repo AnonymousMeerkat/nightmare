@@ -62,9 +62,6 @@ nextevent:
         case SDL_ACTIVEEVENT:
             type = N_WMAN_FOCUS;
             break;
-        case SDL_VIDEORESIZE:
-            type = N_WMAN_RESIZE;
-            break;
         case SDL_KEYUP:
         case SDL_KEYDOWN:
             type = N_WMAN_KEYBOARD;
@@ -91,10 +88,6 @@ nextevent:
                 goto nextevent;
             }
             event->window_focus = sev.active.gain;
-            break;
-        case N_WMAN_RESIZE:
-            event->window_size.x = sev.resize.w;
-            event->window_size.y = sev.resize.h;
             break;
         case N_WMAN_KEYBOARD:
             event->keyboard.state = (sev.type == SDL_KEYDOWN);

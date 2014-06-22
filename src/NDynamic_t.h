@@ -14,7 +14,7 @@ START_HEAD
 #define NRLIST_NEW(typesize) malloc(typesize)
 
 #define NRLIST_INIT(name, typesize, size) {\
-    name[0] = NULL;\
+    name[0] = 0;\
     size = 0;\
 }
 
@@ -23,12 +23,25 @@ START_HEAD
 #define NRLIST_PUSH(name, typesize, size, item) {\
     name[size] = item;\
     name = realloc(name, (typesize) * ((++(size)) + 1));\
-    name[size] = NULL;\
+    name[size] = 0;\
 }
 
 #define NRLIST_POP(name, typesize, size) {\
     name = realloc(name, (typesize) * ((--(size)) + 1));\
-    name[size] = NULL;\
+    name[size] = 0;\
+}
+
+#define NRLIST_INSERT(name, typesize, size, index, item) {\
+    name = realloc(name, (typesize) * ((++(size)) + 1));\
+    memmove(name + (index) + 1, name + (index), typesize * ((size) - (index)));\
+    name[index] = item;\
+    name[size] = 0;\
+}
+
+#define NRLIST_REMOVE(name, typesize, size, index) {\
+    memmove(name + (index), name + (index) + 1, typesize * ((--(size)) - (index)));\
+    name = realloc(name, (typesize) * ((size) + 1));\
+    name[size] = 0;\
 }
 
 #define NRLIST_COUNT(name, size) {\
@@ -64,6 +77,14 @@ START_HEAD
 
 #define NLIST_POP(name) {\
     NRLIST_POP(name.data, name.e_size, name.size);\
+}
+
+#define NLIST_INSERT(name, index, element) {\
+    NRLIST_INSERT(name.data, name.e_size, name.size, index, element);\
+}
+
+#define NLIST_REMOVE(name, index) {\
+    NRLIST_REMOVE(name.data, name.e_size, name.size, index);\
 }
 
 #define NLIST_ITER(name, itername, ...) {\

@@ -90,9 +90,6 @@ nextevent:
                 case SDL_WINDOWEVENT_FOCUS_LOST:
                     type = N_WMAN_FOCUS;
                     break;
-                case SDL_WINDOWEVENT_RESIZED:
-                    type = N_WMAN_RESIZE;
-                    break;
                 default:
                     goto nextevent;
                     break;
@@ -135,10 +132,6 @@ nextevent:
                     event->window_focus = false;
                     break;
             };
-            break;
-        case N_WMAN_RESIZE:
-            event->window_size.x = sev.window.data1;
-            event->window_size.y = sev.window.data2;
             break;
         case N_WMAN_KEYBOARD:
             event->keyboard.state = (sev.type == SDL_KEYDOWN);

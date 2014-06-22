@@ -110,10 +110,8 @@ bool NImage_load(NImage* image, char* path) {
 
     unsigned char* good_data = malloc(width * height * 4);
     for (size_t y = 0; y < height; y++) {
-        for (size_t x = 0; x < width; x++) {
-            for (size_t c = 0; c < 4; c++) {
-                good_data[4 * width * y + 4 * x + c] = raw_data[4 * width * (height - y) + 4 * x + c];
-            }
+        for (size_t x = 0; x < width * 4; x++) {
+            good_data[4 * width * y + x] = raw_data[4 * width * (height - 1 - y) + x];
         }
     }
 

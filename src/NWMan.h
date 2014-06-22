@@ -25,6 +25,7 @@ NSTRUCT(NWMan, {
     void (*swap_buffers)();
 
     // Event stuff
+    void (*get_events)();
     bool (*next_event)(NWMan_event* event);
 
     // Time stuff
@@ -32,8 +33,7 @@ NSTRUCT(NWMan, {
     void (*sleep)(uint millis);
 
     // Info
-    int rshift_key;
-    int lshift_key;
+    int shift_key;
     int left_key;
     int right_key;
 });
@@ -46,8 +46,7 @@ NENUM(NWMan_event_type, {
     N_WMAN_KEYBOARD = 10,
 
     N_WMAN_QUIT = 20,
-    N_WMAN_RESIZE = 21,
-    N_WMAN_FOCUS = 22
+    N_WMAN_FOCUS = 21
 });
 
 #define N_WMAN_MOUSE_LEFT 0
@@ -77,10 +76,6 @@ NSTRUCT(NWMan_event, {
         } keyboard;
 
         // Window
-
-        bool window_quit; // Will always be true if WM_QUIT
-
-        NPos2i window_size;
 
         bool window_focus;
     };

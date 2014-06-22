@@ -91,7 +91,6 @@ static struct {
 static int parse_version(void)
 {
 	if (!glGetIntegerv) {
-		printf("NO INTEGERV!\n");
 		return -1;
 	}
 
@@ -99,7 +98,6 @@ static int parse_version(void)
 	glGetIntegerv(GL_MINOR_VERSION, &version.minor);
 
 	if (version.major < 3) {
-		printf("SMALL VERSION!\n");
 		return -1;
 	}
 	return 0;

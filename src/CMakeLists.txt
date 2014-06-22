@@ -3,6 +3,7 @@ add_subdirectory(WMan)
 set(SOURCES
     NGlobals.c
     NLog.c
+    NPorting.c
     NWMan.c
     NRsc.c
     NRsc_misc.c
@@ -20,4 +21,4 @@ set(SOURCES
 include_directories(${INCLUDES})
 
 add_executable(nightmare ${SOURCES})
-target_link_libraries(nightmare ${LIBRARIES} NWMan game)
+target_link_libraries(nightmare NWMan ${LIBRARIES} game)

@@ -79,7 +79,9 @@ bool NEngine_destroy() {
 
 void NEngine_check_events() {
     NWMan_event event;
+    N_WMan.get_events();
     while (N_running && N_WMan.next_event(&event)) {
+        Ndebug("Event: %i", event.type);
         switch(event.type) {
             case N_WMAN_QUIT:
                 N_running = false;
@@ -94,12 +96,17 @@ void NEngine_check_events() {
 }
 
 void NEngine_run() {
+    int glVersion[2] = {-1, -1}; // Set some default values for the version
+glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]); // Get back the OpenGL MAJOR version we are using
+glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]); // Get back the OpenGL MAJOR version we are using
+Ndebug("OpenGL: %i %i", glVersion[0], glVersion[1]);
     while (N_running) {
         NEngine_update_time();
         NEngine_update_fps();
         NEngine_check_events();
 
         NEngine_gl_init();
+
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.0, 0.0, 0.0, 1.0);
 

@@ -17,4 +17,11 @@
 #  define N_SLASH "/"
 #endif
 
+#ifdef WIN32
+#  define main _main
+#  define Nwin_main WinMain
+#endif
+
+int main(int argc, char** argv);
+
 #endif

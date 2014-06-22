@@ -4,6 +4,7 @@
 #include "wrap/gl.h"
 #include "NRsc.h"
 #include "NEngine.h"
+#include "NPorting.h"
 
 int main(int argc, char** argv) {
     int ret = 0;
