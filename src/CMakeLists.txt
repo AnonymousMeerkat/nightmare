@@ -14,6 +14,7 @@ set(SOURCES
     NSprite.c
     NSpritesheet.c
     NEntity.c
+    NLevel.c
     NEngine.c
     main.c
 )

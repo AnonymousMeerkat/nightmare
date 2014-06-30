@@ -8,6 +8,7 @@
 NEntity* NEntity_new(NEntity_info info) {
     NEntity* entity = malloc(sizeof(NEntity));
     entity->pos = NPos2f0;
+    entity->z = 0;
     entity->size = info.size;
     entity->sheet = info.sheet;
     entity->walk_speed = info.walk_speed;

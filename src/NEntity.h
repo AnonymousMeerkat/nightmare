@@ -28,6 +28,7 @@ NSTRUCT(NEntity_info, {
 
 NSTRUCT(NEntity, {
     NPos2f pos;
+    NPosz z;
     NPos2i size;
 
     NEntity_state state;

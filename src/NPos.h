@@ -10,6 +10,7 @@ START_HEAD
 
 #define NPosf float
 #define NPosi int
+#define NPosz char
 
 /*NSTRUCT(NPos2f, {
     NPosf x;

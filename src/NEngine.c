@@ -33,6 +33,10 @@ void NEngine_update_fps() {
 }
 
 void NEngine_gl_init() {
+    /*glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();*/
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
@@ -64,12 +68,16 @@ bool NEngine_init() {
     Ndebug("Loading spritesheets");
     NRsc_load_spritesheets(G_spritesheet_infos);
 
+    Ndebug("Loading levels");
+    NRsc_load_levels(G_level_infos);
+
     Game_init();
 
     return true;
 }
 
 bool NEngine_destroy() {
+    NRsc_free_levels();
     NRsc_free_spritesheets();
     NRsc_free_images();
     NRsc_free_shaders();

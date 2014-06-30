@@ -10,9 +10,10 @@ START_HEAD
 NTS(NShader_info);
 NTS(NSpritesheet_info);
 
-NShader_info* G_shader_infos;
-char** G_image_infos;
-NSpritesheet_info* G_spritesheet_infos;
+extern NShader_info* G_shader_infos;
+extern char** G_image_infos;
+extern NSpritesheet_info* G_spritesheet_infos;
+extern NLevel_info* G_level_infos;
 
 void Game_init();
 void Game_destroy();

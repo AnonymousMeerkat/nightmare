@@ -13,8 +13,8 @@ NWMan N_WMan_W32;
 extern HINSTANCE hInstance;
 HWND hWnd;
 HANDLE hThread;
-static HGLRC hRC;
-static HDC hDC;
+HGLRC hRC;
+HDC hDC;
 HPALETTE hPalette;
 bool FAKEWINDOW;
 
@@ -177,21 +177,22 @@ LRESULT APIENTRY WndProc(HWND hWndf, UINT message, WPARAM wParam, LPARAM lParam)
 
 bool w32_init() {
     WNDCLASSEX wcex;
-
+    ZeroMemory(&wcex, sizeof(wcex));
     wcex.cbSize = sizeof(WNDCLASSEX);
     wcex.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
     wcex.lpfnWndProc    = WndProc;
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
+    wcex.hIcon          = LoadIcon(NULL, MAKEINTRESOURCE(IDI_APPLICATION));
     wcex.hCursor        = LoadCursor(NULL, IDC_ARROW);
     wcex.hbrBackground  = NULL;
     wcex.lpszMenuName   = NULL;
     wcex.lpszClassName  = "nightmaregame";
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
+    wcex.hIconSm        = LoadIcon(NULL, MAKEINTRESOURCE(IDI_APPLICATION));
 
     if (!RegisterClassEx(&wcex)) {
+        Nerror("Couldn't register window class!");
         return false;
     }
 
@@ -212,8 +213,9 @@ void _w32_create_window_ex() {
         WS_EX_CLIENTEDGE,
         "nightmaregame",
         N_win_title,
-        WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU |
-                WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
+        /*WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU |
+                WS_CLIPCHILDREN | WS_CLIPSIBLINGS,*/
+        WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT,
         N_win_size.x, N_win_size.y,
         NULL,
@@ -276,58 +278,78 @@ bool w32_create_window() {
     }
 
     hDC = GetDC(hWnd);
-    PIXELFORMATDESCRIPTOR pfd =
-    {
+    PIXELFORMATDESCRIPTOR pfd = {
         sizeof(PIXELFORMATDESCRIPTOR),
-        1,
-        PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    //Flags
-        PFD_TYPE_RGBA,            //The kind of framebuffer. RGBA or palette.
-        32,                        //Colordepth of the framebuffer.
-        0, 0, 0, 0, 0, 0,
-        0,
-        0,
-        0,
-        0, 0, 0, 0,
-        0,                        //Number of bits for the depthbuffer
-        8,                        //Number of bits for the stencilbuffer
-        0,                        //Number of Aux buffers in the framebuffer.
-        PFD_MAIN_PLANE,
-        0,
-        0, 0, 0
+        1,                     /* version */
+        PFD_DRAW_TO_WINDOW |
+        PFD_SUPPORT_OPENGL |
+        PFD_DOUBLEBUFFER,
+        PFD_TYPE_RGBA,
+        32,                    /* 32-bit color depth */
+        0, 0, 0, 0, 0, 0,      /* color bits */
+        0,                     /* alpha buffer */
+        0,                     /* shift bit */
+        0,                     /* accumulation buffer */
+        0, 0, 0, 0,            /* accum bits */
+        0,                     /* z-buffer */
+        8,                     /* stencil buffer */
+        0,                     /* auxiliary buffer */
+        PFD_MAIN_PLANE,        /* main layer */
+        0,                     /* reserved */
+        0, 0, 0                /* layer masks */
     };
 
     int pixelFormat = ChoosePixelFormat(hDC, &pfd);
     if (!pixelFormat) {
-        Nerror("Unable to choose pixel format!");
+        Nerror("Unable to choose fake pixel format!");
         return false;
     }
-    if (SetPixelFormat(hDC, pixelFormat, &pfd) != TRUE) {
-        Nerror("Unable to set pixel format!");
+    if (!SetPixelFormat(hDC, pixelFormat, &pfd)) {
+        Nerror("Unable to set fake pixel format!");
         return false;
     }
-    hRC = wglCreateContext(hDC);
-    wglMakeCurrent(hDC, hRC);
+    HGLRC hRC_t = wglCreateContext(hDC);
+    if (!hRC_t) {
+        Nerror("Couldn't create temp context!");
+        return false;
+    }
+    if (!wglMakeCurrent(hDC, hRC_t)) {
+        Nerror("Couldn't activate temp context!");
+        return false;
+    }
 
     Ndebug("Created fake window");
 
     // Get the stuff we need
     _wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC) wglGetProcAddress("wglGetExtensionsStringARB");
     if (!_wglGetExtensionsStringARB || !_w32_check_extension("WGL_ARB_create_context") || !_w32_check_extension("WGL_ARB_pixel_format")) {
+        Nerror("Extensions are missing!");
         return false;
     }
     _wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC) wglGetProcAddress("wglCreateContextAttribsARB");
     _wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC) wglGetProcAddress("wglChoosePixelFormatARB");
 
     if (!_wglCreateContextAttribsARB || !_wglChoosePixelFormatARB) {
+        Nerror("Couldn't load needed functions!");
         return false;
     }
 
+    int attribs[] = {
+        WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+        WGL_CONTEXT_MINOR_VERSION_ARB, 0,
+        0
+    };
+
+    hRC = _wglCreateContextAttribsARB(hDC, 0, attribs);
+
     wglMakeCurrent(NULL, NULL);
-    wglDeleteContext(hRC);
-    hRC = NULL;
+
+    /*wglMakeCurrent(NULL, NULL);
+    wglDeleteContext(hRC_t);
     ReleaseDC(hWnd, hDC);
     DestroyWindow(hWnd);
     FAKEWINDOW = false;
+
 
     _w32_create_window_ex();
 
@@ -341,25 +363,17 @@ bool w32_create_window() {
         Nerror("Can't re-initialize DC");
         return false;
     }
-
-    const int PFAL[] = {
-        WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
-        WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
-        WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-        WGL_SWAP_METHOD_ARB, WGL_SWAP_EXCHANGE_ARB,
-        WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-        WGL_COLOR_BITS_ARB, 32,
-        WGL_DEPTH_BITS_ARB, 0,
-        WGL_STENCIL_BITS_ARB, 8,
-        WGL_RED_BITS_ARB, 8,
-        WGL_GREEN_BITS_ARB, 8,
-        WGL_BLUE_BITS_ARB, 8,
-        WGL_ALPHA_BITS_ARB, 8,
-        WGL_FRAMEBUFFER_SRGB_CAPABLE_ARB, GL_TRUE,
-        WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
-        0
-    };
-
+        const int PFAL[] =
+      {
+         WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
+         WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
+         WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
+         WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
+         WGL_COLOR_BITS_ARB, 32,
+         WGL_DEPTH_BITS_ARB, 24,
+         WGL_STENCIL_BITS_ARB, 8,
+         0 // End of attributes list
+      };
     uint numformats;
     if (!_wglChoosePixelFormatARB(hDC, PFAL, NULL, 1, &pixelFormat, &numformats)) {
         Nerror("Unable to choose pixel format!");
@@ -372,10 +386,10 @@ bool w32_create_window() {
 
     const int CA[] = {
         WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-        WGL_CONTEXT_MINOR_VERSION_ARB, 0,
+        WGL_CONTEXT_MINOR_VERSION_ARB, 2,
         //WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
-        //WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-        WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
+       // WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+        //WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
         0
     };
 
@@ -383,13 +397,17 @@ bool w32_create_window() {
     if (!hRC) {
         Nerror("Failed to create context!");
     }
+
     /*wglMakeCurrent(NULL, NULL);
     wglDeleteContext(hRCfake);*/
-    wglMakeCurrent(hDC, hRC);
+    if (!wglMakeCurrent(hDC, hRC)) {
+        Nerror("Failed to activate real context!");
+        return false;
+    }
 
     ShowWindow(hWnd, SW_SHOW);
-    SetForegroundWindow(hWnd);
-    SetFocus(hWnd);
+    /*SetForegroundWindow(hWnd);
+    SetFocus(hWnd);*/
     UpdateWindow(hWnd);
     return true;
 }

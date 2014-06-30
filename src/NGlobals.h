@@ -13,9 +13,12 @@ START_HEAD
 NTS(NShader);
 NTS(NImage);
 NTS(NSpritesheet);
+NTS(NLevel);
+NTS(NEntity);
 NTS(NShader_info);
 NTS(NSpritesheet_data);
 NTS(NSpritesheet_info);
+NTS(NLevel_info);
 NTS(NDLL_info);
 
 #define N_SHADER_IMAGE 0
@@ -57,6 +60,8 @@ extern GLKMatrix4 N_gl_model;
 extern NShader** N_shaders;
 extern NImage** N_images;
 extern NSpritesheet** N_spritesheets;
+extern NLevel** N_levels;
+extern NEntity* N_player;
 
 // Input
 
@@ -77,6 +82,7 @@ extern void (*Ndll_loop)(NDLL_info info);
 extern NShader_info* N_dll_shader_infos;
 extern char** N_dll_image_infos;
 extern NSpritesheet_info* N_dll_spritesheet_infos;
+extern NLevel_info* N_dll_level_infos;
 
 // Game
 

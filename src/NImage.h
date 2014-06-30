@@ -24,6 +24,7 @@ NSTRUCT(NImage, {
 NImage* NImage_new(NImage_type type);
 void NImage_destroy(NImage* image);
 
+unsigned char* NImage_load_raw(char* path, NPos2i* size);
 bool NImage_load(NImage* image, char* path);
 
 void NImage_record(NImage* image); // FBO

@@ -187,6 +187,83 @@ int main(int argc, char** argv) {
     strcat(FINAL, sprites);
     strcat(FINAL, ss_infos);
 
+    strcpy(ss_infos, "NLevel_info _G_level_infos[] = {\n");
+
+    json_array_foreach(json_object_get(root, "levels"), index, value) {
+        char lyrsdata[BUFSIZE];
+        lyrsdata[0] = 0;
+        char lvldata[BUFSIZE];
+        char temp[BUFSIZE];
+
+        const char* name = json_string_value(json_array_get(value, 0));
+
+        sprintf(lvldata, "NLevel_layer_data _lvl_%s_data[] = {\n", name);
+
+        sprintf(temp, "\t{\"%s\", _lvl_%s_data},\n", name, name);
+        strcat(ss_infos, temp);
+
+        size_t ind;
+        json_t* lyrm;
+
+        json_array_foreach(json_array_get(value, 1), ind, lyrm) {
+            char lyrdata[BUFSIZE];
+            int num = json_integer_value(json_array_get(lyrm, 0));
+            char* minus = "";
+            if (num < 0) {
+                minus = "m";
+                num = -num;
+            }
+
+            sprintf(temp, "\t{_lvl_%s_%s_%i_hotspots},\n", name, minus, num);
+            strcat(lvldata, temp);
+
+            sprintf(lyrdata, "NLevel_hotspot _lvl_%s_%s_%i_hotspots[] = {\n", name, minus, num);
+
+            json_t* hotspots = json_object_get(json_array_get(lyrm, 1), "hotspots");
+            if (hotspots) {
+                size_t i;
+                json_t* htspt;
+
+                json_array_foreach(hotspots, i, htspt) {
+                    json_t* areav = json_object_get(htspt, "area");
+#define area_value(n) json_integer_value(json_array_get(areav, n))
+                    long long int area[] = {
+                        area_value(0),
+                        area_value(1),
+                        area_value(2),
+                        area_value(3),
+                    };
+
+                    char* type = "N_LEVEL_HOTSPOT_CLICK";
+                    if (strcmp(json_string_value(json_object_get(htspt, "type")), "location") == 0) {
+                        type = "N_LEVEL_HOTSPOT_LOCATION";
+                    }
+
+                    sprintf(temp, "\t{{%lld, %lld, %lld, %lld}, %s, %lld, \"%s\"},\n",
+                        area[0], area[1], area[2], area[3],
+                        type,
+                        json_integer_value(json_object_get(htspt, "action")),
+                        json_string_value(json_object_get(htspt, "data"))
+                    );
+
+                    strcat(lyrdata, temp);
+                }
+            }
+
+            strcat(lyrdata, "\t{{0, 0, 0, 0}, 0, 0, NULL}\n};\n");
+
+            strcat(lyrsdata, lyrdata);
+        }
+
+        strcat(lvldata, "\t{NULL}\n};\n");
+
+        strcat(FINAL, lyrsdata);
+        strcat(FINAL, lvldata);
+    }
+
+    strcat(ss_infos, "\t{NULL, NULL}\n};\nNLevel_info* G_level_infos = _G_level_infos;\n\n");
+    strcat(FINAL, ss_infos);
+
     fprintf(output, FINAL);
 
     if (output != stdout) {

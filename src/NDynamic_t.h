@@ -8,13 +8,16 @@ START_HEAD
 #include "NTypes.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 // Raw lists
+
+#define NRLIST_SET_LAST_0(name, typesize, size) memset(name + size, 0, typesize)
 
 #define NRLIST_NEW(typesize) malloc(typesize)
 
 #define NRLIST_INIT(name, typesize, size) {\
-    name[0] = 0;\
+    NRLIST_SET_LAST_0(name, typesize, 0);\
     size = 0;\
 }
 
@@ -23,25 +26,25 @@ START_HEAD
 #define NRLIST_PUSH(name, typesize, size, item) {\
     name[size] = item;\
     name = realloc(name, (typesize) * ((++(size)) + 1));\
-    name[size] = 0;\
+    NRLIST_SET_LAST_0(name, typesize, size);\
 }
 
 #define NRLIST_POP(name, typesize, size) {\
     name = realloc(name, (typesize) * ((--(size)) + 1));\
-    name[size] = 0;\
+    NRLIST_SET_LAST_0(name, typesize, size);\
 }
 
 #define NRLIST_INSERT(name, typesize, size, index, item) {\
     name = realloc(name, (typesize) * ((++(size)) + 1));\
     memmove(name + (index) + 1, name + (index), typesize * ((size) - (index)));\
     name[index] = item;\
-    name[size] = 0;\
+    NRLIST_SET_LAST_0(name, typesize, size);\
 }
 
 #define NRLIST_REMOVE(name, typesize, size, index) {\
     memmove(name + (index), name + (index) + 1, typesize * ((--(size)) - (index)));\
     name = realloc(name, (typesize) * ((size) + 1));\
-    name[size] = 0;\
+    NRLIST_SET_LAST_0(name, typesize, size);\
 }
 
 #define NRLIST_COUNT(name, size) {\

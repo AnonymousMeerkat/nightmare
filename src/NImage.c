@@ -88,24 +88,18 @@ void NImage_destroy(NImage* image) {
     free(image);
 }
 
-bool NImage_load(NImage* image, char* path) {
-    bool ret = false;
-    if (image->type != NImage_IMAGE) {
-        Nerror("Error loading image file into framebuffer!");
-        goto end;
-    }
 
+unsigned char* NImage_load_raw(char* path, NPos2i* size) {
     unsigned int error;
     unsigned char* raw_data;
     unsigned int width, height;
 
     error = lodepng_decode32_file(&raw_data, &width, &height, path);
-    image->size.x = width;
-    image->size.y = height;
+    size->x = width;
+    size->y = height;
     if (error) {
         Nerror("Error loading image %s (%u): %s", path, error, lodepng_error_text(error));
-        ret = false;
-        goto end;
+        return NULL;
     }
 
     unsigned char* good_data = malloc(width * height * 4);
@@ -116,6 +110,22 @@ bool NImage_load(NImage* image, char* path) {
     }
 
     free(raw_data);
+
+    return good_data;
+}
+
+bool NImage_load(NImage* image, char* path) {
+    bool ret = false;
+    if (image->type != NImage_IMAGE) {
+        Nerror("Error loading image file into framebuffer!");
+        goto end;
+    }
+
+    unsigned char* good_data = NImage_load_raw(path, &image->size);
+    if (!good_data) {
+        ret = false;
+        goto end;
+    }
 
     NImage_bind(image);
     NImage_gl_parameters();

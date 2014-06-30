@@ -7,6 +7,7 @@
 #include "NLog.h"
 #include "NSprite.h"
 #include "NSpritesheet.h"
+#include "NLevel.h"
 #include "NDynamic_t.h"
 
 #include <string.h>
@@ -157,15 +158,63 @@ NSpritesheet* NRsc_load_spritesheet(char* name, NSpritesheet_data* datas) {
     return NSpritesheet_new(datas);
 }
 
+NLevel* NRsc_load_level(char* name, NLevel_layer_data* datas) {
+    bool okay = true;
+
+    char* path = NRsc_join_paths("levels", name);
+    char** names = NRsc_ls(path);
+    size_t names_count;
+    NRLIST_COUNT(names, names_count);
+
+    NLevel_layer* layers = malloc(sizeof(NLevel_layer) * names_count);
+    int* numbers = malloc(sizeof(int) * names_count);
+
+    NPosz offset = 0x7F;
+
+    for (size_t i = 0; i < names_count; i++) {
+        char* noext = NRsc_remove_ext(names[i]);
+        int ournum = atoi(noext);
+        numbers[i] = ournum;
+        free(noext);
+        offset = NMIN(ournum, offset);
+    }
+
+    for (size_t i = 0; i < names_count; i++) {
+        NLevel_layer layer;
+
+        char* currpath = NRsc_join_paths(path, names[i]);
+        NImage* image = NRsc_load_image(currpath);
+        free(currpath);
+        if (!image) {
+            okay = false;
+            break;
+        }
+        layer.base = image;
+        layer.hotspots = datas[i].hotspots; // Since it's a global .... :D
+
+        layers[numbers[i] - offset] = layer;
+    }
+
+    free(path);
+    free(numbers);
+    NRsc_ls_free(names);
+
+    if (!okay) {
+        return NULL;
+    }
+
+    return NLevel_new(layers, offset);
+}
+
 
 void NRsc_load_shaders(NShader_info* infos) {
     NLIST_NEW_FROM_ARR(NShader*, shaders, N_shaders);
     for (size_t i = 0; infos[i].name; i++) {
         NLIST_PUSH(shaders, NRsc_load_shader(infos[i].name, infos[i].attribs));
-        Ndebug("%p", shaders.data[i]);
+        //Ndebug("%p", shaders.data[i]);
     }
     N_shaders = shaders.data;
-    Ndebug("%u", shaders.data[0]->shader_handle);
+    //Ndebug("%u", shaders.data[0]->shader_handle);
 }
 
 void NRsc_load_images(char** names) {
@@ -184,6 +233,14 @@ void NRsc_load_spritesheets(NSpritesheet_info* infos) {
         NLIST_PUSH(spritesheets, NRsc_load_spritesheet(infos[i].name, infos[i].datas));
     }
     N_spritesheets = spritesheets.data;
+}
+
+void NRsc_load_levels(NLevel_info* infos) {
+    NLIST_NEW_FROM_ARR(NLevel*, levels, N_levels);
+    for (size_t i = 0; infos[i].name; i++) {
+        NLIST_PUSH(levels, NRsc_load_level(infos[i].name, infos[i].datas));
+    }
+    N_levels = levels.data;
 }
 
 
@@ -209,4 +266,12 @@ void NRsc_free_spritesheets() {
     }
     free(N_spritesheets);
     N_spritesheets = NULL;
+}
+
+void NRsc_free_levels() {
+    for (size_t i = 0; N_levels[i]; i++) {
+        NLevel_destroy(N_levels[i]);
+    }
+    free(N_levels);
+    N_levels = NULL;
 }

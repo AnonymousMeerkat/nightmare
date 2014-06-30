@@ -21,6 +21,8 @@ GLKMatrix4 N_gl_model;
 NShader** N_shaders;
 NImage** N_images;
 NSpritesheet** N_spritesheets;
+NLevel** N_levels;
+NEntity* N_player;
 
 bool N_key_states[65536];
 
@@ -31,6 +33,7 @@ void (*Ndll_loop)(NDLL_info info);
 NShader_info* N_dll_shader_infos;
 char** N_dll_image_infos;
 NSpritesheet_info* N_dll_spritesheet_infos;
+NLevel_info* N_dll_level_infos;
 
 bool N_running;
 uint N_delta;
@@ -57,6 +60,8 @@ void NGlobals_init() {
     N_images = N__images.data;
     NLIST_NEW(NSpritesheet*, N__spritesheets);
     N_spritesheets = N__spritesheets.data;
+    NLIST_NEW(NLevel*, N__levels);
+    N_levels = N__levels.data;
 
     N_dll = NULL;
     Ndll_init = NULL;

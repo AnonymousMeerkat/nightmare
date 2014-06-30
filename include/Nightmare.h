@@ -21,6 +21,7 @@ START_HEAD
 #include "../src/NSprite.h"
 #include "../src/NSpritesheet.h"
 #include "../src/NEntity.h"
+#include "../src/NLevel.h"
 #include "../src/Game.h"
 
 END_HEAD
