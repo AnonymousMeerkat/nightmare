@@ -20,6 +20,7 @@
 #define DOWN_K 0x28
 #define LEFT_K 0x25
 #define RIGHT_K 0x27
+#define ESC_K 27
 
 NWMan N_WMan_X11;
 
@@ -62,6 +63,8 @@ int _X11_translate_keycode(int keycode) {
             return LEFT_K;
         case XK_Right:
             return RIGHT_K;
+        case XK_Escape:
+            return ESC_K;
     }
 
     //return keysym;
