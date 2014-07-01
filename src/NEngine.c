@@ -18,6 +18,8 @@
 #include <GLKit/GLKMath.h>
 #include <stdlib.h>
 
+NRectf viewport;
+
 void NEngine_update_time() {
     N_currtime = N_WMan.get_millis();
     N_delta = N_currtime - N_lasttime;
@@ -43,18 +45,25 @@ void NEngine_gl_init() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+void NEngine_viewport() {
+    glViewport(viewport.pos.x, viewport.pos.y, viewport.size.x, viewport.size.y);
+}
+
 bool NEngine_init() {
     NEngine_update_time();
     NEngine_update_fps();
 
     NEngine_gl_init();
+    viewport = Nsplu_calc_viewport();
 
     srand(0);
 
     Ndebug("Initializing matrices");
-    N_gl_projection = GLKMatrix4MakeOrtho(0.0f, N_win_size.x, N_win_size.y, 0.0f, -1, 1);
+    N_gl_projection = GLKMatrix4MakeOrtho(0.0f, N_game_size.x, N_game_size.y, 0.0f, -1, 1);
     N_gl_view = GLKMatrix4Identity;
     N_gl_model = GLKMatrix4Identity;
+
+    //N_gl_view = GLKMatrix4Scale(N_gl_view, (float)N_win_size.x / (float)N_game_size.x, (float)N_win_size.y / (float)N_game_size.y, 1.0f);
 
     Ndebug("Loading models");
     NSquare_init();
@@ -114,6 +123,7 @@ Ndebug("OpenGL: %i %i", glVersion[0], glVersion[1]);
         NEngine_check_events();
 
         NEngine_gl_init();
+        NEngine_viewport();
 
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.0, 0.0, 0.0, 1.0);

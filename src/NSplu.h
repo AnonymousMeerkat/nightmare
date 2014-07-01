@@ -6,7 +6,10 @@
 START_HEAD
 
 #include "NTypes.h"
+#include "NRect.h"
 #include "wrap/gl.h"
+
+NRectf Nsplu_calc_viewport();
 
 GLKMatrix4 Nsplu_calc_pos(GLKVector2 pos);
 GLKMatrix4 Nsplu_calc_rect(GLKVector2 pos, GLKVector2 size);

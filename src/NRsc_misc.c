@@ -166,7 +166,7 @@ NLevel* NRsc_load_level(char* name, NLevel_layer_data* datas) {
     size_t names_count;
     NRLIST_COUNT(names, names_count);
 
-    NLevel_layer* layers = malloc(sizeof(NLevel_layer) * names_count);
+    NLevel_layer* layers = malloc(sizeof(NLevel_layer) * (names_count + 1));
     int* numbers = malloc(sizeof(int) * names_count);
 
     NPosz offset = 0x7F;
@@ -194,6 +194,9 @@ NLevel* NRsc_load_level(char* name, NLevel_layer_data* datas) {
 
         layers[numbers[i] - offset] = layer;
     }
+
+    NLevel_layer blank = {NULL, NULL};
+    layers[names_count] = blank;
 
     free(path);
     free(numbers);

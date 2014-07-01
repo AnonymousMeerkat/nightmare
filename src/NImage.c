@@ -5,6 +5,7 @@
 #include "NSquare.h"
 #include "NShader.h"
 #include "NTypes.h"
+#include "NEngine.h"
 
 #include "wrap/gl.h"
 #include <lodepng.h>
@@ -25,11 +26,11 @@ NSTRUCT(fbo_data, {
 
 bool NImage_new_fbo(NImage* image) {
     fbo_data* data = malloc(sizeof(fbo_data));
-    image->size = N_win_size;
+    image->size = N_game_size;
     glGenFramebuffers(1, &data->fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, data->fbo);
     glBindTexture(GL_TEXTURE_2D, image->id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, N_win_size.x, N_win_size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, N_game_size.x, N_game_size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -146,11 +147,12 @@ void NImage_record(NImage* image) {
         return;
     }
     glBindFramebuffer(GL_FRAMEBUFFER, ((fbo_data*)image->data)->fbo);
-    //glViewport(0, 0, N_win_size.x, N_win_size.y);
+    glViewport(0, 0, image->size.x, image->size.y);
 }
 
 void NImage_stoprecord() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    NEngine_viewport();
 }
 
 void NImage_bind(NImage* image) {

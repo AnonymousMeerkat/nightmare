@@ -42,12 +42,15 @@ uint N_currtime;
 uint N_lastsecond;
 uint N_fps;
 
+NPos2i N_game_size;
+
 NShader* N_shader;
 
 
 void NGlobals_init() {
     N_win_pos = NPos2i0;
     N_win_size = Npos2i(800, 600);
+    //N_win_size = Npos2i(2048, 256);
     //N_win_title = "Nightmare Engine";
 
     N_indent = 0;
@@ -77,6 +80,8 @@ void NGlobals_init() {
     N_currtime = 0;
     N_lastsecond = 0;
     N_fps = 0;
+
+    N_game_size = Npos2i(800, 256);
 
     N_shader = NULL;
 }
