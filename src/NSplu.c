@@ -28,13 +28,13 @@ NRectf Nsplu_calc_viewport() {
 }
 
 GLKMatrix4 Nsplu_calc_pos(GLKVector2 pos) {
-    GLKMatrix4 model = N_gl_view;
+    GLKMatrix4 model = N_gl_model;
     model = GLKMatrix4Translate(model, pos.x, pos.y, 0);
     return model;
 }
 
 GLKMatrix4 Nsplu_calc_rect(GLKVector2 pos, GLKVector2 size) {
-    GLKMatrix4 model = N_gl_view;
+    GLKMatrix4 model = N_gl_model;
     model = GLKMatrix4Translate(model, pos.x, pos.y, 0);
     model = GLKMatrix4Scale(model, size.x, size.y, 0);
     return model;

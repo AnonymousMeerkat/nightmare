@@ -40,6 +40,7 @@ NSTRUCT(NLevel_info, {
 NSTRUCT(NLevel, {
     NLevel_layer* layers;
     NPosz offset;
+    NPosf camera;
 
     NLIST(NEntity*) entities;
 });

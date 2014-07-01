@@ -44,6 +44,7 @@ NSTRUCT(NEntity, {
 NEntity* NEntity_new(NEntity_info info);
 void NEntity_destroy(NEntity* entity);
 
+NPos2f NEntity_center(NEntity* entity);
 NPosi NEntity_distance(NEntity* entity, NEntity* other);
 
 void NEntity_still(NEntity* entity);

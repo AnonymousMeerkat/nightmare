@@ -2,6 +2,7 @@
 
 #include "NGlobals.h"
 #include <stdlib.h>
+#include <GLKit/GLKMath.h>
 
 #define en_ds ((float)N_delta) * ((entity->state == NEntity_WALK) ? entity->walk_speed : entity->trot_speed)
 
@@ -25,6 +26,10 @@ void NEntity_destroy(NEntity* entity) {
     free(entity);
 }
 
+
+NPos2f NEntity_center(NEntity* entity) {
+    return GLKVector2Add(entity->pos, GLKVector2DivideScalar(GLKpos2i(entity->size), 2));
+}
 
 NPosi NEntity_distance(NEntity* entity, NEntity* other) {
     return abs(entity->pos.x - other->pos.x);
