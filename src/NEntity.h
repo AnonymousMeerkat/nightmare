@@ -85,7 +85,7 @@ void NEntity_move_towards(NEntity* entity, NEntity* other);
 
 void NEntity_update(NEntity* entity);
 void NEntity_draw(NEntity* entity);
-void NEntity_draw_scale(NEntity* entity, NPos2i scale);
+void NEntity_draw_scale(NEntity* entity, NPos2i scale, float alpha);
 
 END_HEAD
 

@@ -35,7 +35,7 @@
 #include <GLKit/GLKMath.h>
 
 void NShadow_draw(NLevel* level, NEntity* entity, NPosz layer) {
-    GLKVector3 light_pos = GLKVector3Make(400, 170, 40.7);
+    GLKVector3 light_pos = GLKVector3Make(400, 170, 75);
 
     NPosf layer_z = NLevel_get_z(level, layer);
     NPosf entity_z = NLevel_get_z(level, entity->z);
@@ -47,7 +47,8 @@ void NShadow_draw(NLevel* level, NEntity* entity, NPosz layer) {
 
 
     GLKVector3 pos_dir = GLKVector3Subtract(entity_pos, light_pos);
-    GLKVector3 pos_projected = GLKVector3Add(light_pos, GLKVector3MultiplyScalar(pos_dir, z_ratio));
+    GLKVector3 pos_projection = GLKVector3MultiplyScalar(pos_dir, z_ratio);
+    GLKVector3 pos_projected = GLKVector3Add(light_pos, pos_projection);
 
     GLKVector3 size_dir = GLKVector3Subtract(entity_size, light_pos);
     GLKVector3 size_projected = GLKVector3Add(light_pos, GLKVector3MultiplyScalar(size_dir, z_ratio));
@@ -61,7 +62,8 @@ void NShadow_draw(NLevel* level, NEntity* entity, NPosz layer) {
     NPos2f old_pos = entity->pos;
     entity->pos = Npos2f(pos_projected.x, pos_projected.y);
     NShader_run(N_shaders[2]);
-    NEntity_draw_scale(entity, Npos2i(size.x, size.y));
+    NPosf angle = GLKVector3Length(pos_projection)/NABS(light_pos.z - layer_z);
+    NEntity_draw_scale(entity, Npos2i(size.x, size.y), (9-(NCLAMP(angle, 1, 10)-1))/9);
     NShader_stop();
     entity->pos = old_pos;
 }

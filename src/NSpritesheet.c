@@ -53,6 +53,6 @@ void NSpritesheet_update(NSpritesheet* sheet) {
     }
 }
 
-void NSpritesheet_draw(NSpritesheet* sheet, size_t id, NPos2i pos, NPos2i size, bool flip) {
-    NSprite_draw(sheet->sprites[id].sprite, pos, size, flip);
+void NSpritesheet_draw(NSpritesheet* sheet, size_t id, NPos2i pos, NPos2i size, bool flip, float alpha) {
+    NSprite_draw(sheet->sprites[id].sprite, pos, size, flip, alpha);
 }

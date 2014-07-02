@@ -58,7 +58,7 @@ NSprite* NSprite_new(NImage** images, NSprite_framedata* frames);
 void NSprite_destroy(NSprite* sprite);
 
 void NSprite_update(NSprite* sprite);
-void NSprite_draw(NSprite* sprite, NPos2i pos, NPos2i size, bool flip);
+void NSprite_draw(NSprite* sprite, NPos2i pos, NPos2i size, bool flip, float alpha);
 
 END_HEAD
 

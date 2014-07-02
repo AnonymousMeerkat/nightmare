@@ -117,10 +117,10 @@ void NEntity_update(NEntity* entity) {
     // TODO: CR
 }
 
-void NEntity_draw_scale(NEntity* entity, NPos2i scale) {
-    NSpritesheet_draw(entity->sheet, entity->state, Npos2i(entity->pos.x, entity->pos.y), scale, !entity->facing_left);
+void NEntity_draw_scale(NEntity* entity, NPos2i scale, float alpha) {
+    NSpritesheet_draw(entity->sheet, entity->state, Npos2i(entity->pos.x, entity->pos.y), scale, !entity->facing_left, alpha);
 }
 
 void NEntity_draw(NEntity* entity) {
-    NEntity_draw_scale(entity, NPos2i0);
+    NEntity_draw_scale(entity, NPos2i0, 1);
 }
