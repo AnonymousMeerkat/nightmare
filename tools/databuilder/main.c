@@ -241,7 +241,13 @@ int main(int argc, char** argv) {
                 num = -num;
             }
 
-            sprintf(temp, "\t{_lvl_%s_%s_%i_hotspots},\n", name, minus, num);
+            int z_size = 20;
+            json_t* z_size_v = json_object_get(json_array_get(lyrm, 1), "z_size");
+            if (z_size_v) {
+                z_size = json_integer_value(z_size_v);
+            }
+
+            sprintf(temp, "\t{_lvl_%s_%s_%i_hotspots, %i},\n", name, minus, num, z_size);
             strcat(lvldata, temp);
 
             sprintf(lyrdata, "NLevel_hotspot _lvl_%s_%s_%i_hotspots[] = {\n", name, minus, num);
@@ -282,7 +288,7 @@ int main(int argc, char** argv) {
             strcat(lyrsdata, lyrdata);
         }
 
-        strcat(lvldata, "\t{NULL}\n};\n");
+        strcat(lvldata, "\t{NULL, 0}\n};\n");
 
         strcat(FINAL, lyrsdata);
         strcat(FINAL, lvldata);

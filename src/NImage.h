@@ -60,6 +60,7 @@ void NImage_stoprecord();
 void NImage_bind(NImage* image);
 void NImage_unbind();
 
+void NImage_draw_scale(NImage* image, NPos2i pos, NPos2i size, bool flip, float alpha);
 void NImage_draw(NImage* image, NPos2i pos, bool flip, float alpha);
 
 END_HEAD

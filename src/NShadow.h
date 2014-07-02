@@ -25,34 +25,21 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "NSpritesheet.h"
+#ifndef _NME_SHADOW_H
+#define _NME_SHADOW_H
 
-#include "NSprite.h"
+#include "NCompat.h"
 
-#include <stdlib.h>
+START_HEAD
 
-NSpritesheet* NSpritesheet_new(NSpritesheet_data* sprites) {
-    NSpritesheet* sheet = malloc(sizeof(NSpritesheet));
-    sheet->sprites = sprites;
-    return sheet;
-}
+#include "NUtil.h"
+#include "NPos.h"
 
-void NSpritesheet_destroy(NSpritesheet* sheet) {
-    NSprite* sprite;
-    for (size_t i = 0; (sprite = sheet->sprites[i].sprite); i++) {
-        NSprite_destroy(sprite);
-    }
-    free(sheet);
-}
+NTS(NLevel);
+NTS(NEntity);
 
+void NShadow_draw(NLevel* level, NEntity* entity, NPosz layer);
 
-void NSpritesheet_update(NSpritesheet* sheet) {
-    NSprite* sprite;
-    for (size_t i = 0; (sprite = sheet->sprites[i].sprite); i++) {
-        NSprite_update(sprite);
-    }
-}
+END_HEAD
 
-void NSpritesheet_draw(NSpritesheet* sheet, size_t id, NPos2i pos, NPos2i size, bool flip) {
-    NSprite_draw(sheet->sprites[id].sprite, pos, size, flip);
-}
+#endif

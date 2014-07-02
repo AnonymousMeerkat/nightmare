@@ -64,6 +64,6 @@ void NSprite_update(NSprite* sprite) {
     sprite->id %= sprite->frame_count;
 }
 
-void NSprite_draw(NSprite* sprite, NPos2i pos, bool flip) {
-    NImage_draw(sprite->images[sprite->frames[sprite->id].image_id], pos, flip, 1);
+void NSprite_draw(NSprite* sprite, NPos2i pos, NPos2i size, bool flip) {
+    NImage_draw_scale(sprite->images[sprite->frames[sprite->id].image_id], pos, size, flip, 1);
 }

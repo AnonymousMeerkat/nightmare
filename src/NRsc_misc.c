@@ -218,11 +218,12 @@ NLevel* NRsc_load_level(char* name, NLevel_layer_data* datas) {
         }
         layer.base = image;
         layer.hotspots = datas[i].hotspots; // Since it's a global .... :D
+        layer.z_size = datas[i].z_size;
 
         layers[numbers[i] - offset] = layer;
     }
 
-    NLevel_layer blank = {NULL, NULL};
+    NLevel_layer blank = {NULL, NULL, 0};
     layers[names_count] = blank;
 
     free(path);
@@ -233,7 +234,7 @@ NLevel* NRsc_load_level(char* name, NLevel_layer_data* datas) {
         return NULL;
     }
 
-    return NLevel_new(layers, offset);
+    return NLevel_new(layers, -offset);
 }
 
 

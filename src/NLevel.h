@@ -53,10 +53,12 @@ NSTRUCT(NLevel_hotspot, {
 NSTRUCT(NLevel_layer, {
     NImage* base;
     NLevel_hotspot* hotspots;
+    NPosf z_size;
 });
 
 NSTRUCT(NLevel_layer_data, {
     NLevel_hotspot* hotspots;
+    NPosf z_size;
 });
 
 NSTRUCT(NLevel_info, {
@@ -65,17 +67,18 @@ NSTRUCT(NLevel_info, {
 });
 
 NSTRUCT(NLevel, {
-    NLevel_layer* layers;
-    NPosz offset;
+    NLIST(NLevel_layer) layers;
+    NPosz default_layer;
     NPosf camera;
 
     NLIST(NEntity*) entities;
 });
 
-NLevel* NLevel_new(NLevel_layer* layers, NPosz offset);
+NLevel* NLevel_new(NLevel_layer* layers, NPosz default_layer);
 void NLevel_destroy(NLevel* level);
 
-#define NLEVEL_GET_LAYER(level, id) ((level)->layers[(id) - (level)->offset])
+NPosf NLevel_get_z(NLevel* level, NPosz z);
+NPosf NLevel_get_camera(NLevel* level);
 
 void NLevel_draw(NLevel* level);
 

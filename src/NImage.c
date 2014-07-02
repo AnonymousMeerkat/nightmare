@@ -191,13 +191,27 @@ void NImage_unbind() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void NImage_draw(NImage* image, NPos2i pos, bool flip, float alpha) {
+void NImage_draw_scale(NImage* image, NPos2i pos, NPos2i size_, bool flip, float alpha) {
+    NPos2i size = image->size;
+    if (size_.x != 0 && size_.y != 0) {
+        size = size_;
+    }
     NImage_bind(image);
     NShader* shader = N_shaders[N_SHADER_IMAGE];
-    NShader_run(shader);
+    bool ran_shader = false;
+    if (!N_shader) {
+        NShader_run(shader);
+        ran_shader = true;
+    }
     NShader_set_int(shader, "N_UV_flip", flip);
     NShader_set_float(shader, "N_alpha", alpha);
-    NSquare_draw(pos, image->size);
-    NShader_stop();
+    NSquare_draw(pos, size);
+    if (ran_shader) {
+        NShader_stop();
+    }
     NImage_unbind();
+}
+
+void NImage_draw(NImage* image, NPos2i pos, bool flip, float alpha) {
+    NImage_draw_scale(image, pos, NPos2i0, flip, alpha);
 }
