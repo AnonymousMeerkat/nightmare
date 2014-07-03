@@ -62,6 +62,14 @@ NPosi NEntity_distance(NEntity* entity, NEntity* other) {
     return abs(entity->pos.x - other->pos.x);
 }
 
+bool NEntity_facing(NEntity* entity, NEntity* other) {
+    if (entity->pos.x - other->pos.x > 0) {
+        return entity->facing_left;
+    } else {
+        return !entity->facing_left;
+    }
+}
+
 
 void NEntity_still(NEntity* entity) {
     entity->state = NEntity_STILL;

@@ -75,6 +75,7 @@ void NEntity_destroy(NEntity* entity);
 
 NPos2f NEntity_center(NEntity* entity);
 NPosi NEntity_distance(NEntity* entity, NEntity* other);
+bool NEntity_facing(NEntity* entity, NEntity* other);
 
 void NEntity_still(NEntity* entity);
 void NEntity_walk(NEntity* entity);
