@@ -93,8 +93,12 @@ void NLevel_draw(NLevel* level) {
         NPosz z = i;
 
         NEntity* entity;
-        for (size_t j = 0; j < level->entities.size && (entity = level->entities.data[j])->z == z; j++) {
-            NEntity_draw(entity);
+        for (size_t j = 0; j < level->entities.size && (entity = level->entities.data[j])->z >= z; j++) {
+            if (entity->z > z) {
+                NShadow_draw(level, entity, z);
+            } else {
+                NEntity_draw(entity);
+            }
         }
 
         if (N_player->z > z) {

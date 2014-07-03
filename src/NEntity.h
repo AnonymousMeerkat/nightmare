@@ -65,6 +65,8 @@ NSTRUCT(NEntity, {
     NPosf trot_speed;
     bool facing_left;
 
+    void* data;
+
     // Functions
 });
 

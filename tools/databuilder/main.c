@@ -185,10 +185,10 @@ int main(int argc, char** argv) {
         json_array_foreach(json_array_get(value, 1), ind, fdm) {
             const char* fdname = json_string_value(json_array_get(fdm, 0));
 
-            sprintf(temp, "NSprite_framedata _ss_%s_%s_data[] = {\n", name, fdname);
+            sprintf(temp, "NSprite_framedata _ss_%s_%s_%zu_data[] = {\n", name, fdname, ind);
             strcat(framedata, temp);
 
-            sprintf(temp, "\t{\"%s\", _ss_%s_%s_data, NULL},\n", fdname, name, fdname);
+            sprintf(temp, "\t{\"%s\", _ss_%s_%s_%zu_data, NULL},\n", fdname, name, fdname, ind);
             strcat(ssdata, temp);
 
             size_t i;

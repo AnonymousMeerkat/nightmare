@@ -147,11 +147,6 @@ NSprite* NRsc_load_sprite_dir(char* path, NSprite_framedata* framedata) {
         char* noext = NRsc_remove_ext(currname);
         int ournumber = atoi(noext);
         free(noext);
-#if 0
-        if (ournumber == 0) {
-            continue;
-        }
-#endif
         // XXX: Buffer overflow attack imminent here lol
         paths[ournumber] = NRsc_join_paths(path, currname);
     }
