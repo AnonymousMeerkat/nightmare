@@ -63,7 +63,8 @@ void NShadow_draw(NLevel* level, NEntity* entity, NPosz layer) {
     entity->pos = Npos2f(pos_projected.x, pos_projected.y);
     NShader_run(N_shaders[2]);
     NPosf angle = GLKVector3Length(pos_projection)/NABS(light_pos.z - layer_z);
-    NEntity_draw_scale(entity, Npos2i(size.x, size.y), (9-(NCLAMP(angle, 1, 10)-1))/9);
+    float alpha = (9-(NCLAMP(angle, 1, 10)-1))/9;
+    NEntity_draw_scale(entity, Npos2i(size.x, size.y), alpha);
     NShader_stop();
     entity->pos = old_pos;
 }
