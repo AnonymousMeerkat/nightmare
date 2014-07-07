@@ -55,7 +55,7 @@ NSTRUCT(NSpritesheet, {
 NSpritesheet* NSpritesheet_new(NSpritesheet_data* sprites);
 void NSpritesheet_destroy(NSpritesheet* sheet);
 
-void NSpritesheet_update(NSpritesheet* sheet);
+bool NSpritesheet_update(NSpritesheet* sheet, size_t id);
 void NSpritesheet_draw(NSpritesheet* sheet, size_t id, NPos2i pos, NPos2i size, bool flip, float alpha);
 
 END_HEAD

@@ -55,13 +55,15 @@ void NSprite_destroy(NSprite* sprite) {
 }
 
 
-void NSprite_update(NSprite* sprite) {
+bool NSprite_update(NSprite* sprite) {
     uint millis = sprite->frames[sprite->id].millis;
 
     sprite->frame_delta += N_delta;
     sprite->id += sprite->frame_delta / millis;
+    size_t old_id = sprite->id;
     sprite->frame_delta %= millis;
     sprite->id %= sprite->frame_count;
+    return sprite->id < old_id;
 }
 
 void NSprite_draw(NSprite* sprite, NPos2i pos, NPos2i size, bool flip, float alpha) {

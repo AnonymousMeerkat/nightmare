@@ -46,11 +46,16 @@ void NSpritesheet_destroy(NSpritesheet* sheet) {
 }
 
 
-void NSpritesheet_update(NSpritesheet* sheet) {
+bool NSpritesheet_update(NSpritesheet* sheet, size_t id) {
     NSprite* sprite;
+    bool ret = false;
     for (size_t i = 0; (sprite = sheet->sprites[i].sprite); i++) {
-        NSprite_update(sprite);
+        bool thingy = NSprite_update(sprite);
+        if (i == id) {
+            ret = thingy;
+        }
     }
+    return ret;
 }
 
 void NSpritesheet_draw(NSpritesheet* sheet, size_t id, NPos2i pos, NPos2i size, bool flip, float alpha) {

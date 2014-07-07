@@ -83,6 +83,15 @@ void NEntity_trot(NEntity* entity) {
     entity->state = NEntity_TROT;
 }
 
+void NEntity_attack(NEntity* entity) {
+    if (entity->state == NEntity_ATTACK) {
+        return;
+    }
+    entity->old_state = NEntity_STILL;
+    entity->state = NEntity_ATTACK;
+}
+
+
 void NEntity_flip(NEntity* entity) {
     entity->facing_left = !entity->facing_left;
 }
@@ -121,7 +130,9 @@ void NEntity_move_towards(NEntity* entity, NEntity* other) {
 
 
 void NEntity_update(NEntity* entity) {
-    NSpritesheet_update(entity->sheet);
+    if (NSpritesheet_update(entity->sheet, entity->state) && entity->state == NEntity_ATTACK) {
+        entity->state = entity->old_state;
+    }
     // TODO: CR
 }
 

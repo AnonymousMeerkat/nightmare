@@ -43,7 +43,8 @@ NENUM(NEntity_state, {
     NEntity_WALK = 1,
     NEntity_TROT = 2,
     NEntity_ATTACK = 3,
-    NEntity_BACK = 4
+    NEntity_DEAD = 4,
+    NEntity_BACK = 5,
 });
 
 NSTRUCT(NEntity_info, {
@@ -58,6 +59,7 @@ NSTRUCT(NEntity, {
     NPosz z;
     NPos2i size;
 
+    NEntity_state old_state;
     NEntity_state state;
     NSpritesheet* sheet;
 
@@ -80,6 +82,8 @@ bool NEntity_facing(NEntity* entity, NEntity* other);
 void NEntity_still(NEntity* entity);
 void NEntity_walk(NEntity* entity);
 void NEntity_trot(NEntity* entity);
+void NEntity_attack(NEntity* entity);
+
 void NEntity_flip(NEntity* entity);
 void NEntity_forward(NEntity* entity);
 void NEntity_left(NEntity* entity);
