@@ -31,6 +31,7 @@
 #include "NRsc.h"
 #include "NSplu.h"
 #include <stdlib.h>
+#include <string.h>
 
 void NShader_print_log(bool shader, GLuint handle, char* prefix) {
     GLsizei len_dont_use;
@@ -56,7 +57,12 @@ bool NShader_load(GLenum type, const GLchar* shader, GLuint* handle) {
     i_handle = glCreateShader(type);
     *handle = i_handle;
     Ndebug("Loading shader");
-    glShaderSource(i_handle, 1, &shader, NULL);
+    size_t shaderlen = strlen(shader);
+    GLchar* newsrc = malloc(sizeof(GLchar) * (shaderlen + N_shader_head_len + 1));
+    strcpy(newsrc, N_shader_head);
+    strcat(newsrc, shader);
+    glShaderSource(i_handle, 1, (const GLchar* const*) &newsrc, NULL);
+    free(newsrc);
     Ndebug("Compiling shader");
     glCompileShader(i_handle);
     glGetShaderiv(i_handle, GL_COMPILE_STATUS, &status);

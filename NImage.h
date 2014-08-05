@@ -25,47 +25,44 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "NSprite.h"
+#ifndef _NME_IMAGE_H
+#define _NME_IMAGE_H
 
-#include "NImage.h"
-#include "NGlobals.h"
+#include "NCompat.h"
 
-#include <stdlib.h>
+START_HEAD
 
-NSprite* NSprite_new(NImage** images, NSprite_framedata* frames) {
-    NSprite* sprite = malloc(sizeof(NSprite));
-    sprite->images = images; // FFS DON'T FREE images MANUALLY!
-    sprite->frames = frames;
-    sprite->frame_count = 0;
-    for (int i = 0; frames[i].notnull; i++) {
-        sprite->frame_count++;
-    }
-    sprite->id = 0;
-    sprite->frame_delta = 0;
-    return sprite;
-}
+#include "NUtil.h"
+#include "NPos.h"
+#include "NTypes.h"
 
-void NSprite_destroy(NSprite* sprite) {
-    NImage* image;
-    for (size_t i = 0; (image = sprite->images[i]); i++) {
-        NImage_destroy(image);
-    }
-    free(sprite->images);
-    free(sprite);
-}
+NENUM(NImage_type, {
+    NImage_IMAGE = 0,
+    NImage_FBO = 1
+});
 
+NSTRUCT(NImage, {
+    NImage_type type;
+    uint id;
+    NPos2i size;
+    void* data;
+});
 
-bool NSprite_update(NSprite* sprite) {
-    uint millis = sprite->frames[sprite->id].millis;
+NImage* NImage_new(NImage_type type);
+void NImage_destroy(NImage* image);
 
-    sprite->frame_delta += N_delta;
-    sprite->id += sprite->frame_delta / millis;
-    size_t old_id = sprite->id;
-    sprite->frame_delta %= millis;
-    sprite->id %= sprite->frame_count;
-    return sprite->id < old_id;
-}
+unsigned char* NImage_load_raw(char* path, NPos2i* size);
+bool NImage_load(NImage* image, char* path);
 
-void NSprite_draw(NSprite* sprite, NPos2i pos, NPos2i size, bool flip, float alpha) {
-    NIMAGE_DRAW(sprite->images[sprite->frames[sprite->id].image_id], .pos = pos, .size = size, .flip = flip, .alpha = alpha);
-}
+void NImage_record(NImage* image); // FBO
+void NImage_stoprecord();
+
+void NImage_bind(NImage* image);
+void NImage_unbind();
+
+void NImage_draw_scale(NImage* image, NPos2i pos, NPos2i size, bool flip, float alpha);
+void NImage_draw(NImage* image, NPos2i pos, bool flip, float alpha);
+
+END_HEAD
+
+#endif

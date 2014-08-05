@@ -105,6 +105,8 @@ extern void (*Ndll_destroy)();
 
 extern void (*Ndll_loop)(NDLL_info info);
 
+extern char* N_shader_head;
+extern size_t N_shader_head_len;
 
 extern NShader_info* N_dll_shader_infos;
 extern char** N_dll_image_infos;

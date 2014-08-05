@@ -69,6 +69,7 @@ void NEngine_gl_init() {
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_3D);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
@@ -94,6 +95,9 @@ bool NEngine_init() {
 
     Ndebug("Loading models");
     NSquare_init();
+
+    Ndebug("Loading shader header");
+    NRsc_load_shader_head();
 
     Ndebug("Loading shaders");
     NRsc_load_shaders(G_shader_infos);

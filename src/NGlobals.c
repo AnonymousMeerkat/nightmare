@@ -57,6 +57,8 @@ NDLL* N_dll;
 void (*Ndll_init)(int argc, char** argv);
 void (*Ndll_destroy)();
 void (*Ndll_loop)(NDLL_info info);
+char* N_shader_head;
+size_t N_shader_head_len;
 NShader_info* N_dll_shader_infos;
 char** N_dll_image_infos;
 NSpritesheet_info* N_dll_spritesheet_infos;
@@ -75,7 +77,7 @@ NShader* N_shader;
 
 
 void NGlobals_init() {
-    N_win_pos = NPos2i0;
+    N_win_pos = N_Pos2i0;
     N_win_size = Npos2i(800, 600);
     //N_win_size = Npos2i(2048, 256);
     //N_win_title = "Nightmare Engine";
@@ -97,6 +99,8 @@ void NGlobals_init() {
     Ndll_init = NULL;
     Ndll_destroy = NULL;
     Ndll_loop = NULL;
+    N_shader_head = NULL;
+    N_shader_head_len = 0;
     N_dll_shader_infos = NULL;
     N_dll_spritesheet_infos = NULL;
     N_dll_image_infos = NULL;

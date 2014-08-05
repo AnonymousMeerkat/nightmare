@@ -25,47 +25,23 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "NSprite.h"
+#ifndef _NME_SPRITE3D_H
+#define _NME_SPRITE3D_H
 
-#include "NImage.h"
-#include "NGlobals.h"
+#include "NCompat.h"
 
-#include <stdlib.h>
+START_HEAD
 
-NSprite* NSprite_new(NImage** images, NSprite_framedata* frames) {
-    NSprite* sprite = malloc(sizeof(NSprite));
-    sprite->images = images; // FFS DON'T FREE images MANUALLY!
-    sprite->frames = frames;
-    sprite->frame_count = 0;
-    for (int i = 0; frames[i].notnull; i++) {
-        sprite->frame_count++;
-    }
-    sprite->id = 0;
-    sprite->frame_delta = 0;
-    return sprite;
-}
+#include "NUtil.h"
+#include "NTypes.h"
 
-void NSprite_destroy(NSprite* sprite) {
-    NImage* image;
-    for (size_t i = 0; (image = sprite->images[i]); i++) {
-        NImage_destroy(image);
-    }
-    free(sprite->images);
-    free(sprite);
-}
+NSTRUCT(NSprite3D, {
+    NPos3i size;
+    uint gl_id;
+    float frame_id;
+    ushort frame_count;
+})
 
+END_HEAD
 
-bool NSprite_update(NSprite* sprite) {
-    uint millis = sprite->frames[sprite->id].millis;
-
-    sprite->frame_delta += N_delta;
-    sprite->id += sprite->frame_delta / millis;
-    size_t old_id = sprite->id;
-    sprite->frame_delta %= millis;
-    sprite->id %= sprite->frame_count;
-    return sprite->id < old_id;
-}
-
-void NSprite_draw(NSprite* sprite, NPos2i pos, NPos2i size, bool flip, float alpha) {
-    NIMAGE_DRAW(sprite->images[sprite->frames[sprite->id].image_id], .pos = pos, .size = size, .flip = flip, .alpha = alpha);
-}
+#endif

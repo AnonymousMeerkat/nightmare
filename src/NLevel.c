@@ -88,7 +88,7 @@ void NLevel_draw(NLevel* level) {
     NLevel_layer layer;
     for (size_t i = 0; i < level->layers.size; i++) {
         layer = level->layers.data[i];
-        NImage_draw(layer.base, NPos2i0, false, 1);
+        NIMAGE_DRAW(layer.base);
 
         NPosz z = i;
 
@@ -97,14 +97,14 @@ void NLevel_draw(NLevel* level) {
             if (entity->z > z) {
                 NShadow_draw(level, entity, z);
             } else {
-                NEntity_draw(entity);
+                NENTITY_DRAW(entity);
             }
         }
 
         if (N_player->z > z) {
             NShadow_draw(level, N_player, z);
         } else if (N_player->z == z) {
-            NEntity_draw(N_player);
+            NENTITY_DRAW(N_player);
         }
     }
     N_gl_view = oldview;

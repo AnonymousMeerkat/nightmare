@@ -47,6 +47,16 @@
     return dll;
 }*/
 
+bool NRsc_load_shader_head() {
+    if ((N_shader_head = NRsc_read_file(NRSC_JOIN_PATHS("glsl", "glsl.h")))) {
+        N_shader_head_len = strlen(N_shader_head);
+        return true;
+    } else {
+        N_shader_head_len = 0;
+        return false;
+    }
+}
+
 NShader* NRsc_load_shader(char* name, NShader_attrib* attribs) {
     Ndebug("Loading paths");
     size_t pathlen = strlen(name) + 6;
@@ -89,7 +99,7 @@ NImage* NRsc_load_image(char* name) {
 
     free(simplepath);
 
-    NImage* ret = NImage_new(NImage_IMAGE);
+    NImage* ret = NImage_new(NImage_2D);
 
     if (!ret) {
         Nerror("Error creating image!");
@@ -106,6 +116,51 @@ NImage* NRsc_load_image(char* name) {
 end:
     free(path);
 
+    return ret;
+}
+
+typedef struct {
+    short magic;
+    short width;
+    short height;
+    short breadth;
+    uchar contents[0];
+} fog3_head;
+
+NImage* NRsc_load_fog(char* name) {
+    NImage* ret = NImage_new(NImage_3D);
+
+    if (!ret) {
+        Nerror("Error creating fog texture!");
+        ret = NULL;
+        goto end;
+    }
+
+    fog3_head* data = (fog3_head*) NRsc_read_file(name);
+    if (!data) {
+        Nerror("Error loading fog file %s!", name);
+        NImage_destroy(ret);
+        ret = NULL;
+        goto end;
+    }
+
+    NPos3i size;
+    size.x = data->width;
+    size.y = data->height;
+    size.z = data->breadth;
+
+    Ndebug("==========Z: %i", data->breadth);
+
+    if (!NImage_load_3D(ret, size, data->contents, 1)) {
+        Nerror("Error loading 3D fog texture!");
+        NImage_destroy(ret);
+        ret = NULL;
+        goto freedata;
+    }
+
+freedata:
+    free(data);
+end:
     return ret;
 }
 

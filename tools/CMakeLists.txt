@@ -1,1 +1,2 @@
 add_subdirectory(databuilder)
+add_subdirectory(fogbuilder)

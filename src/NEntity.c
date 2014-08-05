@@ -35,7 +35,7 @@
 
 NEntity* NEntity_new(NEntity_info info) {
     NEntity* entity = malloc(sizeof(NEntity));
-    entity->pos = NPos2f0;
+    entity->pos = N_Pos2f0;
     entity->z = 0;
     entity->size = info.size;
     entity->sheet = info.sheet;
@@ -55,7 +55,7 @@ void NEntity_destroy(NEntity* entity) {
 
 
 NPos2f NEntity_center(NEntity* entity) {
-    return GLKVector2Add(entity->pos, GLKVector2DivideScalar(GLKpos2i(entity->size), 2));
+    return GLKVector2Add(entity->pos, GLKVector2DivideScalar(Npos2i_2f(entity->size), 2));
 }
 
 NPosi NEntity_distance(NEntity* entity, NEntity* other) {
@@ -136,10 +136,6 @@ void NEntity_update(NEntity* entity) {
     // TODO: CR
 }
 
-void NEntity_draw_scale(NEntity* entity, NPos2i scale, float alpha) {
-    NSpritesheet_draw(entity->sheet, entity->state, Npos2i(entity->pos.x, entity->pos.y), scale, !entity->facing_left, alpha);
-}
-
-void NEntity_draw(NEntity* entity) {
-    NEntity_draw_scale(entity, NPos2i0, 1);
+void NEntity_draw(NEntity* entity, struct NEntity_draw_args args) {
+    NSpritesheet_draw(entity->sheet, entity->state, Npos2f_2i(entity->pos), args.size, !entity->facing_left, args.alpha);
 }

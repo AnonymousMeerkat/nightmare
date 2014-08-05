@@ -46,31 +46,94 @@ START_HEAD
 
 typedef GLKVector2 NPos2f;
 
-static const NPos2f NPos2f0;
+static const NPos2f N_Pos2f0;
+#define Npos2f0() {0.,0.}
 
 static inline NPos2f Npos2f(NPosf x, NPosf y) {
     NPos2f ret = {x, y};
     return ret;
 }
 
+typedef GLKVector3 NPos3f;
+
+static const NPos3f N_Pos3f0;
+#define Npos3f0() {0.,0.,0.}
+
+static inline NPos3f Npos3f(NPosf x, NPosf y, NPosf z) {
+    NPos3f ret = {x, y, z};
+    return ret;
+}
+
+
 NSTRUCT(NPos2i, {
     NPosi x;
     NPosi y;
 });
 
-static const NPos2i NPos2i0;
+static const NPos2i N_Pos2i0;
+#define Npos2i0() {0,0}
 
 static inline NPos2i Npos2i(NPosi x, NPosi y) {
     NPos2i ret = {x, y};
     return ret;
 }
 
-static inline GLKVector2 GLKpos2i(NPos2i pos) {
-    GLKVector2 vec2;
-    vec2.x = pos.x;
-    vec2.y = pos.y;
-    return vec2;
+NSTRUCT(NPos3i, {
+    NPosi x;
+    NPosi y;
+    NPosi z;
+});
+
+static const NPos3i N_Pos3i0;
+#define Npos3i0() {0,0,0}
+
+static inline NPos3i Npos3i(NPosi x, NPosi y, NPosi z) {
+    NPos3i ret = {x, y, z};
+    return ret;
 }
+
+#define header(orig_t, new_t) static inline NPos##new_t Npos##orig_t##_##new_t(NPos##orig_t pos)
+
+#define _2(orig_t, new_t)\
+header(orig_t, new_t) {\
+    NPos##new_t ret = {pos.x, pos.y};\
+    return ret;\
+}
+
+#define _2_3(orig_t, new_t)\
+header(orig_t, new_t) {\
+    NPos##new_t ret = {pos.x, pos.y, 0};\
+    return ret;\
+}
+
+#define _3_3(orig_t, new_t)\
+header(orig_t, new_t) {\
+    NPos##new_t ret = {pos.x, pos.y, pos.z};\
+    return ret;\
+}
+
+_2(2f, 2i);
+_2(3i, 2i);
+_2(3f, 2i);
+
+_2(2i, 2f);
+_2(3i, 2f);
+_2(3f, 2f);
+
+#undef _2
+
+_2_3(2i, 3i);
+_2_3(2f, 3i);
+_3_3(3f, 3i);
+
+_2_3(2i, 3f);
+_2_3(2f, 3f);
+_3_3(3i, 3f);
+
+#undef _2_3
+#undef _3_3
+
+#undef header
 
 END_HEAD
 

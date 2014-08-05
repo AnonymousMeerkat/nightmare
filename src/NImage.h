@@ -37,14 +37,15 @@ START_HEAD
 #include "NTypes.h"
 
 NENUM(NImage_type, {
-    NImage_IMAGE = 0,
-    NImage_FBO = 1
+    NImage_2D = 0,
+    NImage_3D = 1,
+    NImage_FBO = 10
 });
 
 NSTRUCT(NImage, {
     NImage_type type;
     uint id;
-    NPos2i size;
+    NPos3i size;
     void* data;
 });
 
@@ -53,6 +54,7 @@ void NImage_destroy(NImage* image);
 
 unsigned char* NImage_load_raw(char* path, NPos2i* size);
 bool NImage_load(NImage* image, char* path);
+bool NImage_load_3D(NImage* image, NPos3i size, uchar* data, uchar channels);
 
 void NImage_record(NImage* image); // FBO
 void NImage_stoprecord();
@@ -60,8 +62,16 @@ void NImage_stoprecord();
 void NImage_bind(NImage* image);
 void NImage_unbind();
 
-void NImage_draw_scale(NImage* image, NPos2i pos, NPos2i size, bool flip, float alpha);
-void NImage_draw(NImage* image, NPos2i pos, bool flip, float alpha);
+
+struct NImage_draw_args {
+    NPos2i pos;
+    NPos2i size;
+    NPosf z;
+    bool flip;
+    float alpha;
+};
+void NImage_draw(NImage* image, struct NImage_draw_args args);
+#define NIMAGE_DRAW(img, ...) NImage_draw(img, (struct NImage_draw_args){.pos = N_Pos2i0, .size = N_Pos2i0, .z = 0., .flip = 0, .alpha = 1., __VA_ARGS__})
 
 END_HEAD
 

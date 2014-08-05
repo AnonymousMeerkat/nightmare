@@ -43,15 +43,15 @@ GLuint ibo;
 
 typedef struct {
     GLfloat position[3];
-    GLfloat texcoord[2];
+    GLfloat texcoord[3];
 } vertex;
 
 void NSquare_init() {
     vertex vertexdata[VERTICES] = {
-        { { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f } },
-        { { 1.0f, 0.0f, 0.0f }, { 1.0f, 1.0f } },
-        { { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f } },
-        { { 1.0f, 1.0f, 0.0f }, { 1.0f, 0.0f } }
+        { { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f } },
+        { { 1.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 0.0f } },
+        { { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
+        { { 1.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f } }
     };
     GLubyte indexdata[INDICES] = {0, 1, 2, 1, 3, 2};
 
@@ -103,7 +103,7 @@ void NSquare_draw_shape() {
 }
 
 void NSquare_draw(NPos2i pos, NPos2i size) {
-    N_gl_model = Nsplu_calc_rect(GLKpos2i(pos), GLKpos2i(size));
+    N_gl_model = Nsplu_calc_rect(Npos2i_2f(pos), Npos2i_2f(size));
     NShader_update_MVP(N_shader);
     NSquare_draw_shape();
     N_gl_model = GLKMatrix4Identity;

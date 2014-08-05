@@ -53,7 +53,7 @@ NTS(NLevel_info);
 bool NRsc_init();
 void NRsc_destroy();
 
-#define NRSC_JOIN_PATHS(path1, path2) path1 SLASH path2
+#define NRSC_JOIN_PATHS(path1, path2) path1 N_SLASH path2
 
 char* NRsc_join_paths(char* path1, char* path2); // FREE
 char* NRsc_remove_ext(char* path); // FREE
@@ -66,8 +66,10 @@ char* NRsc_read_file(char* path);
 
 // Misc
 NDLL* NRsc_load_dll();
+bool NRsc_load_shader_head();
 NShader* NRsc_load_shader(char* name, NShader_attrib* attribs);
 NImage* NRsc_load_image(char* name);
+NImage* NRsc_load_fog(char* name);
 NSprite* NRsc_load_sprite(char** paths, NSprite_framedata* framedata);
 NSprite* NRsc_load_sprite_dir(char* path, NSprite_framedata* framedata);
 NSpritesheet* NRsc_load_spritesheet(char* name, NSpritesheet_data* datas);

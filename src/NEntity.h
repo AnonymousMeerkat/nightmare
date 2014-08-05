@@ -91,8 +91,13 @@ void NEntity_right(NEntity* entity);
 void NEntity_move_towards(NEntity* entity, NEntity* other);
 
 void NEntity_update(NEntity* entity);
-void NEntity_draw(NEntity* entity);
-void NEntity_draw_scale(NEntity* entity, NPos2i scale, float alpha);
+
+struct NEntity_draw_args {
+    NPos2i size;
+    float alpha;
+};
+void NEntity_draw(NEntity* entity, struct NEntity_draw_args args);
+#define NENTITY_DRAW(entity, ...) NEntity_draw(entity, (struct NEntity_draw_args){.size = N_Pos2i0, .alpha = 1., __VA_ARGS__})
 
 END_HEAD
 
