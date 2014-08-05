@@ -44,6 +44,7 @@
 #include "wrap/gl.h"
 #include <GLKit/GLKMath.h>
 #include <stdlib.h>
+#include <time.h>
 
 NRectf viewport;
 
@@ -61,67 +62,97 @@ void NEngine_update_fps() {
     }
 }
 
-void NEngine_gl_init() {
-    /*glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();*/
+bool NEngine_gl_init() {
+    // Get OpenGL version
+    int glVersion[2] = {-1, -1};
+    glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]);
+    glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]);
+
+    Ndebug("OpenGL %i.%i detected", glVersion[0], glVersion[1]);
+
+    // Initialize properties/variables/shtuff
+    Ndebug("Setting some OpenGL properties");
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_TEXTURE_3D);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    Ndebug("Setting viewport");
+    viewport = Nsplu_calc_viewport();
+    NEngine_update_viewport();
+
+    return true;
 }
 
-void NEngine_viewport() {
+void NEngine_update_viewport() {
     glViewport(viewport.pos.x, viewport.pos.y, viewport.size.x, viewport.size.y);
 }
 
 bool NEngine_init() {
-    NEngine_update_time();
-    NEngine_update_fps();
+#define OP(x) {\
+    NINDENT(okay = x);\
+    if (!okay) {\
+        return false;\
+    }\
+}
 
-    NEngine_gl_init();
-    viewport = Nsplu_calc_viewport();
+    bool okay = true;
 
-    srand(0);
+    Ndebug("Initializing OpenGL");
+    OP(NEngine_gl_init());
+
+    Ndebug("Initializing randomness (literally)");
+    srand(time(NULL));
 
     Ndebug("Initializing matrices");
     N_gl_projection = GLKMatrix4MakeOrtho(0.0f, N_game_size.x, N_game_size.y, 0.0f, -1, 1);
     N_gl_view = GLKMatrix4Identity;
     N_gl_model = GLKMatrix4Identity;
 
-    //N_gl_view = GLKMatrix4Scale(N_gl_view, (float)N_win_size.x / (float)N_game_size.x, (float)N_win_size.y / (float)N_game_size.y, 1.0f);
-
-    Ndebug("Loading models");
-    NSquare_init();
+    Ndebug("Loading square");
+    OP(NSquare_init());
 
     Ndebug("Loading shader header");
-    NRsc_load_shader_head();
+    OP(NRsc_load_shader_head());
 
     Ndebug("Loading shaders");
-    NRsc_load_shaders(G_shader_infos);
+    OP(NRsc_load_shaders(G_shader_infos));
 
-    Ndebug("Loading images");
-    NRsc_load_images(G_image_infos);
+    Ndebug("Loading stills");
+    OP(NRsc_load_images(G_image_infos));
 
     Ndebug("Loading spritesheets");
-    NRsc_load_spritesheets(G_spritesheet_infos);
+    OP(NRsc_load_spritesheets(G_spritesheet_infos));
 
     Ndebug("Loading levels");
-    NRsc_load_levels(G_level_infos);
+    OP(NRsc_load_levels(G_level_infos));
 
-    Game_init();
+    Ndebug("Initializing defaults");
+    NINDENT(NEngine_update_time());
+    NINDENT(NEngine_update_fps());
+
+    Ndebug("Initializing game");
+    OP(Game_init());
 
     return true;
 }
 
 bool NEngine_destroy() {
+    Ndebug("Destroying game");
+    NINDENT(Game_destroy());
+
+    Ndebug("Destroying levels");
     NRsc_free_levels();
+
+    Ndebug("Destroying spritesheets");
     NRsc_free_spritesheets();
+
+    Ndebug("Destroying stills");
     NRsc_free_images();
+
+    Ndebug("Destroying shaders");
     NRsc_free_shaders();
-    Game_destroy();
     return true;
 }
 
@@ -129,7 +160,6 @@ void NEngine_check_events() {
     NWMan_event event;
     N_WMan.get_events();
     while (N_running && N_WMan.next_event(&event)) {
-        Ndebug("Event: %i", event.type);
         switch(event.type) {
             case N_WMAN_QUIT:
                 N_running = false;
@@ -144,17 +174,10 @@ void NEngine_check_events() {
 }
 
 void NEngine_run() {
-    int glVersion[2] = {-1, -1}; // Set some default values for the version
-glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]); // Get back the OpenGL MAJOR version we are using
-glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]); // Get back the OpenGL MAJOR version we are using
-Ndebug("OpenGL: %i %i", glVersion[0], glVersion[1]);
     while (N_running) {
         NEngine_update_time();
         NEngine_update_fps();
         NEngine_check_events();
-
-        NEngine_gl_init();
-        NEngine_viewport();
 
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.0, 0.0, 0.0, 1.0);

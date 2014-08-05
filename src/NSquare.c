@@ -46,7 +46,7 @@ typedef struct {
     GLfloat texcoord[3];
 } vertex;
 
-void NSquare_init() {
+bool NSquare_init() {
     vertex vertexdata[VERTICES] = {
         { { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f } },
         { { 1.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 0.0f } },
@@ -77,6 +77,8 @@ void NSquare_init() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     square_id = vao;
+
+    return true; // FIXME
 }
 
 void NSquare_destroy() {

@@ -35,6 +35,8 @@
 #include "../wrap/windows.h"
 #include <GL/wglext.h>
 
+// XXX TODO FIXME EVERYTHIIINNNGGGG!
+
 NWMan N_WMan_W32;
 
 extern HINSTANCE hInstance;

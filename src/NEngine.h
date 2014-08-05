@@ -35,7 +35,7 @@ START_HEAD
 bool NEngine_init();
 bool NEngine_destroy();
 
-void NEngine_viewport();
+void NEngine_update_viewport();
 
 void NEngine_run();
 

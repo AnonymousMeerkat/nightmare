@@ -4,7 +4,7 @@
 #ifdef __linux
 #  include <linux/limits.h>
 #else
-#  define PATH_MAX 4096 // Whatever lol
+#  define PATH_MAX 4096 // Running 'cat /usr/include/linux/limits.h | grep PATH' gives me this...
 #endif
 
 #endif

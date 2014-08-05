@@ -41,7 +41,7 @@ NTS(NShader);
 
 extern GLuint NSquare_id;
 
-void NSquare_init();
+bool NSquare_init();
 void NSquare_destroy();
 
 void NSquare_draw_shape();

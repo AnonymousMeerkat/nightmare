@@ -219,7 +219,7 @@ void NImage_record(NImage* image) {
 
 void NImage_stoprecord() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    NEngine_viewport();
+    NEngine_update_viewport();
 }
 
 void NImage_bind(NImage* image) {

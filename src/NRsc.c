@@ -39,26 +39,43 @@
 #include "NDynamic_t.h"
 #include <dirent.h>
 
-#ifdef WIN32
+#if defined(WIN32)
 #  include <windows.h>
+#elif defined(MACOSX)
+#  include <mach-o/dyld.h>
 #endif
 
 bool NRsc_init() {
-    char exepath[PATH_MAX + 1];
-#ifdef WIN32
+    char exepath[PATH_MAX];
+
+#if defined(WIN32)
     GetModuleFileName(GetModuleHandle(NULL), exepath, PATH_MAX);
-#else
+#elif defined(LINUX)
     char* result = realpath("/proc/self/exe", exepath);
     if (!result) {
         Nerror("Can't figure out self path!");
         return false;
     }
+#elif defined(MACOSX)
+    int size = PATH_MAX;
+    if (_NSGetExecutablePath(exepath, &size)) {
+        Nerror("Path buffer of size %i too small!", PATH_MAX);
+    }
+#elif defined(FREEBSD)
+    int mib[4];
+    mib[0] = CTL_KERN;
+    mib[1] = KERN_PROC;
+    mib[2] = KERN_PROC_PATHNAME;
+    mib[3] = -1;
+    size_t size = PATH_MAX;
+    sysctl(mib, 4, exepath, &size, NULL, 0);
 #endif
+
     char* toppath = dirname(dirname(exepath));
     N_rsc_path = malloc(strlen(toppath) + 7);
     strcpy(N_rsc_path, toppath);
     strcat(N_rsc_path, N_SLASH "game");
-    Ndebug(N_rsc_path);
+    Ndebug("Game data directory: %s", N_rsc_path);
     return true;
 }
 
@@ -136,28 +153,36 @@ void NRsc_ls_free(char** lsd) {
 #endif
 
 char* NRsc_read_file(char* simplepath) {
+    Ndebug("Loading file '%s'", simplepath);
+    N_indent++;
+
+    char* ret = NULL;
+
     char* path = NRsc_get_path(simplepath);
     FILE* file = fopen(path, "r");
     free(path);
     if (file == NULL) {
-        Nerror("Error loading file!");
-        return NULL;
+        Nerror("Error opening file!");
+        goto end;
     }
 
     fseek (file, 0, SEEK_END);
     size_t file_size = ftell(file);
     rewind (file);
 
-    char* ret = malloc(file_size + 1);
+    ret = malloc(file_size + 1);
     memset(ret, 0, file_size + 1);
     size_t n_read = fread(ret, 1, file_size, file);
     if (n_read != file_size) {
         Nerror("Error reading file!");
-        return NULL;
+        free(ret);
+        ret = NULL;
+        goto closefile;
     }
-    //ret[file_size] = 0;
-    Ndebug(ret);
+
+closefile:
     fclose(file);
-    //ret = realloc(ret, strlen(ret)); // Save memory
+end:
+    N_indent--;
     return ret;
 }

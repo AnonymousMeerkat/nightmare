@@ -79,8 +79,6 @@ NShader* N_shader;
 void NGlobals_init() {
     N_win_pos = N_Pos2i0;
     N_win_size = Npos2i(800, 600);
-    //N_win_size = Npos2i(2048, 256);
-    //N_win_title = "Nightmare Engine";
 
     N_indent = 0;
 
@@ -118,5 +116,4 @@ void NGlobals_init() {
 }
 
 void NGlobals_destroy() {
-    return; // Useless
 }

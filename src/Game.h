@@ -42,7 +42,7 @@ extern char** G_image_infos;
 extern NSpritesheet_info* G_spritesheet_infos;
 extern NLevel_info* G_level_infos;
 
-void Game_init();
+bool Game_init();
 void Game_destroy();
 void Game_loop();
 

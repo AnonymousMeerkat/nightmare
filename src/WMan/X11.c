@@ -40,7 +40,7 @@
 #include <sys/time.h>
 #include <time.h>
 
-// Stolen from the WinAPI keyboard mappings .. because boredom
+// Stolen from the WinAPI keyboard mappings ... cuz laziness
 #define SHIFT_K 0xA0
 #define CTRL_K 0xA2
 #define UP_K 0x26
@@ -79,23 +79,31 @@ int _X11_translate_keycode(int keycode) {
         case XK_Shift_R:
         case XK_Shift_L:
             return SHIFT_K;
+
         case XK_Control_R:
         case XK_Control_L:
             return CTRL_K;
+
         case XK_Up:
             return UP_K;
+
         case XK_Down:
             return DOWN_K;
+
         case XK_Left:
             return LEFT_K;
+
         case XK_Right:
             return RIGHT_K;
+
         case XK_Escape:
             return ESC_K;
+
+        default:
+            return 0;
     }
 
-    //return keysym;
-    return 0;
+    return 0; // Just in case ;)
 }
 
 bool _X11_update_keycodes() {
@@ -157,10 +165,11 @@ bool _X11_update_keycodes() {
             break;
         }
     }
+
     XkbFreeKeyboard(xkb_description, 0, True);
 
-    // Get layout-dependant keyboard mapping (using plain ole Keysyms)
 
+    // Get layout-dependant keyboard mapping (using plain ole Keysyms)
     for (int keycode = 8; keycode < 256; keycode++) {
         if (_keycodes[keycode] == 0) {
             _keycodes[keycode] = _X11_translate_keycode(keycode);
@@ -200,7 +209,7 @@ bool X11_create_window() {
     xl_visual_info = glXChooseVisual(xl_display, 0, glx_attributes);
 
     if (xl_visual_info == NULL) {
-        Nerror("Cannot choose visual (GLX)");
+        Nerror("Can't choose visual (GLX)");
         return false;
     }
 
@@ -227,7 +236,7 @@ bool X11_create_window() {
         hints->min_height = hints->max_height = N_win_size.y;
         XSetWMNormalHints(xl_display, xl_window, hints);
         XFree(hints);
-    }
+    };
 
     glx_context = glXCreateContext(xl_display, xl_visual_info, NULL, True);
     if (!glx_context) {
@@ -239,13 +248,19 @@ bool X11_create_window() {
 }
 
 bool X11_destroy_window() {
+    // Destroy context
     glXMakeCurrent(xl_display, 0, 0);
     glXDestroyContext(xl_display, glx_context);
+
+    // Destroy window
     XUnmapWindow(xl_display, xl_window);
     XDestroyWindow(xl_display, xl_window);
+
+    // Destroy display
     XFreeColormap(xl_display, xl_colormap);
     XFree(xl_visual_info);
     XFlush(xl_display);
+
     return true;
 }
 
@@ -256,12 +271,14 @@ void X11_swap_buffers() {
 
 
 void X11_get_events() {
+    // Nothing to see here, move along 8)
 }
 
 bool X11_next_event(NWMan_event* e) {
     if (XPending(xl_display) <= 0) {
         return false;
     }
+
     XEvent event;
     XNextEvent(xl_display, &event);
 
@@ -271,23 +288,28 @@ bool X11_next_event(NWMan_event* e) {
         case Expose:
             e->type = N_WMAN_FOCUS;
             e->window_focus = true;
+
             goto end;
+
         case KeyPress:
         case KeyRelease:
             if (NOUTRANGE(event.xkey.keycode, 0, 255)) {
                 return false;
             }
+
             e->type = N_WMAN_KEYBOARD;
             e->keyboard.state = type == KeyPress;
             e->keyboard.key = _keycodes[event.xkey.keycode];
-            Ndebug("%i %i", event.xkey.keycode, e->keyboard.key);
+
             goto end;
+
         case ClientMessage:
             if (event.xclient.message_type == WM_PROTOCOLS) {
                 if ((unsigned long) event.xclient.data.l[0] == WM_DELETE_WINDOW) {
                     e->type = N_WMAN_QUIT;
                 }
             }
+
             goto end;
     }
 

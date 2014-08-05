@@ -77,6 +77,7 @@ NShader* NShader_new(char* vertex, char* fragment, NShader_attrib* attribs) {
     NShader* ret = NULL;
 
     Ndebug("Creating shader program");
+    N_indent++;
     NShader* shader = malloc(sizeof(NShader));
     shader->shader_handle = glCreateProgram();
     if (!shader->shader_handle) {
@@ -85,6 +86,7 @@ NShader* NShader_new(char* vertex, char* fragment, NShader_attrib* attribs) {
     }
 
     Ndebug("Loading vertex shader");
+    N_indent++;
     if (!NShader_load(GL_VERTEX_SHADER, vertex, &shader->vertex_handle)) {
         Nerror("Error loading vertex shader");
         goto deleteshader;
@@ -92,13 +94,18 @@ NShader* NShader_new(char* vertex, char* fragment, NShader_attrib* attribs) {
     Ndebug("Attaching vertex shader");
     glAttachShader(shader->shader_handle, shader->vertex_handle);
 
+    N_indent--;
+
     Ndebug("Loading fragment shader");
+    N_indent++;
     if (!NShader_load(GL_FRAGMENT_SHADER, fragment, &shader->fragment_handle)) {
         Nerror("Error loading fragment shader");
         goto deletevertex;
     }
     Ndebug("Attaching fragment shader");
     glAttachShader(shader->shader_handle, shader->fragment_handle);
+
+    N_indent -= 2;
 
     for (GLuint i = 0; attribs[i].name; i++) {
         glBindAttribLocation(shader->shader_handle, attribs[i].attrib, attribs[i].name);

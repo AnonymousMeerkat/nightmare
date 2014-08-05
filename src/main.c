@@ -74,15 +74,17 @@ int main(int argc, char** argv) {
     Ndebug("Initializing paths");
     NINDENT(okay = NRsc_init());
 
-    /*if (!okay) {
-        return;
-    }*/
+    if (!okay) {
+        Ndebug("Error initializing paths!");
+        return 1;
+    }
 
     Ndebug("Loading engine");
     NINDENT(okay = NEngine_init());
 
     if (!okay) {
         Nerror("Error loading engine!");
+        return 1;
     }
 
     // Game
@@ -91,7 +93,7 @@ int main(int argc, char** argv) {
 
     // End
     Ndebug("Destroying engine");
-    NEngine_destroy();
+    NINDENT(NEngine_destroy());
 
     Ndebug("Destroying paths");
     NINDENT(NRsc_destroy());

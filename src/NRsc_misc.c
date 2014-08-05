@@ -58,7 +58,9 @@ bool NRsc_load_shader_head() {
 }
 
 NShader* NRsc_load_shader(char* name, NShader_attrib* attribs) {
-    Ndebug("Loading paths");
+    Ndebug("Loading shader '%s'", name);
+    N_indent++;
+
     size_t pathlen = strlen(name) + 6;
     char* base_path = malloc(pathlen);
     strcpy(base_path, "glsl" N_SLASH);
@@ -78,21 +80,20 @@ NShader* NRsc_load_shader(char* name, NShader_attrib* attribs) {
 
     free(base_path);
 
-    Ndebug("Loading shader");
     NShader* shader = NShader_new(vertex_file, fragment_file, attribs);
+
     free(vertex_file);
     free(fragment_file);
 
+    N_indent--;
     return shader;
 }
 
 NImage* NRsc_load_image(char* name) {
-    //size_t pathlen = strlen(name) + 5;
-    Ndebug(name);
+    Ndebug("Loading image '%s'", name);
+
     size_t pathlen = strlen(name) + 1;
     char* simplepath = malloc(pathlen);
-    /*strcpy(simplepath, "img" SLASH);
-    strcat(simplepath, name);*/
     strcpy(simplepath, name);
 
     char* path = NRsc_get_path(simplepath);
@@ -128,6 +129,9 @@ typedef struct {
 } fog3_head;
 
 NImage* NRsc_load_fog(char* name) {
+    Ndebug("Loading fog file '%s'", name);
+    N_indent++;
+
     NImage* ret = NImage_new(NImage_3D);
 
     if (!ret) {
@@ -138,7 +142,7 @@ NImage* NRsc_load_fog(char* name) {
 
     fog3_head* data = (fog3_head*) NRsc_read_file(name);
     if (!data) {
-        Nerror("Error loading fog file %s!", name);
+        Nerror("Error loading fog file!", name);
         NImage_destroy(ret);
         ret = NULL;
         goto end;
@@ -148,8 +152,6 @@ NImage* NRsc_load_fog(char* name) {
     size.x = data->width;
     size.y = data->height;
     size.z = data->breadth;
-
-    Ndebug("==========Z: %i", data->breadth);
 
     if (!NImage_load_3D(ret, size, data->contents, 1)) {
         Nerror("Error loading 3D fog texture!");
@@ -161,6 +163,7 @@ NImage* NRsc_load_fog(char* name) {
 freedata:
     free(data);
 end:
+    N_indent--;
     return ret;
 }
 
@@ -222,20 +225,37 @@ NSprite* NRsc_load_sprite_dir(char* path, NSprite_framedata* framedata) {
 }
 
 NSpritesheet* NRsc_load_spritesheet(char* name, NSpritesheet_data* datas) {
+    Ndebug("Loading spritesheet '%s'", name);
+    N_indent++;
+
+    NSpritesheet* ret = NULL;
+
     char* path = NRsc_join_paths("sprites", name);
 
     for (size_t i = 0; datas[i].name || datas[i].framedata || datas[i].sprite; i++) {
         char* currpath = NRsc_join_paths(path, datas[i].name);
         datas[i].sprite = NRsc_load_sprite_dir(currpath, datas[i].framedata);
         free(currpath);
+
+        if (!datas[i].sprite) {
+            goto end;
+        }
     }
 
+    ret = NSpritesheet_new(datas);
+
+end:
     free(path);
 
-    return NSpritesheet_new(datas);
+    N_indent--;
+
+    return ret;
 }
 
 NLevel* NRsc_load_level(char* name, NLevel_layer_data* datas) {
+    Ndebug("Loading level '%s'", name);
+    N_indent++;
+
     bool okay = true;
 
     char* path = NRsc_join_paths("levels", name);
@@ -280,6 +300,8 @@ NLevel* NRsc_load_level(char* name, NLevel_layer_data* datas) {
     free(numbers);
     NRsc_ls_free(names);
 
+    N_indent--;
+
     if (!okay) {
         return NULL;
     }
@@ -288,40 +310,59 @@ NLevel* NRsc_load_level(char* name, NLevel_layer_data* datas) {
 }
 
 
-void NRsc_load_shaders(NShader_info* infos) {
+bool NRsc_load_shaders(NShader_info* infos) {
     NLIST_NEW_FROM_ARR(NShader*, shaders, N_shaders);
     for (size_t i = 0; infos[i].name; i++) {
-        NLIST_PUSH(shaders, NRsc_load_shader(infos[i].name, infos[i].attribs));
-        //Ndebug("%p", shaders.data[i]);
+        NShader* shader = NRsc_load_shader(infos[i].name, infos[i].attribs);
+        if (!shader) {
+            return false;
+        }
+
+        NLIST_PUSH(shaders, shader);
     }
     N_shaders = shaders.data;
-    //Ndebug("%u", shaders.data[0]->shader_handle);
+    return true;
 }
 
-void NRsc_load_images(char** names) {
+bool NRsc_load_images(char** names) {
     NLIST_NEW_FROM_ARR(NImage*, images, N_images);
     for (size_t i = 0; names[i]; i++) {
         char* path = NRsc_join_paths("img" N_SLASH, names[i]);
-        NLIST_PUSH(images, NRsc_load_image(path));
+        NImage* image = NRsc_load_image(path);
+        if (!image) {
+            return false;
+        }
+        NLIST_PUSH(images, image);
         free(path);
     }
     N_images = images.data;
+    return true;
 }
 
-void NRsc_load_spritesheets(NSpritesheet_info* infos) {
+bool NRsc_load_spritesheets(NSpritesheet_info* infos) {
     NLIST_NEW_FROM_ARR(NSpritesheet*, spritesheets, N_spritesheets);
     for (size_t i = 0; infos[i].name; i++) {
-        NLIST_PUSH(spritesheets, NRsc_load_spritesheet(infos[i].name, infos[i].datas));
+        NSpritesheet* spritesheet = NRsc_load_spritesheet(infos[i].name, infos[i].datas);
+        if (!spritesheet) {
+            return false;
+        }
+        NLIST_PUSH(spritesheets, spritesheet);
     }
     N_spritesheets = spritesheets.data;
+    return true;
 }
 
-void NRsc_load_levels(NLevel_info* infos) {
+bool NRsc_load_levels(NLevel_info* infos) {
     NLIST_NEW_FROM_ARR(NLevel*, levels, N_levels);
     for (size_t i = 0; infos[i].name; i++) {
-        NLIST_PUSH(levels, NRsc_load_level(infos[i].name, infos[i].datas));
+        NLevel* level = NRsc_load_level(infos[i].name, infos[i].datas);
+        if (!level) {
+            return false;
+        }
+        NLIST_PUSH(levels, level);
     }
     N_levels = levels.data;
+    return true;
 }
 
 
