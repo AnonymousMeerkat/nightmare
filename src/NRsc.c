@@ -43,6 +43,9 @@
 #  include <windows.h>
 #elif defined(MACOSX)
 #  include <mach-o/dyld.h>
+#elif defined(FREEBSD)
+#  include <sys/types.h>
+#  include <sys/sysctl.h>
 #endif
 
 bool NRsc_init() {
