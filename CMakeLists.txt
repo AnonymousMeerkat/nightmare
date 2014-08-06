@@ -64,7 +64,11 @@ if(WIN32)
 endif(WIN32)
 
 if(UNIX)
-    set(LIBRARIES ${LIBRARIES} dl)
+    if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+        set(LIBRARIES ${LIBRARIES} c)
+    else()
+        set(LIBRARIES ${LIBRARIES} dl)
+    endif()
 endif(UNIX)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
