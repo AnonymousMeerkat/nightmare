@@ -1,2 +1,2 @@
 cd out
-lua ../LoadGen.lua compat_4_4 -version=4.4 -spec=gl -style=pointer_c -profile=compatibility -extfile=../ALLEXT
+lua ../LoadGen.lua compat -version=max -spec=gl -style=pointer_c -profile=compatibility -extfile=../ALLEXT

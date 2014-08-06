@@ -116,9 +116,9 @@ function glx_spec.GetExtStringParamList(enumResolve) return "display, screen" en
 --	Function name used to get an extension string.
 --	Enumerator name used to get an extension string.
 function gl_spec.GetIndexedExtStringFunc(options)
-	--if(tonumber(options.version) >= 3.0) then
-	--	return {"GetIntegerv", "NUM_EXTENSIONS", "GetStringi", "EXTENSIONS"}
-	--end
+	if(tonumber(options.version) >= 3.0) then
+		return {"GetIntegerv", "NUM_EXTENSIONS", "GetStringi", "EXTENSIONS"}
+	end
 	return nil
 end
 function wgl_spec.GetIndexedExtStringFunc(options) return nil end

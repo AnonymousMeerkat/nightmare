@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
-#include "gl_compat_4_4.h"
+#include "gl_compat.h"
 
 #if defined(__APPLE__)
 #include <mach-o/dyld.h>
@@ -11706,16 +11706,37 @@ static void LoadExtByName(const char *extensionName)
 }
 
 
-static void ProcExtsFromExtList()
+static void ProcExtsFromExtString(const char *strExtList)
 {
-	GLint iLoop;
-	GLint iNumExtensions = 0;
-	_ptrc_glGetIntegerv(GL_NUM_EXTENSIONS, &iNumExtensions);
+	size_t iExtListLen = strlen(strExtList);
+	const char *strExtListEnd = strExtList + iExtListLen;
+	const char *strCurrPos = strExtList;
+	char strWorkBuff[256];
 
-	for(iLoop = 0; iLoop < iNumExtensions; iLoop++)
+	while(*strCurrPos)
 	{
-		const char *strExtensionName = (const char *)_ptrc_glGetStringi(GL_EXTENSIONS, iLoop);
-		LoadExtByName(strExtensionName);
+		/*Get the extension at our position.*/
+		int iStrLen = 0;
+		const char *strEndStr = strchr(strCurrPos, ' ');
+		int iStop = 0;
+		if(strEndStr == NULL)
+		{
+			strEndStr = strExtListEnd;
+			iStop = 1;
+		}
+
+		iStrLen = (int)((ptrdiff_t)strEndStr - (ptrdiff_t)strCurrPos);
+
+		if(iStrLen > 255)
+			return;
+
+		strncpy(strWorkBuff, strCurrPos, iStrLen);
+		strWorkBuff[iStrLen] = '\0';
+
+		LoadExtByName(strWorkBuff);
+
+		strCurrPos = strEndStr + 1;
+		if(iStop) break;
 	}
 }
 
@@ -11724,12 +11745,10 @@ int ogl_LoadFunctions()
 	int numFailed = 0;
 	ClearExtensionVars();
 	
-	_ptrc_glGetIntegerv = (void (CODEGEN_FUNCPTR *)(GLenum, GLint *))IntGetProcAddress("glGetIntegerv");
-	if(!_ptrc_glGetIntegerv) return ogl_LOAD_FAILED;
-	_ptrc_glGetStringi = (const GLubyte * (CODEGEN_FUNCPTR *)(GLenum, GLuint))IntGetProcAddress("glGetStringi");
-	if(!_ptrc_glGetStringi) return ogl_LOAD_FAILED;
+	_ptrc_glGetString = (const GLubyte * (CODEGEN_FUNCPTR *)(GLenum))IntGetProcAddress("glGetString");
+	if(!_ptrc_glGetString) return ogl_LOAD_FAILED;
 	
-	ProcExtsFromExtList();
+	ProcExtsFromExtString((const char *)_ptrc_glGetString(GL_EXTENSIONS));
 	numFailed = Load_Version_4_4();
 	
 	if(numFailed == 0)
