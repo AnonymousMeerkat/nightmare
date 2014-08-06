@@ -65,7 +65,7 @@ endif(WIN32)
 
 if(UNIX)
     if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-        include_directories(/usr/local)
+        include_directories(/usr/local/include)
         set(LIBRARIES ${LIBRARIES} c)
     else()
         set(LIBRARIES ${LIBRARIES} dl)
