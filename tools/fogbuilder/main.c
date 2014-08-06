@@ -46,6 +46,7 @@
 #define ELEMNUM (WIDTH * HEIGHT * BREADTH)
 
 
+typedef unsigned short ushort;
 typedef unsigned char uchar;
 typedef double val_t;
 
