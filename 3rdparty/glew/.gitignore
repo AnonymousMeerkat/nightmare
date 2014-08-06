@@ -1,8 +1,0 @@
-*.pc
-./build/vc6/*.rc
-./auto/extensions
-./auto/registry
-./bin
-./lib
-./tmp
-*.a

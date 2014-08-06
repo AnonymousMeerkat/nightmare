@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
     }
 
     Ndebug("Initializing OpenGL");
-    if (glewInit() != GLEW_OK) {
+    if (ogl_LoadFunctions() == ogl_LOAD_FAILED) {
         Nerror("Error initializing OpenGL!");
         return 1;
     }
