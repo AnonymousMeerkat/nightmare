@@ -78,10 +78,11 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
 add_subdirectory(3rdparty)
 include_directories(3rdparty/jansson/include)
-include_directories(3rdparty/gl3w/include)
+#include_directories(3rdparty/gl3w/include)
+include_directories(3rdparty/glew/include)
 include_directories(3rdparty/lodepng)
 
-set(LIBRARIES ${LIBRARIES} gl3w GLKit lodepng ${OPENGL_LIBRARIES})
+set(LIBRARIES ${LIBRARIES} glew_static GLKit lodepng ${OPENGL_LIBRARIES})
 
 # Compile tools
 
