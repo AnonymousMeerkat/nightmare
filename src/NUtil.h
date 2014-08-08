@@ -53,6 +53,8 @@ START_HEAD
 
 #define NSPACESHIP(x, y) ((x) > (y) ? 1 : ((x) < (y) ? -1 : 0))
 
+#define NSTRINGIFY(x) #x
+
 END_HEAD
 
 #endif

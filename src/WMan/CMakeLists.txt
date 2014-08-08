@@ -11,4 +11,4 @@ if(X11_FOUND)
     set(SOURCES X11.c)
 endif(X11_FOUND)
 
-add_library(NWMan ${SOURCES})
+add_library(NWMan STATIC ${SOURCES})

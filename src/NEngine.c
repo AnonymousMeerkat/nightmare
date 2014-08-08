@@ -82,6 +82,19 @@ bool NEngine_gl_init() {
     viewport = Nsplu_calc_viewport();
     NEngine_update_viewport();
 
+    Ndebug("Initializing matrices");
+
+    // Matrix reset
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    // Programmable matrice setup
+    N_gl_projection = GLKMatrix4MakeOrtho(0.0f, N_game_size.x, N_game_size.y, 0.0f, -1, 1);
+    N_gl_view = GLKMatrix4Identity;
+    N_gl_model = GLKMatrix4Identity;
+
     return true;
 }
 
@@ -104,11 +117,6 @@ bool NEngine_init() {
 
     Ndebug("Initializing randomness (literally)");
     srand(time(NULL));
-
-    Ndebug("Initializing matrices");
-    N_gl_projection = GLKMatrix4MakeOrtho(0.0f, N_game_size.x, N_game_size.y, 0.0f, -1, 1);
-    N_gl_view = GLKMatrix4Identity;
-    N_gl_model = GLKMatrix4Identity;
 
     Ndebug("Loading square");
     OP(NSquare_init());

@@ -162,7 +162,7 @@ char* NRsc_read_file(char* simplepath) {
     char* ret = NULL;
 
     char* path = NRsc_get_path(simplepath);
-    FILE* file = fopen(path, "r");
+    FILE* file = fopen(path, "rb");
     free(path);
     if (file == NULL) {
         Nerror("Error opening file!");

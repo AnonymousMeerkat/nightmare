@@ -2,4 +2,4 @@ set(SOURCES
     out/gl_compat.c
 )
 
-add_library(gllg ${SOURCES})
+add_library(gllg STATIC ${SOURCES})
