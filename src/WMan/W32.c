@@ -298,7 +298,8 @@ bool _w32_check_extension(char* str) {
 }
 
 bool w32_create_window() {
-    FAKEWINDOW = true;
+    //FAKEWINDOW = true;
+    FAKEWINDOW = false;
     // Create the fake window
     _w32_create_window_ex();
 
