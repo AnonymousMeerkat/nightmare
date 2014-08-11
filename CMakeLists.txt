@@ -27,6 +27,17 @@ find_package(OpenGL REQUIRED) # No OpenGL? NO ENGINE! HAHAHAHAHA ... ha
 
 set(WM_FOUND 0)
 
+find_package(Wayland)
+
+if(WAYLAND_FOUND)
+    find_package(UDev REQUIRED)
+    find_package(EGL REQUIRED)
+    set(LIBRARIES ${LIBRARIES} ${WAYLAND_LIBRARIES} ${UDEV_LIBRARIES} ${EGL_LIBRARY})
+    add_definitions(-DWL_FOUND)
+    set(WM_FOUND 1)
+    set(WL_FOUND 1)
+endif(WAYLAND_FOUND)
+
 find_package(X11)
 
 if(X11_FOUND)

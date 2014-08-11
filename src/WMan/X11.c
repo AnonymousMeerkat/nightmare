@@ -321,7 +321,9 @@ end:
 
 uint X11_get_millis() {
     struct timeval tv;
-    gettimeofday(&tv, NULL);
+    gettimeofday(&tv, NULL); /// Replace to clock_gettime()
+                              // FreeBSD: CLOCK_UPTIME_FAST or CLOCK_MONOTONIC_FAST
+                              // Linux: CLOCK_MONOTONIC_RAW, then CLOCK_MONOTONIC_COARSE
     return tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 

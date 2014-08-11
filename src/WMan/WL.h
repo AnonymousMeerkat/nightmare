@@ -25,54 +25,12 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "NWMan.h"
+#ifndef _NME_WMAN_WL_H
+#define _NME_WMAN_WL_H
 
-#include "WMan/SDL.h"
-#include "WMan/SDL2.h"
-#include "WMan/W32.h"
-#include "WMan/X11.h"
-#include "WMan/WL.h"
+#include "../NWMan.h"
 
-#include "NLog.h"
+extern NWMan N_WMan_WL;
+void NWMan_WL_init();
 
-NWMan N_WMan;
-
-NWMan_event NWMan_event_new(NWMan_event_type type) {
-    NWMan_event event;
-    event.type = type;
-
-    return event;
-}
-
-
-bool NWMan_init() {
-#if defined(WL_FOUND)
-        Ndebug("WM Backend = Wayland");
-        NWMan_WL_init();
-        N_WMan = N_WMan_WL;
-#elif defined(X11_FOUND)
-        Ndebug("WM Backend = X11");
-        NWMan_X11_init();
-        N_WMan = N_WMan_X11;
-#elif defined(WIN32)
-        Ndebug("WM Backend = Windows");
-        NWMan_W32_init();
-        N_WMan = N_WMan_W32;
-#elif defined(SDL_FOUND)
-        Ndebug("WM Backend = SDL");
-        NWMan_SDL_init();
-        N_WMan = N_WMan_SDL;
-#elif defined(SDL2_FOUND)
-        Ndebug("WM Backend = SDL2");
-        NWMan_SDL2_init();
-        N_WMan = N_WMan_SDL2;
-#else
-        Nerror("No backend available!!");
-        return false;
 #endif
-    return N_WMan.init();
-}
-
-bool NWMan_destroy() {
-    return N_WMan.destroy();
-}

@@ -10,5 +10,8 @@ endif(WIN32)
 if(X11_FOUND)
     set(SOURCES X11.c)
 endif(X11_FOUND)
+if(WL_FOUND)
+    set(SOURCES WL.c)
+endif(WL_FOUND)
 
 add_library(NWMan STATIC ${SOURCES})
