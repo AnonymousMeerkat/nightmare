@@ -23,6 +23,10 @@ if(WIN32)
     set(CMAKE_INCLUDE_PATH "${CMAKE_INCLUDE_PATH};${PROJECT_SOURCE_DIR}/3rdparty/w32")
 endif(WIN32)
 
+if(UNIX)
+    set(CMAKE_INCLUDE_PATH "${CMAKE_INCLUDE_PATH}:/usr/local/include")
+endif(UNIX)
+
 find_package(OpenGL REQUIRED) # No OpenGL? NO ENGINE! HAHAHAHAHA ... ha
 
 set(WM_FOUND 0)
