@@ -242,7 +242,7 @@ bool WL_create_window() {
     for (EGLint i = 0; i < n; i++) {
         EGLint buffer_size;
         eglGetConfigAttrib(egl.display, configs[i], EGL_BUFFER_SIZE, &buffer_size);
-        if (buffer_size == window.buffer_size) {
+        if (buffer_size == 32) {
             egl.config = configs[i];
             break;
         }
