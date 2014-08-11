@@ -89,6 +89,9 @@ static void _WLregistry_handle(void* data, struct  wl_registry* registry, uint32
         display.xdg_shell = wl_registry_bind(registry, name, &_WL_xdg_shell_interface, 1);
         xdg_shell_add_listener(display.xdg_shell, &_WL_xdg_shell_listener, NULL);
     }*/
+    if (NSTREQ(interface, "wl_compositor")) {
+        display.compositor = wl_registry_bind(registry, name, &wl_compositor_interface, 1);
+    }
 }
 
 static void _WLregistry_handle_remove(void* data, struct wl_registry* registry, uint32_t name) {
