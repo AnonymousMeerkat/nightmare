@@ -91,6 +91,8 @@ static void _WLregistry_handle(void* data, struct  wl_registry* registry, uint32
     }*/
     if (NSTREQ(interface, "wl_compositor")) {
         display.compositor = wl_registry_bind(registry, name, &wl_compositor_interface, 1);
+    } else if (NSTREQ(interface, "wl_shell")) {
+        display.shell = wl_registry_bind(registry, name, &wl_shell_interface, 1);
     }
 }
 
