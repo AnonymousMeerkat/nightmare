@@ -307,7 +307,7 @@ bool WL_destroy_window() {
 void  WL_swap_buffers() {
     wl_surface_set_opaque_region(window->surface, NULL);
     eglSwapBuffers(egl.display, window.egl_surface);
-    wl_display_dispatch();
+    wl_display_dispatch(display.display);
 }
 
 
