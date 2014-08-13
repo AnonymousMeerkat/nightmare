@@ -36,7 +36,7 @@
 #ifdef USE_EGL
 const char versionstr[] = "#version 100\n";
 #else
-const char versionstr[] = "#version 120\n";
+const char versionstr[] = "#version 120\n#extension GL_EXT_gpu_shader4 : enable\n";
 #endif
 
 void NShader_print_log(bool shader, GLuint handle, char* prefix) {
