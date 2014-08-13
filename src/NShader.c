@@ -36,12 +36,13 @@
 #ifdef USE_EGL
 const char versionstr[] =
 "#version 100\n"
-"precision mediump float;\n"
-"precision mediump mat4;\n"
-"precision mediump vec2;\n";
+"precision mediump float;\n";
 #else
 const char versionstr[] =
 "#version 120\n"
+"#define lowp\n"
+"#define mediump\n"
+"#define highp\n"
 "extension GL_EXT_gpu_shader4 : enable\n";
 #endif
 
