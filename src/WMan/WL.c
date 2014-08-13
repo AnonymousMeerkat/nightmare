@@ -285,6 +285,8 @@ bool WL_create_window() {
 
     eglSwapInterval(egl.display, 0);
 
+    wl_display_dispatch(display.display);
+
     return true;
 }
 
@@ -306,6 +308,7 @@ bool WL_destroy_window() {
 
 void  WL_swap_buffers() {
     wl_surface_set_opaque_region(window.surface, NULL);
+    wl_display_dispatch(display.display);
     eglSwapBuffers(egl.display, window.egl_surface);
     wl_display_dispatch(display.display);
 }
