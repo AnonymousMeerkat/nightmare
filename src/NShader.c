@@ -36,14 +36,15 @@
 #ifdef USE_EGL
 const char versionstr[] =
 "#version 100\n"
-"precision mediump float;\n";
+"precision mediump float;\n"
+"#extension GL_OES_texture_3D : enable\n";
 #else
 const char versionstr[] =
 "#version 120\n"
 "#define lowp\n"
 "#define mediump\n"
 "#define highp\n"
-"extension GL_EXT_gpu_shader4 : enable\n";
+"#extension GL_EXT_gpu_shader4 : enable\n";
 #endif
 
 void NShader_print_log(bool shader, GLuint handle, char* prefix) {
