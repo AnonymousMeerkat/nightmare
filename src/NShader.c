@@ -36,7 +36,6 @@
 #ifdef USE_EGL
 const char versionstr[] =
 "#version 100\n"
-"#define GL_OES_texture_3D 1\n"
 "#extension GL_OES_texture_3D : enable\n"
 "precision mediump float;\n";
 #else
