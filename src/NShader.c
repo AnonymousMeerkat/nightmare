@@ -34,7 +34,7 @@
 #include <string.h>
 
 #ifdef USE_EGL
-const char versionstr[] = "#version 120 es\n";
+const char versionstr[] = "#version 100\n";
 #else
 const char versionstr[] = "#version 120\n";
 #endif
