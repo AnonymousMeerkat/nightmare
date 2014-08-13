@@ -35,8 +35,8 @@
 
 #ifdef USE_EGL
 const char versionstr[] =
-"#version 100\n"
-"precision mediump float;\n";
+"#version 300 es\n"
+"//precision mediump float;\n";
 #else
 const char versionstr[] =
 "#version 120\n"
