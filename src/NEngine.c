@@ -64,11 +64,7 @@ void NEngine_update_fps() {
 
 bool NEngine_gl_init() {
     // Get OpenGL version
-    int glVersion[2] = {-1, -1};
-    glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]);
-    glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]);
-
-    Ndebug("OpenGL %i.%i detected", glVersion[0], glVersion[1]);
+    Ndebug("OpenGL %.1f detected", atof((const char*)glGetString(GL_VERSION)));
 
     // Initialize properties/variables/shtuff
     Ndebug("Setting some OpenGL properties");

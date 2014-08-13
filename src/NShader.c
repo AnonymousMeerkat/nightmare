@@ -33,6 +33,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef USE_EGL
+const char versionstr[] = "#version 120 es\n";
+#else
+const char versionstr[] = "#version 120\n";
+#endif
+
 void NShader_print_log(bool shader, GLuint handle, char* prefix) {
     GLsizei len_dont_use;
     GLsizei len;
@@ -58,8 +64,9 @@ bool NShader_load(GLenum type, const GLchar* shader, GLuint* handle) {
     *handle = i_handle;
     Ndebug("Loading shader");
     size_t shaderlen = strlen(shader);
-    GLchar* newsrc = malloc(sizeof(GLchar) * (shaderlen + N_shader_head_len + 1));
-    strcpy(newsrc, N_shader_head);
+    GLchar* newsrc = malloc(sizeof(GLchar) * (sizeof(versionstr) + shaderlen + N_shader_head_len + 1));
+    strcpy(newsrc, versionstr);
+    strcat(newsrc, N_shader_head);
     strcat(newsrc, shader);
     glShaderSource(i_handle, 1, (const GLchar* const*) &newsrc, NULL);
     free(newsrc);
