@@ -28,7 +28,7 @@
 #ifndef _NME_WMAN_WL_H
 #define _NME_WMAN_WL_H
 
-#include "../NWMan.h"
+#include <NWMan.h>
 
 extern NWMan N_WMan_WL;
 void NWMan_WL_init();

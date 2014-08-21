@@ -26,8 +26,8 @@
 */
 
 #include "X11.h"
-#include "../NLog.h"
-#include "../NGlobals.h"
+#include <NLog.h>
+#include <NGlobals.h>
 
 #include <X11/X.h>
 #include <X11/Xlib.h>

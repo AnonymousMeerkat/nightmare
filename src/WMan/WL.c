@@ -25,8 +25,9 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "../NWMan.h"
-#include "../NLog.h"
+#include "WL.h"
+#include <NLog.h>
+#include <NGlobals.h>
 
 #include <errno.h>
 #include <stdio.h>

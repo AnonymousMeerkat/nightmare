@@ -34,6 +34,17 @@
 #define error(...) fprintf(stderr, __VA_ARGS__)
 #define BUFSIZE 8192
 
+const char Fheader[] =
+"#include <NShader.h>\n"
+"#include <NSprite.h>\n"
+"#include <NSpritesheet.h>\n"
+"#include <NLevel.h>\n"
+"\n"
+"// AUTOMATICALLY GENERATED\n"
+"// DO NOT MODIFY!\n"
+"\n"
+;
+
 void showhelp(char* name) {
     printf("Usage: %s input output\n", name);
 }
@@ -110,7 +121,7 @@ int main(int argc, char** argv) {
 
     char FINAL[BUFSIZE];
 
-    strcpy(FINAL, "#include <Nightmare.h>\n// AUTOMATICALLY GENERATED\n// DO NOT MODIFY!\n\n");
+    strcpy(FINAL, Fheader);
 
     const char* title = json_string_value(json_object_get(root, "title"));
     char TITLE_TEMP[BUFSIZE];
