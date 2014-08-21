@@ -28,10 +28,6 @@
 #ifndef _NME_SPRITE_H
 #define _NME_SPRITE_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NUtil.h"
 #include "NTypes.h"
 #include "NPos.h"
@@ -59,7 +55,5 @@ void NSprite_destroy(NSprite* sprite);
 
 bool NSprite_update(NSprite* sprite);
 void NSprite_draw(NSprite* sprite, NPos2i pos, NPos2i size, bool flip, float alpha);
-
-END_HEAD
 
 #endif

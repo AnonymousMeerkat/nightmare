@@ -1,10 +1,6 @@
 #ifndef _NME_WRAP_GL_H
 #define _NME_WRAP_GL_H
 
-#include "../NCompat.h"
-
-START_HEAD
-
 #define GLEW_STATIC
 #include <gl_compat.h>
 #include <GL/gl.h>
@@ -22,7 +18,5 @@ START_HEAD
 #define glScale(x, y) _glScale(x, y, 0)
 
 #undef _gl
-
-END_HEAD
 
 #endif

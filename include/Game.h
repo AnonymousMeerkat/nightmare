@@ -28,10 +28,6 @@
 #ifndef _NME_GAME_H
 #define _NME_GAME_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NUtil.h"
 
 NTS(NShader_info);
@@ -45,8 +41,5 @@ extern NLevel_info* G_level_infos;
 bool Game_init();
 void Game_destroy();
 void Game_loop();
-
-END_HEAD
-
 
 #endif

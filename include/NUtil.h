@@ -28,10 +28,6 @@
 #ifndef _NME_UTIL_H
 #define _NME_UTIL_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #define NUNUSED(x) (void)(x)
 #define NTS(x) typedef struct _##x x
 #define NTE(x) typedef enum _##x x
@@ -54,7 +50,5 @@ START_HEAD
 #define NSPACESHIP(x, y) ((x) > (y) ? 1 : ((x) < (y) ? -1 : 0))
 
 #define NSTRINGIFY(x) #x
-
-END_HEAD
 
 #endif

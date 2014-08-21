@@ -28,10 +28,6 @@
 #ifndef _NME_GLOBALS_H
 #define _NME_GLOBALS_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NTypes.h"
 #include "NUtil.h"
 #include "NPos.h"
@@ -51,7 +47,6 @@ NTS(NDLL_info);
 #define N_SHADER_IMAGE 0
 
 
-#ifndef NMEX
 // Functions
 
 void NGlobals_init();
@@ -125,22 +120,5 @@ extern uint N_fps;
 extern NPos2i N_game_size;
 
 extern NShader* N_shader;
-
-#else
-
-void NGlobals_set_size(NPos2i size);
-NPos2i NGlobals_get_size();
-
-void NGlobals_set_title(char* title);
-char* NGlobals_get_title();
-
-void NGlobals_indent_inc();
-void NGlobals_indent_dec();
-
-NShader** NGlobals_get_shaders();
-
-#endif
-
-END_HEAD
 
 #endif

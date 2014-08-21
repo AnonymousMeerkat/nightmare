@@ -28,10 +28,6 @@
 #ifndef _NME_IMAGE_H
 #define _NME_IMAGE_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NUtil.h"
 #include "NPos.h"
 #include "NTypes.h"
@@ -72,7 +68,5 @@ struct NImage_draw_args {
 };
 void NImage_draw(NImage* image, struct NImage_draw_args args);
 #define NIMAGE_DRAW(img, ...) NImage_draw(img, (struct NImage_draw_args){.pos = N_Pos2i0, .size = N_Pos2i0, .z = 0., .flip = 0, .alpha = 1., __VA_ARGS__})
-
-END_HEAD
 
 #endif

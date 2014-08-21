@@ -28,12 +28,9 @@
 #ifndef _NME_RSC_H
 #define _NME_RSC_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NPorting.h"
 #include "NUtil.h"
+#include "NTypes.h"
 
 typedef void* NDLL;
 
@@ -84,7 +81,5 @@ void NRsc_free_shaders();
 void NRsc_free_images();
 void NRsc_free_spritesheets();
 void NRsc_free_levels();
-
-END_HEAD
 
 #endif

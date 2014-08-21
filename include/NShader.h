@@ -28,10 +28,6 @@
 #ifndef _NME_SHADER_H
 #define _NME_SHADER_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NUtil.h"
 #include "NTypes.h"
 
@@ -65,7 +61,5 @@ void NShader_update_MVP(NShader* shader);
 
 void NShader_run(NShader* shader);
 void NShader_stop();
-
-END_HEAD
 
 #endif

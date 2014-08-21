@@ -28,21 +28,12 @@
 #ifndef _NME_POS_H
 #define _NME_POS_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NUtil.h"
 #include "NTypes.h"
 
 #define NPosf float
 #define NPosi int
 #define NPosz char
-
-/*NSTRUCT(NPos2f, {
-    NPosf x;
-    NPosf y;
-});*/
 
 typedef GLKVector2 NPos2f;
 
@@ -134,7 +125,5 @@ _3_3(3i, 3f);
 #undef _3_3
 
 #undef header
-
-END_HEAD
 
 #endif

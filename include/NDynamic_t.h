@@ -28,10 +28,6 @@
 #ifndef _NME_DYNAMIC_T_H
 #define _NME_DYNAMIC_T_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NTypes.h"
 
 #include <stdlib.h>
@@ -142,7 +138,5 @@ static inline bool Nstreq(char* str1, char* str2) {
     for (size_t i = 0; ((str1[i] == str2[i]) || (ret = false)) && str1[i] != 0; i++);
     return ret;
 }
-
-END_HEAD
 
 #endif

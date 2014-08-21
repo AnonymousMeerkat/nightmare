@@ -28,10 +28,6 @@
 #ifndef _NME_LOG_H
 #define _NME_LOG_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 int Ninfo(const char* fmt, ...);
 int Ndebug(const char* fmt, ...);
 int Nerror(const char* fmt, ...);
@@ -51,7 +47,5 @@ void Nnewline();
       NGlobals_indent_dec();\
   }
 #endif
-
-END_HEAD
 
 #endif

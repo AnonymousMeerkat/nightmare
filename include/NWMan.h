@@ -30,10 +30,6 @@
 
 // Internal window manager API
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NPos.h"
 #include "NUtil.h"
 #include "NTypes.h"
@@ -115,7 +111,5 @@ bool NWMan_init();
 bool NWMan_destroy();
 
 extern NWMan N_WMan;
-
-END_HEAD
 
 #endif

@@ -28,10 +28,6 @@
 #ifndef _NME_ENTITY_H
 #define _NME_ENTITY_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NUtil.h"
 #include "NTypes.h"
 #include "NPos.h"
@@ -98,7 +94,5 @@ struct NEntity_draw_args {
 };
 void NEntity_draw(NEntity* entity, struct NEntity_draw_args args);
 #define NENTITY_DRAW(entity, ...) NEntity_draw(entity, (struct NEntity_draw_args){.size = N_Pos2i0, .alpha = 1., __VA_ARGS__})
-
-END_HEAD
 
 #endif

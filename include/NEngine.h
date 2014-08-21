@@ -28,9 +28,7 @@
 #ifndef _NME_ENGINE_H
 #define _NME_ENGINE_H
 
-#include "NCompat.h"
-
-START_HEAD
+#include <NTypes.h>
 
 bool NEngine_init();
 bool NEngine_destroy();
@@ -38,7 +36,5 @@ bool NEngine_destroy();
 void NEngine_update_viewport();
 
 void NEngine_run();
-
-END_HEAD
 
 #endif

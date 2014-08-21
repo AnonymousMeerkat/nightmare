@@ -28,10 +28,6 @@
 #ifndef _NME_RECT_H
 #define _NME_RECT_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NUtil.h"
 #include "NPos.h"
 
@@ -58,7 +54,5 @@ static inline NRecti Nrecti(NPos2i pos, NPos2i size) {
     NRecti ret = {pos, size};
     return ret;
 }
-
-END_HEAD
 
 #endif

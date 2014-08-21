@@ -28,10 +28,6 @@
 #ifndef _NME_LEVEL_H
 #define _NME_LEVEL_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NUtil.h"
 #include "NDynamic_t.h"
 #include "NRect.h"
@@ -81,7 +77,5 @@ NPosf NLevel_get_z(NLevel* level, NPosz z);
 NPosf NLevel_get_camera(NLevel* level);
 
 void NLevel_draw(NLevel* level);
-
-END_HEAD
 
 #endif

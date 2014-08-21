@@ -28,10 +28,6 @@
 #ifndef _NME_SHADOW_H
 #define _NME_SHADOW_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NUtil.h"
 #include "NPos.h"
 
@@ -39,7 +35,5 @@ NTS(NLevel);
 NTS(NEntity);
 
 void NShadow_draw(NLevel* level, NEntity* entity, NPosz layer);
-
-END_HEAD
 
 #endif

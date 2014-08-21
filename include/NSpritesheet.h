@@ -28,10 +28,6 @@
 #ifndef _NME_SPRITESHEET_H
 #define _NME_SPRITESHEET_H
 
-#include "NCompat.h"
-
-START_HEAD
-
 #include "NUtil.h"
 #include "NSprite.h"
 #include "NPos.h"
@@ -57,7 +53,5 @@ void NSpritesheet_destroy(NSpritesheet* sheet);
 
 bool NSpritesheet_update(NSpritesheet* sheet, size_t id);
 void NSpritesheet_draw(NSpritesheet* sheet, size_t id, NPos2i pos, NPos2i size, bool flip, float alpha);
-
-END_HEAD
 
 #endif
