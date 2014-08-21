@@ -34,7 +34,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "wrap/limits.h"
 #include <string.h>
 #include "NDynamic_t.h"
 #include <dirent.h>
@@ -47,6 +46,8 @@
 #  include <sys/types.h>
 #  include <sys/sysctl.h>
 #endif
+
+#define PATH_MAX 4096
 
 bool NRsc_init() {
     char exepath[PATH_MAX];
