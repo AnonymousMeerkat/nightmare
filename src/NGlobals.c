@@ -33,6 +33,7 @@
 int N_argc;
 char** N_argv;
 
+char* N_WMan_backend;
 NPos2i N_win_pos;
 NPos2i N_win_size;
 //char* N_win_title;
@@ -53,6 +54,7 @@ NEntity* N_player;
 
 bool N_key_states[65536];
 
+bool N_shader_egl;
 char* N_shader_head;
 size_t N_shader_head_len;
 
@@ -69,6 +71,7 @@ NShader* N_shader;
 
 
 void NGlobals_init() {
+    N_WMan_backend = "";
     N_win_pos = N_Pos2i0;
     N_win_size = Npos2i(800, 600);
 
@@ -85,6 +88,7 @@ void NGlobals_init() {
     NLIST_NEW(NLevel*, N__levels);
     N_levels = N__levels.data;
 
+    N_shader_egl = false;
     N_shader_head = NULL;
     N_shader_head_len = 0;
 

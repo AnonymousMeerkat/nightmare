@@ -34,6 +34,7 @@
 #include "WMan/WL.h"
 
 #include "NLog.h"
+#include <NDynamic_t.h>
 
 NWMan N_WMan;
 
@@ -45,32 +46,69 @@ NWMan_event NWMan_event_new(NWMan_event_type type) {
 }
 
 
+struct NWMan_backend {
+    char* name;
+    bool pickme;
+    bool egl;
+    void (*init)();
+    NWMan* wman;
+};
+
 bool NWMan_init() {
-#if defined(WL_FOUND)
-        Ndebug("WM Backend = Wayland");
-        NWMan_WL_init();
-        N_WMan = N_WMan_WL;
-#elif defined(X11_FOUND)
-        Ndebug("WM Backend = X11");
-        NWMan_X11_init();
-        N_WMan = N_WMan_X11;
-#elif defined(WIN32)
-        Ndebug("WM Backend = Windows");
-        NWMan_W32_init();
-        N_WMan = N_WMan_W32;
-#elif defined(SDL_FOUND)
-        Ndebug("WM Backend = SDL");
-        NWMan_SDL_init();
-        N_WMan = N_WMan_SDL;
-#elif defined(SDL2_FOUND)
-        Ndebug("WM Backend = SDL2");
-        NWMan_SDL2_init();
-        N_WMan = N_WMan_SDL2;
-#else
-        Nerror("No backend available!!");
-        return false;
+    bool ret = false;
+    NLIST_NEW(struct NWMan_backend, backends);
+
+#ifdef WL_FOUND
+    struct NWMan_backend wl_backend = {"Wayland", NSTRIEQ(N_WMan_backend, "wayland"), true, NWMan_WL_init, &N_WMan_WL};
+    NLIST_PUSH(backends, wl_backend);
 #endif
-    return N_WMan.init();
+#ifdef X11_FOUND
+    struct NWMan_backend x11_backend = {"X11", NSTRIEQ(N_WMan_backend, "x11"), false, NWMan_X11_init, &N_WMan_X11};
+    NLIST_PUSH(backends, x11_backend;);
+#endif
+#ifdef W32_FOUND
+    struct NWMan_backend w32_backend = {"Windows", NSTRIEQ(N_WMan_backend, "w32") ||
+                          NSTRIEQ(N_WMan_backend, "windows"), false, NWMan_W32_init, &N_WMan_W32};
+    NLIST_PUSH(backends, w32_backend);
+#endif
+
+    bool has_preference = (N_WMan_backend[0] != 0);
+
+    for (size_t i = 0; i < backends.size; i++) {
+        struct NWMan_backend backend = backends.data[i];
+
+        backend.init();
+
+        bool pickme = true;
+        bool returnme = false;
+
+        if (has_preference) {
+            pickme = backend.pickme;
+            returnme = true;
+        }
+
+        if (pickme) {
+            Ndebug("Trying %s", backend.name);
+            bool okay;
+            NINDENT(okay = backend.wman->init());
+            if (okay) {
+                Ndebug("WM Backend = %s", backend.name);
+                N_WMan = *backend.wman;
+                N_shader_egl = backend.egl;
+                ret = true;
+                goto end;
+            } else if (returnme) {
+                ret = false;
+                goto end;
+            }
+        }
+    }
+
+    Nerror("No backend available!");
+
+end:
+    NLIST_DESTROY(backends);
+    return ret;
 }
 
 bool NWMan_destroy() {

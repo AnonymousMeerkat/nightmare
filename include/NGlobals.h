@@ -58,6 +58,7 @@ extern char** N_argv;
 
 // Window
 
+extern char* N_WMan_backend;
 extern NPos2i N_win_pos;
 extern NPos2i N_win_size;
 extern char* N_win_title;
@@ -78,6 +79,7 @@ extern GLKMatrix4 N_gl_model;
 
 // Shader
 
+extern bool N_shader_egl;
 extern char* N_shader_head;
 extern size_t N_shader_head_len;
 

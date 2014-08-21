@@ -17,6 +17,7 @@ set(SOURCES
     NShadow.c
     NLevel.c
     NEngine.c
+    NArgs.c
     main.c
 )
 

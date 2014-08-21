@@ -32,6 +32,29 @@
 #include "NRsc.h"
 #include "NEngine.h"
 #include "NPorting.h"
+#include "NArgs.h"
+#include <stdlib.h>
+#include <string.h>
+
+void parse_args() {
+    NArg* args = NArgs_parse();
+    NArg arg;
+    for (int i = 0; (arg = args[i]).name; i++) {
+        switch(arg.type) {
+            case NARG_BOOL:
+                Ndebug("%s = %i", arg.name, arg.bool_val);
+                break;
+            case NARG_STR:
+                Ndebug("%s = %s", arg.name, arg.str_val);
+                break;
+        }
+
+        if (NSTREQ(arg.name, "wm")) {
+            N_WMan_backend = arg.str_val;
+        }
+    }
+    free(args);
+}
 
 int main(int argc, char** argv) {
     int ret = 0;
@@ -42,14 +65,19 @@ int main(int argc, char** argv) {
     N_argv = argv;
 
     // Load
+
     Ndebug("Initializing global variables");
     NGlobals_init();
 
+    Ndebug("Parsing arguments");
+    NINDENT(parse_args());
+
     Ndebug("Initializing window manager");
-    NINDENT(okay = NWMan_init(argc, argv));
+    NINDENT(okay = NWMan_init());
 
     if (!okay) {
         Nerror("Error initializing window manager!");
+        return 1;
     }
 
     Ndebug("Creating window");

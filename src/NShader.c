@@ -33,19 +33,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef USE_EGL
-const char versionstr[] =
+const char versionstr_egl[] =
 "#version 100\n"
 "#extension GL_OES_texture_3D : enable\n"
 "precision mediump float;\n";
-#else
-const char versionstr[] =
+
+const char versionstr_gl[] =
 "#version 120\n"
 "#define lowp\n"
 "#define mediump\n"
 "#define highp\n"
 "#extension GL_EXT_gpu_shader4 : enable\n";
-#endif
 
 void NShader_print_log(bool shader, GLuint handle, char* prefix) {
     GLsizei len_dont_use;
@@ -66,13 +64,23 @@ void NShader_print_log(bool shader, GLuint handle, char* prefix) {
 bool NShader_load(GLenum type, const GLchar* shader, GLuint* handle) {
     int status;
 
+    const char* versionstr = NULL;
+    size_t versionstr_len = 0;
+    if (N_shader_egl) {
+        versionstr = versionstr_egl;
+        versionstr_len = sizeof(versionstr_egl);
+    } else {
+        versionstr = versionstr_gl;
+        versionstr_len = sizeof(versionstr_gl);
+    }
+
     Ndebug("Creating shader");
     GLuint i_handle;
     i_handle = glCreateShader(type);
     *handle = i_handle;
     Ndebug("Loading shader");
     size_t shaderlen = strlen(shader);
-    GLchar* newsrc = malloc(sizeof(GLchar) * (sizeof(versionstr) + shaderlen + N_shader_head_len + 1));
+    GLchar* newsrc = malloc(sizeof(GLchar) * (versionstr_len + shaderlen + N_shader_head_len + 1));
     strcpy(newsrc, versionstr);
     strcat(newsrc, N_shader_head);
     strcat(newsrc, shader);
