@@ -16,6 +16,10 @@
 *libgame.a
 *rscdata.c
 
+# Documentation
+doc/html*
+doc/latex*
+
 # Executables
 /bin
 *nightmare
