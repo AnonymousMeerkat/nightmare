@@ -42,7 +42,6 @@ NTS(NShader_info);
 NTS(NSpritesheet_data);
 NTS(NSpritesheet_info);
 NTS(NLevel_info);
-NTS(NDLL_info);
 
 #define N_SHADER_IMAGE 0
 
@@ -77,6 +76,13 @@ extern GLKMatrix4 N_gl_projection;
 extern GLKMatrix4 N_gl_view;
 extern GLKMatrix4 N_gl_model;
 
+// Shader
+
+extern char* N_shader_head;
+extern size_t N_shader_head_len;
+
+extern NShader* N_shader;
+
 // Resource Pool
 
 extern NShader** N_shaders;
@@ -89,26 +95,7 @@ extern NEntity* N_player;
 
 extern bool N_key_states[65536];
 
-// Game.{dll|so}
-
-typedef void* NDLL;
-
-extern NDLL* N_dll;
-
-extern void (*Ndll_init)(int argc, char** argv);
-extern void (*Ndll_destroy)();
-
-extern void (*Ndll_loop)(NDLL_info info);
-
-extern char* N_shader_head;
-extern size_t N_shader_head_len;
-
-extern NShader_info* N_dll_shader_infos;
-extern char** N_dll_image_infos;
-extern NSpritesheet_info* N_dll_spritesheet_infos;
-extern NLevel_info* N_dll_level_infos;
-
-// Game
+// Engine
 
 extern bool N_running;
 extern uint N_delta;
@@ -118,7 +105,5 @@ extern uint N_lastsecond;
 extern uint N_fps;
 
 extern NPos2i N_game_size;
-
-extern NShader* N_shader;
 
 #endif

@@ -28,7 +28,6 @@
 #include "NRsc.h"
 
 #include "NTypes.h"
-//#include "NDll.h"
 #include "NShader.h"
 #include "NImage.h"
 #include "NLog.h"
@@ -38,14 +37,6 @@
 #include "NDynamic_t.h"
 
 #include <string.h>
-
-/*NDLL* NRsc_load_dll() {
-    char* path = NRsc_get_path(NDLL_ADD_EXT("libgame"));
-    NDLL* dll = NDLL_new(path);
-    free(path);
-
-    return dll;
-}*/
 
 bool NRsc_load_shader_head() {
     if ((N_shader_head = NRsc_read_file(NRSC_JOIN_PATHS("glsl", "glsl.h")))) {

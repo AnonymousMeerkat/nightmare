@@ -53,16 +53,8 @@ NEntity* N_player;
 
 bool N_key_states[65536];
 
-NDLL* N_dll;
-void (*Ndll_init)(int argc, char** argv);
-void (*Ndll_destroy)();
-void (*Ndll_loop)(NDLL_info info);
 char* N_shader_head;
 size_t N_shader_head_len;
-NShader_info* N_dll_shader_infos;
-char** N_dll_image_infos;
-NSpritesheet_info* N_dll_spritesheet_infos;
-NLevel_info* N_dll_level_infos;
 
 bool N_running;
 uint N_delta;
@@ -93,15 +85,8 @@ void NGlobals_init() {
     NLIST_NEW(NLevel*, N__levels);
     N_levels = N__levels.data;
 
-    N_dll = NULL;
-    Ndll_init = NULL;
-    Ndll_destroy = NULL;
-    Ndll_loop = NULL;
     N_shader_head = NULL;
     N_shader_head_len = 0;
-    N_dll_shader_infos = NULL;
-    N_dll_spritesheet_infos = NULL;
-    N_dll_image_infos = NULL;
 
     N_running = true;
     N_delta = 0;

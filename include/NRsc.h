@@ -32,8 +32,6 @@
 #include "NUtil.h"
 #include "NTypes.h"
 
-typedef void* NDLL;
-
 NTS(NShader);
 NTS(NShader_attrib);
 NTS(NShader_info);
@@ -62,7 +60,6 @@ void NRsc_ls_free(char** lsd);
 char* NRsc_read_file(char* path);
 
 // Misc
-NDLL* NRsc_load_dll();
 bool NRsc_load_shader_head();
 NShader* NRsc_load_shader(char* name, NShader_attrib* attribs);
 NImage* NRsc_load_image(char* name);
