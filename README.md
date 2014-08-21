@@ -10,10 +10,13 @@ Nightmare was created by Anonymous Meerkat for Ule's Silent Ponyville. Because o
 You'll need these following tools/libraries:
 
   * CMake (and a build system that cmake can generate to)
-  * SDL 1 or 2
-  * OpenGL
-  * FreeImage
-  * Jansson (for the "databuilder" tool)
+  * One of the following:
+    - SDL 1.2
+    - SDL 2
+    - Xlib
+    - Wayland
+    - Windows API
+  * OpenGL or OpenGL ES
 
 ## Compiling ##
 
