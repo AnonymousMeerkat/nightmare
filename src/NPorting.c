@@ -28,9 +28,10 @@
 #include "NPorting.h"
 
 #include "NUtil.h"
-#include "wrap/windows.h"
 
 #ifdef WIN32
+
+#include <windows.h>
 
 // Taken from: http://alter.org.ua/en/docs/win/args/
 PCHAR*

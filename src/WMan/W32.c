@@ -25,17 +25,16 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "../NWMan.h"
+#include "W32.h"
 
-#include "../NGlobals.h"
-#include "../NUtil.h"
-#include "../NDynamic_t.h"
-#include "../NLog.h"
-#include "../wrap/gl.h"
-#include "../wrap/windows.h"
+#include <NGlobals.h>
+#include <NUtil.h>
+#include <NDynamic_t.h>
+#include <NLog.h>
+#include <wrap/gl.h>
+#include <windows.h>
+#include <windowsx.h>
 #include <GL/wglext.h>
-
-// XXX TODO FIXME EVERYTHIIINNNGGGG!
 
 NWMan N_WMan_W32;
 
