@@ -39,7 +39,7 @@ GLuint vbo;
 GLuint ibo;
 
 #define VERTICES 4
-#define INDICES 6
+#define INDICES 4
 
 typedef struct {
     GLfloat position[3];
@@ -53,7 +53,7 @@ bool NSquare_init() {
         { { 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
         { { 1.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f } }
     };
-    GLubyte indexdata[INDICES] = {0, 1, 2, 1, 3, 2};
+    GLubyte indexdata[INDICES] = {3, 2, 1, 0};
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -97,7 +97,7 @@ void NSquare_draw_shape() {
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glDrawElements(GL_TRIANGLES, INDICES, GL_UNSIGNED_BYTE, NULL);
+    glDrawElements(GL_TRIANGLE_STRIP, INDICES, GL_UNSIGNED_BYTE, NULL);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
