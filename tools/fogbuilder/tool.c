@@ -25,6 +25,8 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "../NKTool.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -212,7 +214,7 @@ val_t noise(short x, short y, short z) {
     return pixel;
 }
 
-int main(int argc, char** argv) {
+int fogbuilder(int argc, char** argv) {
     char* filename = "fog.fog3";
 
     if (argc > 1) {
@@ -285,4 +287,11 @@ int main(int argc, char** argv) {
     free(smooths);
     free(values);
     free(ourfog);
+
+    return 0;
 }
+
+NKTool fogbuilder_tool = {
+    .command = "fogbuilder",
+    .tool = fogbuilder
+};

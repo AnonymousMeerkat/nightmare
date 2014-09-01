@@ -25,6 +25,8 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "../NKTool.h"
+
 #include <jansson.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,7 +67,7 @@ char* read_file(char* path) {
     return ret;
 }
 
-int main(int argc, char** argv) {
+int databuilder(int argc, char** argv) {
     char* input = NULL;
     FILE* output = stdout;
 
@@ -308,9 +310,16 @@ int main(int argc, char** argv) {
     strcat(ss_infos, "\t{NULL, NULL}\n};\nNLevel_info* G_level_infos = _G_level_infos;\n\n");
     strcat(FINAL, ss_infos);
 
-    fprintf(output, FINAL);
+    fputs(FINAL, output);
 
     if (output != stdout) {
         fclose(output);
     }
+
+    return 0;
 }
+
+NKTool databuilder_tool = {
+    .command = "databuilder",
+    .tool = databuilder
+};

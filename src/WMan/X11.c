@@ -331,23 +331,23 @@ void X11_sleep(uint millis) {
     usleep(millis * 1000);
 }
 
-void NWMan_X11_init() {
-#define var N_WMan_X11
-    var.init = X11_init;
-    var.destroy = X11_destroy;
 
-    var.create_window = X11_create_window;
-    var.destroy_window = X11_destroy_window;
+NWMan N_WMan_X11 = {
+    .init = X11_init,
+    .destroy = X11_destroy,
 
-    var.swap_buffers = X11_swap_buffers;
+    .create_window = X11_create_window,
+    .destroy_window = X11_destroy_window,
 
-    var.get_events = X11_get_events;
-    var.next_event = X11_next_event;
+    .swap_buffers = X11_swap_buffers,
 
-    var.get_millis = X11_get_millis;
-    var.sleep = X11_sleep;
+    .get_events = X11_get_events,
+    .next_event = X11_next_event,
 
-    var.shift_key = SHIFT_K;
-    var.left_key = LEFT_K;
-    var.right_key = RIGHT_K;
-}
+    .get_millis = X11_get_millis,
+    .sleep = X11_sleep,
+
+    .shift_key = SHIFT_K,
+    .left_key = LEFT_K,
+    .right_key = RIGHT_K
+};

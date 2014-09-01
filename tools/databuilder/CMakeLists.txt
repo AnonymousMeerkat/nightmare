@@ -1,6 +1,5 @@
 set(SOURCES
-    main.c
+    tool.c
 )
 
-add_executable(databuilder ${SOURCES})
-target_link_libraries(databuilder jansson)
+add_library(databuilder STATIC ${SOURCES})

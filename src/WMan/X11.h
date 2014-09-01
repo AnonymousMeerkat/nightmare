@@ -31,6 +31,5 @@
 #include <NWMan.h>
 
 extern NWMan N_WMan_X11;
-void NWMan_X11_init();
 
 #endif

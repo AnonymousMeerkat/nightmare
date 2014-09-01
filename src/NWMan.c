@@ -50,7 +50,6 @@ struct NWMan_backend {
     char* name;
     bool pickme;
     bool egl;
-    void (*init)();
     NWMan* wman;
 };
 
@@ -59,16 +58,16 @@ bool NWMan_init() {
     NLIST_NEW(struct NWMan_backend, backends);
 
 #ifdef WL_FOUND
-    struct NWMan_backend wl_backend = {"Wayland", NSTRIEQ(N_WMan_backend, "wayland"), true, NWMan_WL_init, &N_WMan_WL};
+    struct NWMan_backend wl_backend = {"Wayland", NSTRIEQ(N_WMan_backend, "wayland"), true, &N_WMan_WL};
     NLIST_PUSH(backends, wl_backend);
 #endif
 #ifdef X11_FOUND
-    struct NWMan_backend x11_backend = {"X11", NSTRIEQ(N_WMan_backend, "x11"), false, NWMan_X11_init, &N_WMan_X11};
+    struct NWMan_backend x11_backend = {"X11", NSTRIEQ(N_WMan_backend, "x11"), false, &N_WMan_X11};
     NLIST_PUSH(backends, x11_backend;);
 #endif
-#ifdef W32_FOUND
+#ifdef WIN32
     struct NWMan_backend w32_backend = {"Windows", NSTRIEQ(N_WMan_backend, "w32") ||
-                          NSTRIEQ(N_WMan_backend, "windows"), false, NWMan_W32_init, &N_WMan_W32};
+                          NSTRIEQ(N_WMan_backend, "windows"), false, &N_WMan_W32};
     NLIST_PUSH(backends, w32_backend);
 #endif
 
@@ -76,8 +75,6 @@ bool NWMan_init() {
 
     for (size_t i = 0; i < backends.size; i++) {
         struct NWMan_backend backend = backends.data[i];
-
-        backend.init();
 
         bool pickme = true;
         bool returnme = false;

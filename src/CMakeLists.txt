@@ -1,11 +1,10 @@
+add_subdirectory(Core)
+add_subdirectory(NGL)
 add_subdirectory(WMan)
 
 set(SOURCES
-    NGlobals.c
-    NLog.c
     NPorting.c
     NWMan.c
-    NRsc.c
     NRsc_misc.c
     NSplu.c
     NShader.c
@@ -17,11 +16,10 @@ set(SOURCES
     NShadow.c
     NLevel.c
     NEngine.c
-    NArgs.c
     main.c
 )
 
 include_directories(${INCLUDES})
 
 add_executable(nightmare ${SOURCES})
-target_link_libraries(nightmare NWMan ${LIBRARIES} game)
+target_link_libraries(nightmare NCore NWMan ${LIBRARIES} gllg GLKit lodepng ${OPENGL_LIBRARIES} game)

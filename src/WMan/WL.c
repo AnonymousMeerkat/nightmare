@@ -47,8 +47,6 @@
 #include <EGL/egl.h>
 
 
-NWMan N_WMan_WL;
-
 // Most of this is based off of weston-simple-egl
 
 struct display {
@@ -372,6 +370,7 @@ void WL_sleep(uint millis) {
 
 
 void NWMan_WL_init() {
+    return;
 #define var N_WMan_WL
     var.init = WL_init;
     var.destroy = WL_destroy;
@@ -391,3 +390,19 @@ void NWMan_WL_init() {
     var.left_key = LEFT_K;
     var.right_key = RIGHT_K;*/
 }
+
+NWMan N_WMan_WL = {
+    .init = WL_init,
+    .destroy = WL_destroy,
+
+    .create_window = WL_create_window,
+    .destroy_window = WL_destroy_window,
+
+    .swap_buffers = WL_swap_buffers,
+
+    .get_events = WL_get_events,
+    .next_event = WL_next_event,
+
+    .get_millis = WL_get_millis,
+    .sleep = WL_sleep
+};

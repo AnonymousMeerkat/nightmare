@@ -1,6 +1,5 @@
 set(SOURCES
-    main.c
+    tool.c
 )
 
-add_executable(fogbuilder ${SOURCES})
-target_link_libraries(fogbuilder m)
+add_library(fogbuilder STATIC ${SOURCES})

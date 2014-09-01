@@ -35,7 +35,7 @@
 
 // Raw lists
 
-#define NRLIST_SET_LAST_0(name, typesize, size) memset(name + size, 0, typesize)
+#define NRLIST_SET_LAST_0(name, typesize, size) memset((name) + (size), 0, typesize)
 
 #define NRLIST_NEW(typesize) malloc(typesize)
 
@@ -59,19 +59,31 @@
 
 #define NRLIST_INSERT(name, typesize, size, index, item) {\
     name = realloc(name, (typesize) * ((++(size)) + 1));\
-    memmove(name + (index) + 1, name + (index), typesize * ((size) - (index)));\
+    memmove((name) + (index) + 1, (name) + (index), typesize * ((size) - (index)));\
     name[index] = item;\
     NRLIST_SET_LAST_0(name, typesize, size);\
 }
 
 #define NRLIST_REMOVE(name, typesize, size, index) {\
-    memmove(name + (index), name + (index) + 1, typesize * ((--(size)) - (index)));\
+    memmove((name) + (index), (name) + (index) + 1, typesize * ((--(size)) - (index)));\
     name = realloc(name, (typesize) * ((size) + 1));\
     NRLIST_SET_LAST_0(name, typesize, size);\
 }
 
+#define NRLIST_FREMOVE(name, typesize, size, value) {\
+    size_t i;\
+    for (i = 0; i < size; i++) {\
+        if ((name)[i] == value) {\
+            break;\
+        }\
+    }\
+    if (i < size) {\
+        NRLIST_REMOVE(name, typesize, size, i);\
+    }\
+}
+
 #define NRLIST_COUNT(name, size) {\
-    for (size = 0; name[size]; size++);\
+    for (size = 0; (name)[size]; size++);\
 }
 
 // Easy lists
@@ -98,38 +110,42 @@
 }
 
 #define NLIST_PUSH(name, element) {\
-    NRLIST_PUSH(name.data, name.e_size, name.size, element);\
+    NRLIST_PUSH((name).data, (name).e_size, (name).size, element);\
 }
 
 #define NLIST_POP(name) {\
-    NRLIST_POP(name.data, name.e_size, name.size);\
+    NRLIST_POP((name).data, (name).e_size, (name).size);\
 }
 
 #define NLIST_INSERT(name, index, element) {\
-    NRLIST_INSERT(name.data, name.e_size, name.size, index, element);\
+    NRLIST_INSERT((name).data, (name).e_size, (name).size, index, element);\
 }
 
 #define NLIST_REMOVE(name, index) {\
-    NRLIST_REMOVE(name.data, name.e_size, name.size, index);\
+    NRLIST_REMOVE((name).data, (name).e_size, (name).size, index);\
+}
+
+#define NLIST_FREMOVE(name, value) {\
+    NRLIST_FREMOVE((name).data, (name).e_size, (name).size, value);\
 }
 
 #define NLIST_ITER(name, itername, ...) {\
-    for (size_t itername = 0; itername < name.size; itername++) {\
+    for (size_t itername = 0; itername < (name).size; itername++) {\
         __VA_ARGS__;\
     }\
 }
 
-#define NLIST_COUNT(name, size) NRLIST_COUNT(name.data, size)
+#define NLIST_COUNT(name, size) NRLIST_COUNT((name).data, size)
 
 #define NLIST_FROM_ARR(name, arr) {\
-    free(name.data);\
-    name.data = arr;\
-    NLIST_COUNT(name, name.size);\
+    free((name).data);\
+    (name).data = arr;\
+    NLIST_COUNT(name, (name).size);\
 }
 
 #define NLIST_NEW_FROM_ARR(type, name, arr)\
-    NLIST_NEW(type, name);\
-    NLIST_FROM_ARR(name, arr);
+    NLIST_NEW(type, (name));\
+    NLIST_FROM_ARR((name), arr);
 
 // String functions
 

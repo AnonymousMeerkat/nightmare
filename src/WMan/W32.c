@@ -36,7 +36,6 @@
 #include <windowsx.h>
 #include <GL/wglext.h>
 
-NWMan N_WMan_W32;
 
 extern HINSTANCE hInstance;
 HWND hWnd;
@@ -492,23 +491,23 @@ void w32_sleep(uint millis) {
     Sleep(millis);
 }
 
-void NWMan_W32_init() {
-#define var N_WMan_W32
-    var.init = w32_init;
-    var.destroy = w32_destroy;
 
-    var.create_window = w32_create_window;
-    var.destroy_window = w32_destroy_window;
+NWMan N_WMan_W32 = {
+    .init = w32_init,
+    .destroy = w32_destroy,
 
-    var.swap_buffers = w32_swap_buffers;
+    .create_window = w32_create_window,
+    .destroy_window = w32_destroy_window,
 
-    var.get_events = w32_get_events;
-    var.next_event = w32_next_event;
+    .swap_buffers = w32_swap_buffers,
 
-    var.get_millis = w32_get_millis;
-    var.sleep = w32_sleep;
+    .get_events = w32_get_events,
+    .next_event = w32_next_event,
 
-    var.shift_key = VK_SHIFT;
-    var.left_key = VK_LEFT;
-    var.right_key = VK_RIGHT;
-}
+    .get_millis = w32_get_millis,
+    .sleep = w32_sleep,
+
+    .shift_key = VK_SHIFT,
+    .left_key = VK_LEFT,
+    .right_key = VK_RIGHT
+};

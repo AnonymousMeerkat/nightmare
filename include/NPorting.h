@@ -44,11 +44,10 @@
 #  define N_SLASH "/"
 #endif
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(NCORE_BUILD)
 #  define main _main
 #  define Nwin_main WinMain
-#endif
-
 int main(int argc, char** argv);
+#endif
 
 #endif

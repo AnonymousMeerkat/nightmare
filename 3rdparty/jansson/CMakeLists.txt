@@ -51,7 +51,7 @@ cmake_minimum_required (VERSION 2.8)
 project (jansson C)
 
 # Options
-OPTION (BUILD_SHARED_LIBS "Build shared libraries." OFF)
+SET(BUILD_SHARED_LIBS OFF)
 OPTION (USE_URANDOM "Use /dev/urandom to seed the hash function." ON)
 OPTION (USE_WINDOWS_CRYPTOAPI "Use CryptGenRandom to seed the hash function." ON)
 
@@ -62,17 +62,18 @@ if (MSVC)
 endif ()
 
 # Set some nicer output dirs.
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
-SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
-SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+
+#SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+#SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+#SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 
 # Give the debug version a different postfix for windows,
 # so both the debug and release version can be built in the
 # same build-tree on Windows (MSVC).
-if (WIN32)
-   SET (CMAKE_DEBUG_POSTFIX "_d")
-else (WIN32)
-endif (WIN32)
+#if (WIN32)
+#   SET (CMAKE_DEBUG_POSTFIX "_d")
+#else (WIN32)
+#endif (WIN32)
 
 # This is how I thought it should go
 # set (JANSSON_VERSION "2.3.1")
@@ -105,7 +106,9 @@ if (MSVC)
 endif()
 
 if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-   set(CMAKE_C_FLAGS "-fPIC")
+    if (NOT WIN32)
+        set(CMAKE_C_FLAGS "-fPIC")
+    endif()
 endif()
 
 check_include_files (endian.h HAVE_ENDIAN_H)
@@ -216,7 +219,7 @@ if (NOT DEFINED JSON_INT_T)
    # and gcc wants ldd,
    # I am not sure what cygwin will want, so I will assume I64d
 
-   if (WIN32) # matches both msvc and cygwin
+   if (MSVC) # matches both msvc and cygwin
       set (JSON_INTEGER_FORMAT "\"I64d\"")
    else ()
       set (JSON_INTEGER_FORMAT "\"lld\"")
@@ -312,7 +315,7 @@ if (BUILD_SHARED_LIBS)
 
 else ()
 
-   add_library (jansson ${C_FILES})
+   add_library (jansson STATIC ${C_FILES})
 
 endif ()
 
@@ -418,93 +421,3 @@ if (BUILD_DOCS)
       message("Building documentation enabled for: ${DOC_TARGETS}")
    endif()
 endif ()
-
-
-OPTION (WITHOUT_TESTS "Don't build tests ('make test' to execute tests)" OFF)
-
-if (NOT WITHOUT_TESTS)
-   OPTION (TEST_WITH_VALGRIND "Enable valgrind tests." OFF)
-
-   ENABLE_TESTING()
-
-   if (TEST_WITH_VALGRIND)
-      # TODO: Add FindValgrind.cmake instead of having a hardcoded path.
-
-      # enable valgrind
-      set(CMAKE_MEMORYCHECK_COMMAND valgrind)
-      set(CMAKE_MEMORYCHECK_COMMAND_OPTIONS
-         "--leak-check=full --show-reachable=yes --track-origins=yes -q")
-
-      set(MEMCHECK_COMMAND
-         "${CMAKE_MEMORYCHECK_COMMAND} ${CMAKE_MEMORYCHECK_COMMAND_OPTIONS}")
-      separate_arguments(MEMCHECK_COMMAND)
-   endif ()
-
-   #
-   # Test suites.
-   #
-   if (CMAKE_COMPILER_IS_GNUCC)
-      add_definitions(-Wall -Wextra -Wdeclaration-after-statement)
-   endif ()
-
-   set(api_tests_UNUSED
-         test_array
-         test_copy
-         test_dump
-         test_dump_callback
-         test_equal
-         test_load
-         test_loadb
-         test_number
-         test_object
-         test_pack
-         test_simple
-         test_unpack)
-
-   # Doing arithmetic on void pointers is not allowed by Microsofts compiler
-   # such as secure_malloc and secure_free is doing, so exclude it for now.
-   if (NOT MSVC)
-      list(APPEND api_tests_UNUSED test_memory_funcs)
-   endif()
-
-   # Helper macro for building and linking a test program.
-   macro(build_testprog name dir)
-       add_executable(${name} ${dir}/${name}.c)
-       add_dependencies(${name} jansson)
-       target_link_libraries(${name} jansson)
-   endmacro(build_testprog)
-
-   # Create executables and tests/valgrind tests for API tests.
-   foreach (test ${api_tests})
-      build_testprog(${test} ${PROJECT_SOURCE_DIR}/test/suites/api)
-      add_test(${test} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test})
-
-      if (TEST_WITH_VALGRIND)
-         add_test(memcheck_${test} ${MEMCHECK_COMMAND}
-                  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test})
-      endif ()
-   endforeach ()
-
-   # Test harness for the suites tests.
-   #build_testprog(json_process ${PROJECT_SOURCE_DIR}/test/bin)
-
-   set(SUITES encoding-flags valid invalid invalid-unicode)
-   foreach (SUITE ${SUITES})
-       file(GLOB TESTDIRS ${jansson_SOURCE_DIR}/test/suites/${SUITE}/*)
-       foreach (TESTDIR ${TESTDIRS})
-         if (IS_DIRECTORY ${TESTDIR})
-            get_filename_component(TNAME ${TESTDIR} NAME)
-            add_test(${SUITE}__${TNAME}
-                     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/json_process ${TESTDIR})
-            if ((${SUITE} STREQUAL "valid" OR ${SUITE} STREQUAL "invalid") AND NOT EXISTS ${TESTDIR}/nostrip)
-               add_test(${SUITE}__${TNAME}__strip
-                        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/json_process --strip ${TESTDIR})
-            endif ()
-         endif ()
-       endforeach ()
-   endforeach ()
-
-   add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
-                     DEPENDS json_process ${api_tests})
-endif ()
-

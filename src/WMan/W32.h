@@ -31,6 +31,5 @@
 #include <NWMan.h>
 
 extern NWMan N_WMan_W32;
-void NWMan_W32_init();
 
 #endif

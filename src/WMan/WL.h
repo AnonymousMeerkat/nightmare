@@ -31,6 +31,5 @@
 #include <NWMan.h>
 
 extern NWMan N_WMan_WL;
-void NWMan_WL_init();
 
 #endif

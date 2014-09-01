@@ -6,11 +6,17 @@ project(nme)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 set(CMAKE_BUILD_TYPE Debug)
+set(BUILD_SHARED_LIBS OFF)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O0")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 -Wall -Wextra -Wno-missing-braces -Wno-unknown-pragmas -Wno-override-init")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 -Wall -Wextra -Wno-missing-braces -Wno-unknown-pragmas")
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-initializer-overrides -Wno-empty-body")
+elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-override-init")
+endif()
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -O0 -g")
 
 add_definitions(-D_BSD_SOURCE)
@@ -95,8 +101,7 @@ add_subdirectory(3rdparty)
 include_directories(3rdparty/jansson/include)
 include_directories(3rdparty/gllg/out)
 include_directories(3rdparty/lodepng)
-
-set(LIBRARIES ${LIBRARIES} gllg GLKit lodepng ${OPENGL_LIBRARIES})
+include_directories(include)
 
 # Compile tools
 
@@ -104,6 +109,5 @@ add_subdirectory(tools)
 
 # Compile
 
-include_directories(include)
 add_subdirectory(game)
 add_subdirectory(src)

@@ -39,6 +39,7 @@
 #include <dirent.h>
 
 #if defined(WIN32)
+#  define WIN32_LEAN_AND_MEAN
 #  include <windows.h>
 #elif defined(MACOSX)
 #  include <mach-o/dyld.h>
@@ -47,7 +48,9 @@
 #  include <sys/sysctl.h>
 #endif
 
-#define PATH_MAX 4096
+#ifndef PATH_MAX
+#  define PATH_MAX 4096
+#endif
 
 bool NRsc_init() {
     char exepath[PATH_MAX];

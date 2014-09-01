@@ -25,42 +25,41 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _NME_UTIL_H
-#define _NME_UTIL_H
+#include <NLog.h>
+#include <NDynamic_t.h>
 
-#include "NPorting.h"
+#include "NKTool.h"
 
-#define NUNUSED(x) (void)(x)
-#define NTS(x) typedef struct _##x x
-#define NTE(x) typedef enum _##x x
-#define NSTRUCT_DEF(name) struct _##name
-#define NSTRUCT(name, ...) NSTRUCT_DEF(name) __VA_ARGS__;NTS(name)
-#define NENUM_DEF(name) enum _##name
-#define NENUM(name, ...) NENUM_DEF(name) __VA_ARGS__;NTE(name)
+extern NKTool ngloptbuilder_tool;
+extern NKTool databuilder_tool;
+extern NKTool fogbuilder_tool;
 
-#ifdef W32
-#  include <windows.h>
-#  define NSTRICMP(x, y) (stricmp(x, y))
-#else
-#  include <strings.h>
-#  define NSTRICMP(x, y) (strcasecmp(x, y))
-#endif
-#define NSTREQ(x, y) (!strcmp(x, y))
-#define NSTRIEQ(x, y) (!NSTRICMP(x, y))
+int main(int argc, char** argv) {
+    NLIST_NEW(NKTool, tools);
+    NLIST_PUSH(tools, ngloptbuilder_tool);
+    NLIST_PUSH(tools, databuilder_tool);
+    NLIST_PUSH(tools, fogbuilder_tool);
 
-#define NABS(x) ((x) > 0 ? (x) : -(x))
-#define NMAX(x, y) ((x) > (y) ? (x) : (y))
-#define NMIN(x, y) ((x) < (y) ? (x) : (y))
+    if (argc < 2) {
+        Ninfo("Usage: %s tool [options]", argv[0]);
+        Nnewline();
+        Ninfo("Tools available:");
+        Nnewline();
+        N_indent++;
+        for (size_t i = 0; i < tools.size; i++) {
+            Ninfo(tools.data[i].command);
+        }
+        N_indent--;
+        Nnewline();
+        return 0;
+    }
 
-#define NCLAMP(x, min, max) (NMIN(NMAX(x, min), max))
+    for (size_t i = 0; i < tools.size; i++) {
+        if (NSTREQ(argv[1], tools.data[i].command)) {
+            return tools.data[i].tool(argc - 1, argv + 1);
+        }
+    }
 
-#define NINRANGE(x, min, max) ((x) >= (min) && (x) <= (max))
-#define NINRANGEX(x, min, max) ((x) > (min) && (x) < (max))
-#define NOUTRANGE(x, min, max) ((x) <= (min) && (x) >= (max))
-#define NOUTRANGEX(x, min, max) ((x) < (min) && (x) > (max))
-
-#define NSPACESHIP(x, y) ((x) > (y) ? 1 : ((x) < (y) ? -1 : 0))
-
-#define NSTRINGIFY(...) #__VA_ARGS__
-
-#endif
+    Nerror("Tool %s not found!", argv[1]);
+    return 1;
+}
