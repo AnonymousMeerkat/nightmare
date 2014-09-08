@@ -27,6 +27,7 @@
 
 #include "W32.h"
 
+#include "common.h"
 #include <NGlobals.h>
 #include <NUtil.h>
 #include <NDynamic_t.h>
@@ -252,33 +253,6 @@ void _w32_create_window_ex() {
     );
 }
 
-// Copied from GLFW
-int _glfwStringInExtensionString(const char* string, const GLubyte* extensions)
-{
-    const GLubyte* start;
-    GLubyte* where;
-    GLubyte* terminator;
-
-    start = extensions;
-    for (;;)
-    {
-        where = (GLubyte*) strstr((const char*) start, string);
-        if (!where)
-            return GL_FALSE;
-
-        terminator = where + strlen(string);
-        if (where == start || *(where - 1) == ' ')
-        {
-            if (*terminator == ' ' || *terminator == '\0')
-                break;
-        }
-
-        start = terminator;
-    }
-
-    return GL_TRUE;
-}
-
 bool _w32_check_extension(char* str) {
 #if 0
     int num_extensions;
@@ -290,7 +264,7 @@ bool _w32_check_extension(char* str) {
         }
     }
 #else
-    return _glfwStringInExtensionString(str, (GLubyte*)_wglGetExtensionsStringARB(hDC));
+    return Next_in_str(str, (GLubyte*)_wglGetExtensionsStringARB(hDC));
 #endif
     return false;
 }

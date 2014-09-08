@@ -26,9 +26,10 @@
 */
 
 #include "X11.h"
+
+#include "common.h"
 #include <NLog.h>
 #include <NGlobals.h>
-
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -198,6 +199,15 @@ bool X11_destroy() {
 }
 
 
+bool _X11_check_ext(char* ext) {
+    const char* exts = glXQueryExtensionsString(xl_display, 0);
+    Ndebug(exts);
+    if (exts) {
+        return Next_in_str(ext, exts);
+    }
+    return false;
+}
+
 bool X11_create_window() {
     static GLint glx_attributes[] = {
         GLX_RGBA,
@@ -244,6 +254,25 @@ bool X11_create_window() {
         return false;
     }
     glXMakeCurrent(xl_display, xl_window, glx_context);
+
+#define runext(type, name, ...) {\
+    type proc = (type)glXGetProcAddress((GLubyte*)name);\
+    if (proc) {\
+        Ndebug("Running "name"("#__VA_ARGS__")");\
+        proc(__VA_ARGS__);\
+    }\
+}
+
+    if (_X11_check_ext("GLX_EXT_swap_control")) {
+        runext(PFNGLXSWAPINTERVALEXTPROC, "glXSwapIntervalEXT", xl_display, xl_window, 1);
+    } else if (_X11_check_ext("GLX_SGI_swap_control")) {
+        runext(PFNGLXSWAPINTERVALSGIPROC, "glXSwapIntervalSGI", 1);
+    } else if (_X11_check_ext("GLX_MESA_swap_control")) {
+        runext(PFNGLXSWAPINTERVALMESAPROC, "glXSwapIntervalMESA", 1);
+    } else {
+        Ndebug("VSync disabled");
+    }
+
     return true;
 }
 

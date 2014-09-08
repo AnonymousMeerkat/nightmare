@@ -1,4 +1,4 @@
-set(SOURCES )
+set(SOURCES common.c)
 
 if(SDL2_FOUND)
     set(SOURCES ${SOURCES} SDL2.c)
