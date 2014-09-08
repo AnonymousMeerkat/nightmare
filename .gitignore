@@ -14,7 +14,13 @@
 *libGLKit.a
 *libgl3w.a
 *libgame.a
+*libNCore.a
+*libNGL.a
+*libfogbuilder.a
+*libdatabuilder.a
+*libngloptbuilder.a
 *rscdata.c
+*params.h
 
 # Documentation
 doc/html*
