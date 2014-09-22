@@ -409,7 +409,9 @@ int ngloptbuilder(int argc, char** argv) {
                 fprintf(output, "#define N_GL_PARAM_%s_TYPE %s\n", our_param.name, our_param.type.type);
                 fprintf(output, "#define N_GL_PARAM_%s_%s 1\n", our_param.name, our_param.type.macro);
                 fprintf(output, "#define N_GL_PARAM_%s_POINTER %i\n", our_param.name, our_param.type.pointer);
-                fprintf(output, "#if defined(_N_GL_PARAM_%s_ENABLED) && defined(_N_GL_PARAM_%s_ENABLED) && defined(_N_GL_PARAM_%s_ENABLED)\n",
+                fprintf(output, "#define N_GL_PARAM_%s_CONTEXT %s\n", our_param.name, our_param.context);
+                fprintf(output, "#define N_GL_PARAM_%s_CONTEXT_%s 1\n", our_param.name, our_param.context);
+                fprintf(output, "#if defined(_N_GL_PARAM_%s_ENABLED) && defined(_N_GL_PARAM_%s_ENABLED) && defined(_N_GL_PARAM_CONTEXT_%s_ENABLED)\n",
                     our_param.type.macro, access, our_param.context);
                 fprintf(output, "NGL_PARAM(%s, N_GL_PARAM_ACCESS_%s, %s, %s)\n",
                     access, our_param.context, our_param.type.type, our_param.name);

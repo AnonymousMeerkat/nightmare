@@ -34,6 +34,8 @@
  * @ingroup NGL
  *
  * @brief NGL API
+ *
+ * Nightmare Engine Graphics Library
  */
 
 #include "NUtil.h"

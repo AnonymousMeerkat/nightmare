@@ -282,9 +282,11 @@ bool WL_create_window() {
         return false;
     }
 
-    eglSwapInterval(egl.display, 0);
+    eglSwapInterval(egl.display, 1);
 
     wl_display_dispatch(display.display);
+
+    Ndebug("Dispatched!");
 
     return true;
 }

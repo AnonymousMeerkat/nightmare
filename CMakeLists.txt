@@ -19,7 +19,7 @@ elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
 endif()
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -O0 -g")
 
-add_definitions(-D_BSD_SOURCE)
+add_definitions(-D_DEFAULT_SOURCE)
 
 # Find libraries
 
