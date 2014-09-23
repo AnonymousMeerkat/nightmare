@@ -28,4 +28,5 @@
 #include "../common.h"
 
 
-void OGL_set()
+void OGL_set(NGL_enum name, void* value) {
+}

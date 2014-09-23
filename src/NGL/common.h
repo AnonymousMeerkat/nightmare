@@ -31,7 +31,15 @@
 #include <NDynamic_t.h>
 
 NSTRUCT_DEF(NGL_common) {
-    #define NGL_PARAM(c, a, t, p) t p;
+#define NGL_CONTEXT(c) struct {
+#define NGL_CONTEXT_END(c) } CONTEXT_##c;
+#define NGL_PARAM(c, a, t, p) t p;
+#include "params.h"
+#undef NGL_PARAM
+#undef NGL_CONTEXT_END
+#undef NGL_CONTEXT
+
+    #define NGL_NULL_PARAM(a, t, p) t p;
     #include "params.h"
     #undef NGL_PARAM
 

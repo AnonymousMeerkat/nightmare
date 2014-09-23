@@ -69,6 +69,7 @@ NSTRUCT(param_type, {
 
 NSTRUCT(param, {
     char* context;
+    bool context_first;
     param_type type;
     char* name;
 });
@@ -177,9 +178,11 @@ int ngloptbuilder(int argc, char** argv) {
 
                     if (contextfound) {
                         our_param.context = contexts.data[i];
+                        our_param.context_first = false;
                     } else {
                         our_param.context = strdup(str1);
                         NLIST_PUSH(contexts, our_param.context);
+                        our_param.context_first = true;
                     }
 
                     str1 = strtok(NULL, ",");
@@ -348,12 +351,19 @@ int ngloptbuilder(int argc, char** argv) {
 
     fputs("#endif\n\n", output);
 
-    fputs(
-        "#ifndef NGL_PARAM\n"
-        "#  define N_GL_PARAM_UNDEF\n"
-        "#  define NGL_PARAM(c, a, t, p)\n"
-        "#endif\n\n",
+#define put_macro_f(name, args)\
+    fputs(\
+        "#ifndef NGL_"name"\n"\
+        "#  define N_GL_"name"_UNDEF\n"\
+        "#  define NGL_"name"("args")\n"\
+        "#endif\n\n",\
     output);
+
+    put_macro_f("CONTEXT", "c");
+    put_macro_f("CONTEXT_END", "c");
+    put_macro_f("PARAM", "c, a, t, p");
+
+#undef put_macro_f
 
 #define put_param_macro(prefix, name, t)\
     fprintf(output, \
@@ -381,6 +391,15 @@ int ngloptbuilder(int argc, char** argv) {
 
     fputs("\n", output);
 
+/*#define put_macro_f(prefix, name) fprintf(output, "NGL_CONTEXT(%s)\n", name)
+    context_macro_gen();
+#undef put_macro_f
+
+    fputs("\n\n", output);*/
+
+    bool first_context = true;
+    char* old_context = NULL;
+
     for (int i = 0; i < 4; i++) {
         char* access = "";
         switch(i) {
@@ -404,6 +423,15 @@ int ngloptbuilder(int argc, char** argv) {
         for (int x = 0; pragmas[i].data[x].name; x++) {
             param our_param = pragmas[i].data[x];
             if (i < 3) {
+                if (our_param.context_first) {
+                    if (first_context) {
+                        first_context = false;
+                    } else {
+                        fprintf(output, "NGL_CONTEXT_END(%s)\n\n", old_context);
+                    }
+                    old_context = our_param.context;
+                    fprintf(output, "NGL_CONTEXT(%s)\n\n", our_param.context);
+                }
                 fprintf(output, "#define N_GL_PARAM_%s_ACCESS %s\n", our_param.name, access);
                 fprintf(output, "#define N_GL_PARAM_%s_%s 1\n", our_param.name, access);
                 fprintf(output, "#define N_GL_PARAM_%s_TYPE %s\n", our_param.name, our_param.type.type);
@@ -414,7 +442,7 @@ int ngloptbuilder(int argc, char** argv) {
                 fprintf(output, "#if defined(_N_GL_PARAM_%s_ENABLED) && defined(_N_GL_PARAM_%s_ENABLED) && defined(_N_GL_PARAM_CONTEXT_%s_ENABLED)\n",
                     our_param.type.macro, access, our_param.context);
                 fprintf(output, "NGL_PARAM(%s, N_GL_PARAM_ACCESS_%s, %s, %s)\n",
-                    access, our_param.context, our_param.type.type, our_param.name);
+                    our_param.context, access, our_param.type.type, our_param.name);
                 fprintf(output, "NGL_%s_PARAM(%s, %s, %s)\n", access, our_param.context, our_param.type.type, our_param.name);
                 fprintf(output, "NGL_%s_PARAM(%s, N_GL_PARAM_ACCESS_%s, %s)\n", our_param.type.macro, our_param.context, access, our_param.name);
                 fprintf(output, "NGL_%s_PARAM(%s, N_GL_PARAM_ACCESS_%s, %s, %s)\n", our_param.type.pointer ? "POINTER" : "NPOINTER", our_param.context, access, our_param.type.type, our_param.name);
@@ -424,6 +452,8 @@ int ngloptbuilder(int argc, char** argv) {
             }
         }
     }
+
+    fprintf(output, "NGL_CONTEXT_END(%s)\n\n", old_context);
 
 #define rem_param_macro(prefix, name)\
     fprintf(output, \
@@ -441,10 +471,16 @@ int ngloptbuilder(int argc, char** argv) {
     rem_param_macro("TYPE", "POINTER");
     rem_param_macro("TYPE", "NPOINTER");
 
-    fputs("#ifdef NGL_PARAM_UNDEF\n"
-          "#  undef NGL_PARAM_UNDEF\n"
-          "#  undef NGL_PARAM\n"
+#undef rem_param_macro
+#define rem_param_macro(name)\
+    fputs("#ifdef NGL_"name"_UNDEF\n"\
+          "#  undef NGL_"name"_UNDEF\n"\
+          "#  undef NGL_"name"\n"\
           "#endif\n\n", output);
+
+    rem_param_macro("PARAM");
+    rem_param_macro("CONTEXT_END");
+    rem_param_macro("CONTEXT");
 
     return 0;
 }
