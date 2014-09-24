@@ -19,7 +19,7 @@
 *libfogbuilder.a
 *libdatabuilder.a
 *libngloptbuilder.a
-*rscdata.c
+#*rscdata.c
 *params.h
 
 # Documentation
