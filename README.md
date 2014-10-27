@@ -17,6 +17,7 @@ You'll need these following tools/libraries:
     - Wayland
     - Windows API
   * OpenGL or OpenGL ES
+  * FreeImage (for the `niffconv` tool)
 
 ## Compiling ##
 
@@ -28,4 +29,4 @@ Put a Nightmare game source (e.g. https://github.com/Anonymous Meerkat/silentpon
 
 ## Running ##
 
-Executable is in bin/nightmare
+`nightmare` executable is in `bin/`
