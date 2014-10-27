@@ -22,6 +22,7 @@ NSTRUCT(NIFF_t, {
 #define NIFF_DATA_BSIZE(x) ((x).x_size * (x).y_size * (x).z_size * (x).bpp)
 #define NIFF_DATA_CSIZE(x) ((x).x_size * (x).y_size * (x).z_size * (x).channels)
 #define NIFF_PALETTE_BSIZE(x) ((x).palette_size * 4)
+#define NIFF_HEAD_SIZE(x) (sizeof(NIFF_t) + NIFF_PALETTE_BSIZE(x))
 #define NIFF_SIZE(x) (sizeof(NIFF_t) + NIFF_DATA_BSIZE(x) + NIFF_PALETTE_BSIZE(x))
 
 NIFF_t* NIFF_from_raw(uchar* raw, uint8_t channels, uint32_t x_size, uint32_t y_size, uint32_t z_size);

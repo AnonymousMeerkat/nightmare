@@ -40,8 +40,7 @@
 
 int niffconv(int argc, char** argv) {
     if (argc < 3) {
-        puts("Usage:");
-        printf("%s input output\n", argv[0]);
+        printf("Usage: %s input output\n", argv[0]);
         return 1;
     }
 

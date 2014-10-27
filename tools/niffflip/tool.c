@@ -25,47 +25,66 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "../NKTool.h"
+
+#include <NTypes.h>
+#include <NIFF.h>
+#include <NRsc.h>
 #include <NLog.h>
-#include <NDynamic_t.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-#include "NKTool.h"
-
-extern NKTool vecmathbuilder_tool;
-extern NKTool ngloptbuilder_tool;
-extern NKTool fogbuilder_tool;
-extern NKTool niffconv_tool;
-extern NKTool niffflip_tool;
-
-int main(int argc, char** argv) {
-    NLIST_NEW(NKTool, tools);
-    NLIST_PUSH(tools, vecmathbuilder_tool);
-    NLIST_PUSH(tools, ngloptbuilder_tool);
-    NLIST_PUSH(tools, fogbuilder_tool);
-#ifdef FREEIMAGE_FOUND
-    NLIST_PUSH(tools, niffconv_tool);
-    NLIST_PUSH(tools, niffflip_tool);
-#endif
-
+int niffflip(int argc, char** argv) {
     if (argc < 2) {
-        Ninfo("Usage: %s tool [options]", argv[0]);
-        Nnewline();
-        Ninfo("Tools available:");
-        Nnewline();
-        N_indent++;
-        for (size_t i = 0; i < tools.size; i++) {
-            Ninfo(tools.data[i].command);
-        }
-        N_indent--;
-        Nnewline();
-        return 0;
+        printf("Usage: %s file\n", argv[0]);
+        return 1;
     }
 
-    for (size_t i = 0; i < tools.size; i++) {
-        if (NSTREQ(argv[1], tools.data[i].command)) {
-            return tools.data[i].tool(argc - 1, argv + 1);
-        }
+    char* read = NRsc_read_file_rp(argv[1]);
+    if (!read) {
+        return 2;
     }
 
-    Nerror("Tool %s not found!", argv[1]);
-    return 1;
+    NIFF_t* niff = (NIFF_t*)read;
+    size_t niffsize = NIFF_SIZE(*niff);
+    NIFF_t* niff2 = malloc(niffsize);
+    size_t headsize = NIFF_HEAD_SIZE(*niff);
+    memcpy(niff2, niff, headsize);
+
+    size_t linesize = (niff->x_size) * niff->bpp;
+
+    uchar* line_o = (uchar*)niff + niffsize - linesize;
+    uchar* line_n = (uchar*)niff2 + headsize;
+    for (size_t y = 0; y < niff->y_size; y++) {
+        uchar* pixel_o = line_o;
+        uchar* pixel_n = line_n;
+        for (size_t x = 0; x < niff->x_size; x++) {
+            memcpy(pixel_n, pixel_o, niff->bpp);
+            pixel_o += niff->bpp;
+            pixel_n += niff->bpp;
+        }
+        line_o -= linesize;
+        line_n += linesize;
+    }
+
+    free(read);
+
+    FILE* fp = fopen(argv[1], "wb");
+    if (!fp) {
+        Nerror("Error opening %s for writing", argv[1]);
+        return 3;
+    }
+
+    fwrite(niff2, 1, niffsize, fp);
+    fclose(fp);
+
+    free(niff2);
+
+    return 0;
 }
+
+NKTool niffflip_tool = {
+    .command = "niffflip",
+    .tool = niffflip
+};

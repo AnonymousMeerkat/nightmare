@@ -19,6 +19,10 @@
 *libfogbuilder.a
 *libdatabuilder.a
 *libngloptbuilder.a
+*libvecmathbuilder.a
+*libniffconv.a
+*libniffflip.a
+*libgllg.a
 #*rscdata.c
 *params.h
 

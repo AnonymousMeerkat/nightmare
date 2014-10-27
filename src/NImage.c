@@ -31,6 +31,8 @@
 #include "NGlobals.h"
 #include "NSquare.h"
 #include "NShader.h"
+#include "NIFF.h"
+#include "NRsc.h"
 #include "NTypes.h"
 #include "NEngine.h"
 
@@ -153,9 +155,25 @@ unsigned char* NImage_load_png(char* path, NPos3i* size) {
     return good_data;
 }
 
+unsigned char* NImage_load_niff(char* path, NPos3i* size) {
+    char* read = NRsc_read_file_rp(path);
+
+    NIFF_t* niff = (NIFF_t*)read;
+    size->x = niff->x_size;
+    size->y = niff->y_size;
+    size->z = niff->z_size;
+
+    unsigned char* raw = NIFF_to_raw(niff);
+
+    free(read);
+
+    return raw;
+}
+
 bool NImage_load(NImage* image, char* path) {
     bool ret;
-    unsigned char* good_data = NImage_load_png(path, &image->size);
+    //unsigned char* good_data = NImage_load_png(path, &image->size);
+    unsigned char* good_data = NImage_load_niff(path, &image->size);
     if (!good_data) {
         ret = false;
         goto end;

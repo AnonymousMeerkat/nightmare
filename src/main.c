@@ -136,10 +136,10 @@ int main(int argc, char** argv) {
 
 
 
-    testie("/home/mijyn/workspace/silentponyville/game/levels/test/0.png");
+    /*testie("/home/mijyn/workspace/silentponyville/game/levels/test/0.png");
     testie("/home/mijyn/workspace/silentponyville/game/levels/test/-1.png");
     testie("/home/mijyn/workspace/silentponyville/game/levels/test/1.png");
-    testie("/home/mijyn/workspace/silentponyville/game/levels/test/-2.png");
+    testie("/home/mijyn/workspace/silentponyville/game/levels/test/-2.png");*/
 
 
 
