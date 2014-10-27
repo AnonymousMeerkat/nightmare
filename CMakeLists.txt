@@ -98,7 +98,6 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 # Compile 3rd party libraries
 
 add_subdirectory(3rdparty)
-include_directories(3rdparty/jansson/include)
 include_directories(3rdparty/gllg)
 include_directories(3rdparty/lodepng)
 include_directories(include)

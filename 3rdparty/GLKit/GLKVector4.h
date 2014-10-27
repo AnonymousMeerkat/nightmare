@@ -24,7 +24,7 @@ extern "C" {
 #pragma mark -
 #pragma mark Prototypes
 #pragma mark -
-    
+
 static __inline__ GLKVector4 GLKVector4Make(float x, float y, float z, float w);
 static __inline__ GLKVector4 GLKVector4MakeWithArray(float values[4]);
 static __inline__ GLKVector4 GLKVector4MakeWithVector3(GLKVector3 vector, float w);
@@ -35,12 +35,12 @@ static __inline__ GLKVector4 GLKVector4Add(GLKVector4 vectorLeft, GLKVector4 vec
 static __inline__ GLKVector4 GLKVector4Subtract(GLKVector4 vectorLeft, GLKVector4 vectorRight);
 static __inline__ GLKVector4 GLKVector4Multiply(GLKVector4 vectorLeft, GLKVector4 vectorRight);
 static __inline__ GLKVector4 GLKVector4Divide(GLKVector4 vectorLeft, GLKVector4 vectorRight);
-        
+
 static __inline__ GLKVector4 GLKVector4AddScalar(GLKVector4 vector, float value);
 static __inline__ GLKVector4 GLKVector4SubtractScalar(GLKVector4 vector, float value);
 static __inline__ GLKVector4 GLKVector4MultiplyScalar(GLKVector4 vector, float value);
 static __inline__ GLKVector4 GLKVector4DivideScalar(GLKVector4 vector, float value);
-	
+
 /*
  Returns a vector whose elements are the larger of the corresponding elements of the vector arguments.
  */
@@ -74,7 +74,7 @@ static __inline__ bool GLKVector4AllGreaterThanOrEqualToVector4(GLKVector4 vecto
  Returns true if all of the vector's elements are greater than or equal to the provided value.
  */
 static __inline__ bool GLKVector4AllGreaterThanOrEqualToScalar(GLKVector4 vector, float value);
-    
+
 static __inline__ GLKVector4 GLKVector4Normalize(GLKVector4 vector);
 
 static __inline__ float GLKVector4DotProduct(GLKVector4 vectorLeft, GLKVector4 vectorRight);
@@ -87,7 +87,7 @@ static __inline__ GLKVector4 GLKVector4Lerp(GLKVector4 vectorStart, GLKVector4 v
  Performs a 3D cross product. The last component of the resulting cross product will be zeroed out.
  */
 static __inline__ GLKVector4 GLKVector4CrossProduct(GLKVector4 vectorLeft, GLKVector4 vectorRight);
-	
+
 /*
  Project the vector, vectorToProject, onto the vector, projectionVector.
  */
@@ -96,7 +96,7 @@ static __inline__ GLKVector4 GLKVector4Project(GLKVector4 vectorToProject, GLKVe
 #pragma mark -
 #pragma mark Implementations
 #pragma mark -
-    
+
 static __inline__ GLKVector4 GLKVector4Make(float x, float y, float z, float w)
 {
     GLKVector4 v = { x, y, z, w };
@@ -113,13 +113,13 @@ static __inline__ GLKVector4 GLKVector4MakeWithArray(float values[4])
     return v;
 #endif
 }
-    
+
 static __inline__ GLKVector4 GLKVector4MakeWithVector3(GLKVector3 vector, float w)
 {
     GLKVector4 v = { vector.v[0], vector.v[1], vector.v[2], w };
     return v;
 }
-    
+
 static __inline__ GLKVector4 GLKVector4Negate(GLKVector4 vector)
 {
 #if defined(__ARM_NEON__)
@@ -181,7 +181,7 @@ static __inline__ GLKVector4 GLKVector4Divide(GLKVector4 vectorLeft, GLKVector4 
 #if defined(__ARM_NEON__)
     float32x4_t *vLeft = (float32x4_t *)&vectorLeft;
     float32x4_t *vRight = (float32x4_t *)&vectorRight;
-    float32x4_t estimate = vrecpeq_f32(*vRight);    
+    float32x4_t estimate = vrecpeq_f32(*vRight);
     estimate = vmulq_f32(vrecpsq_f32(*vRight, estimate), estimate);
     estimate = vmulq_f32(vrecpsq_f32(*vRight, estimate), estimate);
     float32x4_t v = vmulq_f32(*vLeft, estimate);
@@ -236,7 +236,7 @@ static __inline__ GLKVector4 GLKVector4MultiplyScalar(GLKVector4 vector, float v
                      vector.v[1] * value,
                      vector.v[2] * value,
                      vector.v[3] * value };
-    return v;   
+    return v;
 #endif
 }
 
@@ -244,7 +244,7 @@ static __inline__ GLKVector4 GLKVector4DivideScalar(GLKVector4 vector, float val
 {
 #if defined(__ARM_NEON__)
     float32x4_t values = vdupq_n_f32((float32_t)value);
-    float32x4_t estimate = vrecpeq_f32(values);    
+    float32x4_t estimate = vrecpeq_f32(values);
     estimate = vmulq_f32(vrecpsq_f32(values, estimate), estimate);
     estimate = vmulq_f32(vrecpsq_f32(values, estimate), estimate);
     float32x4_t v = vmulq_f32(*(float32x4_t *)&vector, estimate);
@@ -257,7 +257,7 @@ static __inline__ GLKVector4 GLKVector4DivideScalar(GLKVector4 vector, float val
     return v;
 #endif
 }
-    
+
 static __inline__ GLKVector4 GLKVector4Maximum(GLKVector4 vectorLeft, GLKVector4 vectorRight)
 {
 #if defined(__ARM_NEON__)
@@ -297,7 +297,7 @@ static __inline__ GLKVector4 GLKVector4Minimum(GLKVector4 vectorLeft, GLKVector4
         return min;
 #endif
 }
-   
+
 static __inline__ bool GLKVector4AllEqualToVector4(GLKVector4 vectorLeft, GLKVector4 vectorRight)
 {
 #if defined(__ARM_NEON_)
@@ -360,7 +360,7 @@ static __inline__ bool GLKVector4AllGreaterThanVector4(GLKVector4 vectorLeft, GL
     return compare;
 #endif
 }
-    
+
 static __inline__ bool GLKVector4AllGreaterThanScalar(GLKVector4 vector, float value)
 {
 #if defined(__ARM_NEON_)
@@ -423,7 +423,7 @@ static __inline__ bool GLKVector4AllGreaterThanOrEqualToScalar(GLKVector4 vector
     return compare;
 #endif
 }
-    
+
 static __inline__ GLKVector4 GLKVector4Normalize(GLKVector4 vector)
 {
     float scale = 1.0f / GLKVector4Length(vector);
@@ -484,7 +484,7 @@ static __inline__ GLKVector4 GLKVector4Lerp(GLKVector4 vectorStart, GLKVector4 v
     return v;
 #endif
 }
-    
+
 static __inline__ GLKVector4 GLKVector4CrossProduct(GLKVector4 vectorLeft, GLKVector4 vectorRight)
 {
     GLKVector4 v = { vectorLeft.v[1] * vectorRight.v[2] - vectorLeft.v[2] * vectorRight.v[1],
@@ -493,14 +493,14 @@ static __inline__ GLKVector4 GLKVector4CrossProduct(GLKVector4 vectorLeft, GLKVe
                      0.0f };
     return v;
 }
-    
+
 static __inline__ GLKVector4 GLKVector4Project(GLKVector4 vectorToProject, GLKVector4 projectionVector)
 {
     float scale = GLKVector4DotProduct(projectionVector, vectorToProject) / GLKVector4DotProduct(projectionVector, projectionVector);
     GLKVector4 v = GLKVector4MultiplyScalar(projectionVector, scale);
     return v;
 }
-    
+
 #ifdef __cplusplus
 }
 #endif

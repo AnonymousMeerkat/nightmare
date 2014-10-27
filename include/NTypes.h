@@ -31,6 +31,7 @@
 #include <GLKit/GLKMathTypes.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;

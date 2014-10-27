@@ -25,6 +25,11 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+/**
+ * \file
+ * \brief Argument parsing utilities
+ */
+
 #ifndef _NME_ARGS_H
 #define _NME_ARGS_H
 
@@ -45,6 +50,11 @@ NSTRUCT(NArg, {
     };
 });
 
+/**
+ * \brief Parses the command line arguments
+ *
+ * \return NULL-terminated list of NArg's
+ */
 NArg* NArgs_parse();
 
 #endif

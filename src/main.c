@@ -36,6 +36,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "NIFF.h"
+#include <stdio.h>
+#include "NImage.h"
+
 void parse_args() {
     NArg* args = NArgs_parse();
     NArg arg;
@@ -54,6 +58,56 @@ void parse_args() {
         }
     }
     free(args);
+}
+
+void testie(char* path) {
+    Ndebug("=== Test: %s ===", path);
+    NEngine_update_time();
+
+    uint curr;
+
+    curr = N_currtime;
+
+    NPos3i size;
+    uchar* raw = NImage_load_png(path, &size);
+
+    NEngine_update_time();
+    Ndebug("Time: %i", N_currtime - curr);
+
+    NIFF_t* niff_gen = NIFF_from_raw(raw, 4, size.x, size.y, size.z);
+    FILE* fp = fopen("thingy.txt", "wb");
+    fwrite(niff_gen, 1, size.x*size.y*niff_gen->bpp +  niff_gen->palette_size * 4 + sizeof(NIFF_t), fp);
+    fclose(fp);
+
+    Ndebug("Size: %i, %i", size.x*size.y*niff_gen->bpp, niff_gen->palette_size * 4 + sizeof(NIFF_t));
+
+    NEngine_update_time();
+    curr = N_currtime;
+
+    uchar* reraw = NIFF_to_raw(niff_gen);
+    fp = fopen("thingy.txt", "rb");
+    fread(niff_gen, 1, size.x*size.y*niff_gen->bpp +  niff_gen->palette_size * 4 + sizeof(NIFF_t), fp);
+    fclose(fp);
+
+    NEngine_update_time();
+    Ndebug("Time: %i", N_currtime - curr);
+
+   /* bool is_ok = true;
+    for (int i = 0; i < size.x*size.y*4; i++) {
+        if (reraw[i] != raw[i]) {
+            //printf("NOOO!\n");
+            is_ok = false;
+        } else {
+            //printf("YESSS!\n");
+        }
+    }
+
+    printf("%i\n", is_ok);
+
+    FILE* fp = fopen("thingy.txt", "wb");
+    int n = fwrite(niff_gen, 1, 16*16 * 1 + niff_gen->palette_size * 4 + sizeof(NIFF_t), fp);
+    printf("%i %i\n", n, 16*16 * 1 + niff_gen->palette_size * 4 + sizeof(NIFF_t));
+    fclose(fp);*/
 }
 
 int main(int argc, char** argv) {
@@ -79,6 +133,15 @@ int main(int argc, char** argv) {
         Nerror("Error initializing window manager!");
         return 1;
     }
+
+
+
+    testie("/home/mijyn/workspace/silentponyville/game/levels/test/0.png");
+    testie("/home/mijyn/workspace/silentponyville/game/levels/test/-1.png");
+    testie("/home/mijyn/workspace/silentponyville/game/levels/test/1.png");
+    testie("/home/mijyn/workspace/silentponyville/game/levels/test/-2.png");
+
+
 
     Ndebug("Creating window");
     NINDENT(okay = N_WMan.create_window());

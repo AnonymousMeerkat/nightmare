@@ -135,6 +135,7 @@ unsigned char* NImage_load_png(char* path, NPos3i* size) {
     error = lodepng_decode32_file(&raw_data, &width, &height, path);
     size->x = width;
     size->y = height;
+    size->z = 1;
     if (error) {
         Nerror("Error loading image %s (%u): %s", path, error, lodepng_error_text(error));
         return NULL;

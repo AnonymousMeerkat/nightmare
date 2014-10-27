@@ -1,5 +1,4 @@
 add_subdirectory(Core)
-add_subdirectory(NGL)
 add_subdirectory(WMan)
 
 set(SOURCES
@@ -9,6 +8,7 @@ set(SOURCES
     NSplu.c
     NShader.c
     NSquare.c
+    NIFF.c
     NImage.c
     NSprite.c
     NSpritesheet.c

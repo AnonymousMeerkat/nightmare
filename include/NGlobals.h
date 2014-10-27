@@ -28,6 +28,11 @@
 #ifndef _NME_GLOBALS_H
 #define _NME_GLOBALS_H
 
+/**
+ * \file
+ * \brief Global variables
+ */
+
 #include "NTypes.h"
 #include "NUtil.h"
 #include "NPos.h"
@@ -48,7 +53,17 @@ NTS(NLevel_info);
 
 // Functions
 
+/**
+ * \brief Initialize globals to starting values
+ */
 void NGlobals_init();
+
+/**
+ * \brief Free memory used by globals
+ *
+ * \details This function will only free memory to variables
+ *   that allocated memory during the initialization.
+ */
 void NGlobals_destroy();
 
 // Init
@@ -61,6 +76,12 @@ extern char** N_argv;
 extern char* N_WMan_backend;
 extern NPos2i N_win_pos;
 extern NPos2i N_win_size;
+
+/**
+ * \brief Window title
+ *
+ * \details The game will override this one
+ */
 extern char* N_win_title;
 
 // Logging
@@ -95,6 +116,12 @@ extern NEntity* N_player;
 
 // Input
 
+/**
+ * \brief Key states (press or release)
+ *
+ * \details If you want to see whether the A key is pressed,
+ *   you would check N_key_states['A']
+ */
 extern bool N_key_states[65536];
 
 // Engine

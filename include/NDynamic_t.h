@@ -95,6 +95,8 @@
         size_t size;\
     }
 
+typedef NLIST(int) NINTLIST;
+
 #define NLIST_INIT(type, name) {\
     name.e_size = sizeof(type);\
     name.data = NRLIST_NEW(sizeof(type));\
@@ -146,6 +148,17 @@
 #define NLIST_NEW_FROM_ARR(type, name, arr)\
     NLIST_NEW(type, (name));\
     NLIST_FROM_ARR((name), arr);
+
+#define NLIST_DUPLICATE(name, newname) {\
+    (newname) = (name);\
+    (newname).data = malloc(((name).size + 1) * (name).e_size);\
+    memcpy((newname).data, (name).data, ((name).size + 1) * (name).e_size);\
+}
+
+#define NLIST_NEW_FROM_LIST(name, newname) {\
+    typeof(name) (newname);\
+    NLIST_DUPLICATE((name), (newname));\
+}
 
 // String functions
 

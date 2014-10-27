@@ -34,6 +34,8 @@ bool NEngine_init();
 bool NEngine_destroy();
 
 void NEngine_update_viewport();
+void NEngine_update_time();
+void NEngine_update_fps();
 
 void NEngine_run();
 
