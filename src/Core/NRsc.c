@@ -114,6 +114,10 @@ char* NRsc_remove_ext(char* path) {
     return ret;
 }
 
+char* NRsc_get_ext(char* path) {
+    return strrchr(path, '.') + 1;
+}
+
 // FREE
 char* NRsc_get_path(char* simplepath) {
     char* newpath = malloc(strlen(N_rsc_path) + strlen(simplepath) + 2);
@@ -159,15 +163,13 @@ void NRsc_ls_free(char** lsd) {
 }
 #endif
 
-char* NRsc_read_file(char* simplepath) {
-    Ndebug("Loading file '%s'", simplepath);
+char* NRsc_read_file_rp(char* path) {
+    Ndebug("Loading file '%s'", path);
     N_indent++;
 
     char* ret = NULL;
 
-    char* path = NRsc_get_path(simplepath);
     FILE* file = fopen(path, "rb");
-    free(path);
     if (file == NULL) {
         Nerror("Error opening file!");
         goto end;
@@ -191,5 +193,13 @@ closefile:
     fclose(file);
 end:
     N_indent--;
+    return ret;
+}
+
+char* NRsc_read_file(char* simplepath) {
+    char* path = NRsc_get_path(simplepath);
+    char* ret = NRsc_read_file_rp(path);
+    free(path);
+
     return ret;
 }

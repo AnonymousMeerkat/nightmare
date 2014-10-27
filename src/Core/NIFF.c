@@ -1,10 +1,7 @@
 #include <NIFF.h>
 
 #include <NDynamic_t.h>
-
 #include <math.h>
-
-#include <stdio.h>
 
 NIFF_t* NIFF_from_raw(uchar* raw, uint8_t channels, uint32_t x_size, uint32_t y_size, uint32_t z_size) {
     NIFF_t head = {

@@ -3,6 +3,7 @@ set(SOURCES
     NLog.c
     NRsc.c
     NGlobals.c
+    NIFF.c
 )
 
 add_definitions(-DNCORE_BUILD)

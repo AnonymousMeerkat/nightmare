@@ -8,7 +8,6 @@ set(SOURCES
     NSplu.c
     NShader.c
     NSquare.c
-    NIFF.c
     NImage.c
     NSprite.c
     NSpritesheet.c

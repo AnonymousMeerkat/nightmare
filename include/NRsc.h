@@ -52,12 +52,15 @@ void NRsc_destroy();
 
 char* NRsc_join_paths(char* path1, char* path2); // FREE
 char* NRsc_remove_ext(char* path); // FREE
+char* NRsc_get_ext(char* path);
 
 // All of these functions ONLY accept simple paths
 char* NRsc_get_path(char* simplepath); // FREE
 char** NRsc_ls(char* path); \
 void NRsc_ls_free(char** lsd);
-char* NRsc_read_file(char* path);
+char* NRsc_read_file(char* simplepath);
+
+char* NRsc_read_file_rp(char* path);
 
 // Misc
 bool NRsc_load_shader_head();

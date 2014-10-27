@@ -38,7 +38,6 @@ find_package(OpenGL REQUIRED) # No OpenGL? NO ENGINE! HAHAHAHAHA ... ha
 set(WM_FOUND 0)
 
 find_package(Wayland)
-
 if(WAYLAND_FOUND)
     find_package(UDev REQUIRED)
     find_package(EGL REQUIRED)
@@ -49,7 +48,6 @@ if(WAYLAND_FOUND)
 endif(WAYLAND_FOUND)
 
 find_package(X11)
-
 if(X11_FOUND)
     set(LIBRARIES ${LIBRARIES} ${X11_LIBRARIES})
     add_definitions(-DX11_FOUND)
@@ -57,7 +55,6 @@ if(X11_FOUND)
 endif(X11_FOUND)
 
 find_package(SDL)
-
 if(SDL_FOUND)
     set(LIBRARIES ${LIBRARIES} ${SDL_LIBRARY})
     add_definitions(-DSDL_FOUND)
@@ -65,7 +62,6 @@ if(SDL_FOUND)
 endif(SDL_FOUND)
 
 find_package(SDL2)
-
 if(SDL2_FOUND)
     set(LIBRARIES ${LIBRARIES} ${SDL2_LIBRARY})
     add_definitions(-DSDL2_FOUND)
@@ -75,6 +71,13 @@ endif(SDL2_FOUND)
 if(NOT WM_FOUND)
     message(FATAL_ERROR "Please install either SDL or SDL2!")
 endif(NOT WM_FOUND)
+
+find_package(FreeImage)
+if(FreeImage_FOUND)
+    add_definitions(-DFREEIMAGE_FOUND)
+    set(TOOLS_LIBRARIES ${TOOLS_LIBRARIES} ${FreeImage_LIBRARIES})
+    include_directories(${FreeImage_INCLUDE_DIRS})
+endif(FreeImage_FOUND)
 
 # Include 3rd party libraries
 
