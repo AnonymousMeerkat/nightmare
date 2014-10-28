@@ -76,6 +76,6 @@ void NLevel_destroy(NLevel* level);
 NPosf NLevel_get_z(NLevel* level, NPosz z);
 NPosf NLevel_get_camera(NLevel* level);
 
-void NLevel_draw(NLevel* level);
+void NLevel_draw(NLevel* level, NImage* fog);
 
 #endif

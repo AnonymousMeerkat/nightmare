@@ -80,7 +80,7 @@ NPosf NLevel_get_camera(NLevel* level) {
     return NCLAMP(player_center, half_width, level->layers.data[0].base->size.x - half_width) - half_width;
 }
 
-void NLevel_draw(NLevel* level) {
+void NLevel_draw(NLevel* level, NImage* fog) {
     GLKMatrix4 oldview = N_gl_view;
     level->camera = NLevel_get_camera(level);
     N_gl_view = GLKMatrix4Translate(N_gl_view, -level->camera, 0, 0);
@@ -106,6 +106,18 @@ void NLevel_draw(NLevel* level) {
         } else if (N_player->z == z) {
             NENTITY_DRAW(N_player);
         }
+
+        uint move_x_amt = ((N_currtime/40)-(int)level->camera)%1024u;
+        uint move_y_amt = (-N_currtime/100)%1024u;
+        NShader_run(N_shaders[3]);
+        NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt, move_y_amt));
+        NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt - 1024, move_y_amt));
+        NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt - 1024, move_y_amt - 1024));
+        NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt, move_y_amt - 1024));
+        NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt + 1024, move_y_amt));
+        NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt + 1024, move_y_amt + 1024));
+        NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt, move_y_amt + 1024));
+        NShader_stop();
     }
     N_gl_view = oldview;
 }
