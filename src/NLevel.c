@@ -115,8 +115,7 @@ void NLevel_draw(NLevel* level, NImage* fog) {
         NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt - 1024, move_y_amt - 1024));
         NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt, move_y_amt - 1024));
         NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt + 1024, move_y_amt));
-        NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt + 1024, move_y_amt + 1024));
-        NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt, move_y_amt + 1024));
+        NIMAGE_DRAW(fog, .size = Npos2i(1024, 1024), .pos = Npos2i(move_x_amt + 1024, move_y_amt - 1024));
         NShader_stop();
     }
     N_gl_view = oldview;
