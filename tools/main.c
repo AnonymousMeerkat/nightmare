@@ -33,7 +33,6 @@
 #include <math.h>
 
 extern NKTool vecmathbuilder_tool;
-extern NKTool ngloptbuilder_tool;
 extern NKTool fogbuilder_tool;
 extern NKTool niffconv_tool;
 extern NKTool niffflip_tool;
@@ -41,7 +40,6 @@ extern NKTool niffflip_tool;
 int main(int argc, char** argv) {
     NLIST_NEW(NKTool, tools);
     NLIST_PUSH(tools, vecmathbuilder_tool);
-    NLIST_PUSH(tools, ngloptbuilder_tool);
     NLIST_PUSH(tools, fogbuilder_tool);
 #ifdef FREEIMAGE_FOUND
     NLIST_PUSH(tools, niffconv_tool);

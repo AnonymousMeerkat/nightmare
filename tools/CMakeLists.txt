@@ -1,7 +1,6 @@
 add_definitions(-DNCORE_BUILD)
 
 add_subdirectory(vecmathbuilder)
-add_subdirectory(ngloptbuilder)
 add_subdirectory(fogbuilder)
 add_subdirectory(niffconv)
 add_subdirectory(niffflip)
@@ -11,4 +10,4 @@ set(SOURCES
 )
 
 add_executable(nightmaretool ${SOURCES})
-target_link_libraries(nightmaretool vecmathbuilder ngloptbuilder fogbuilder niffconv niffflip m NCore ${TOOLS_LIBRARIES})
+target_link_libraries(nightmaretool vecmathbuilder fogbuilder niffconv niffflip m NCore ${TOOLS_LIBRARIES})
