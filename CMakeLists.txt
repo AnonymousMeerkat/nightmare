@@ -102,7 +102,6 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
 add_subdirectory(3rdparty)
 include_directories(3rdparty/gllg)
-include_directories(3rdparty/lodepng)
 include_directories(include)
 
 # Compile tools

@@ -37,7 +37,6 @@
 #include "NEngine.h"
 
 #include "wrap/gl.h"
-#include <lodepng.h>
 #include <stdlib.h>
 #include <GLKit/GLKMath.h>
 
@@ -129,32 +128,6 @@ void NImage_destroy(NImage* image) {
 }
 
 
-unsigned char* NImage_load_png(char* path, NPos3i* size) {
-    unsigned int error;
-    unsigned char* raw_data;
-    unsigned int width, height;
-
-    error = lodepng_decode32_file(&raw_data, &width, &height, path);
-    size->x = width;
-    size->y = height;
-    size->z = 1;
-    if (error) {
-        Nerror("Error loading image %s (%u): %s", path, error, lodepng_error_text(error));
-        return NULL;
-    }
-
-    unsigned char* good_data = malloc(width * height * 4);
-    for (size_t y = 0; y < height; y++) {
-        for (size_t x = 0; x < width * 4; x++) {
-            good_data[4 * width * y + x] = raw_data[4 * width * (height - 1 - y) + x];
-        }
-    }
-
-    free(raw_data);
-
-    return good_data;
-}
-
 unsigned char* NImage_load_niff(char* path, NPos3i* size) {
     char* read = NRsc_read_file_rp(path);
 
@@ -172,7 +145,6 @@ unsigned char* NImage_load_niff(char* path, NPos3i* size) {
 
 bool NImage_load(NImage* image, char* path) {
     bool ret;
-    //unsigned char* good_data = NImage_load_png(path, &image->size);
     unsigned char* good_data = NImage_load_niff(path, &image->size);
     if (!good_data) {
         ret = false;

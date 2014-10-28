@@ -21,4 +21,4 @@ set(SOURCES
 include_directories(${INCLUDES})
 
 add_executable(nightmare ${SOURCES})
-target_link_libraries(nightmare NCore NWMan ${LIBRARIES} gllg GLKit lodepng ${OPENGL_LIBRARIES} game)
+target_link_libraries(nightmare NCore NWMan ${LIBRARIES} gllg GLKit ${OPENGL_LIBRARIES} game)
