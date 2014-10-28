@@ -16,21 +16,8 @@ NIFF_t* NIFF_from_raw(uchar* raw, uint8_t channels, uint32_t x_size, uint32_t y_
 
     NLIST_NEW(int32_t, palette);
 
-#if 0
-    // Pass .5: Build the palette hash
-
-    NINTLIST palette_hash[4][256];
-
-    for (size_t i = 0; i < 4; i++) {
-        for (size_t j = 0; j < 256; j++) {
-            NLIST_INIT(int32_t, palette_hash[i][j]);
-        }
-    }
-#endif
-
     // Pass 1: Build the palette
 
-#if 1
     for (size_t i = 0; i < raw_size; i += channels) {
         int32_t value = 0;
         memcpy(&value, raw + i, channels);
@@ -47,53 +34,6 @@ NIFF_t* NIFF_from_raw(uchar* raw, uint8_t channels, uint32_t x_size, uint32_t y_
         }
         NLIST_PUSH(palette, value);
     }
-#else
-    for (size_t i = 0; i < raw_size; i += channels) {
-        bool found = true;
-        NINTLIST common;
-        NLIST_INIT(int, common);
-        int* common_ptr;
-        for (int c = 0; c < channels; c++) {
-            NINTLIST list = palette_hash[c][raw[i + c]];
-            if (list.size == 0) {
-                found = false;
-                break;
-            }
-            if (common.size == 0) {
-                if (c != 0) {
-                    found = false;
-                    break;
-                }
-                NLIST_DUPLICATE(list, common);
-                common_ptr = common.data;
-                continue;
-            }
-            bool found_common = false;
-            for (size_t j = 0; j < common.size; j++) {
-                bool found_list = false;
-                for (size_t x = 0; x < list.size; x++) {
-                    if (common_ptr[0] == list.data[x]) {
-                        found_list = true;
-                        break;
-                    }
-                }
-                if (found_list) {
-                    found_common = true;
-                    break;
-                }
-                common_ptr++;
-                common.size--;
-            }
-        }
-        if (!found) {
-            for (int c = 0; c < channels; c++) {
-                NLIST_PUSH(palette_hash[c][raw[i + c]], palette.size);
-            }
-            NLIST_PUSH(palette, *((int*)(raw + i)));
-        }
-        NLIST_DESTROY(common);
-    }
-#endif
 
     // Pass 2: Encode it
 
@@ -125,7 +65,6 @@ NIFF_t* NIFF_from_raw(uchar* raw, uint8_t channels, uint32_t x_size, uint32_t y_
 
     uchar* ret_contents = ret->contents + palette_csize;
 
-#if 1
     for (size_t i = 0; i < raw_size; i += channels) {
         int32_t value = 0;
         memcpy(&value, raw + i, channels);
@@ -142,53 +81,6 @@ NIFF_t* NIFF_from_raw(uchar* raw, uint8_t channels, uint32_t x_size, uint32_t y_
             continue;
         }
     }
-#else
-    for (size_t i = 0; i < raw_size; i += channels) {
-        NINTLIST common;
-        NLIST_INIT(int, common);
-        int* common_ptr;
-        for (int c = 0; c < channels; c++) {
-            NINTLIST list = palette_hash[c][raw[i + c]];
-            if (list.size == 0) {
-                break;
-            }
-            if (common.size == 0) {
-                if (c != 0) {
-                    break;
-                }
-                NLIST_DUPLICATE(list, common);
-                common_ptr = common.data;
-                continue;
-            }
-            bool found_common = false;
-            for (size_t j = 0; j < common.size; j++) {
-                bool found_list = false;
-                for (size_t x = 0; x < list.size; x++) {
-                    if (common_ptr[0] == list.data[x]) {
-                        found_list = true;
-                        break;
-                    }
-                }
-                if (found_list) {
-                    found_common = true;
-                    break;
-                }
-                common_ptr++;
-                common.size--;
-            }
-        }
-        memcpy(ret_contents + (i / channels) * bpp, common_ptr, bpp);
-
-        NLIST_DESTROY(common);
-    }
-
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 256; j++) {
-            NLIST_DESTROY(palette_hash[i][j]);
-        }
-    }
-    NLIST_DESTROY(palette);
-#endif
 
     return ret;
 }
