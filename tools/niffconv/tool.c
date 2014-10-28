@@ -103,10 +103,10 @@ int niffconv(int argc, char** argv) {
 
             uchar* line_raw = data_raw + pitch_raw * (size.y - 1);
             uchar* line = data;
-            for (size_t y = 0; y < size.y; y++) {
+            for (ssize_t y = 0; y < size.y; y++) {
                 uchar* pixel_raw = line_raw;
                 uchar* pixel = line;
-                for (size_t x = 0; x < size.x; x++) {
+                for (ssize_t x = 0; x < size.x; x++) {
                     pixel[0] = pixel_raw[FI_RGBA_RED];
                     pixel[1] = pixel_raw[FI_RGBA_GREEN];
                     pixel[2] = pixel_raw[FI_RGBA_BLUE];
@@ -152,9 +152,9 @@ int niffconv(int argc, char** argv) {
         uint pitch = FreeImage_GetPitch(bitmap);
         BYTE* bits = (BYTE*) FreeImage_GetBits(bitmap);
 
-        for (size_t y = 0; y < size.y; y++) {
+        for (ssize_t y = 0; y < size.y; y++) {
             BYTE* pixel = bits;
-            for (size_t x = 0; x < size.x; x++) {
+            for (ssize_t x = 0; x < size.x; x++) {
                 size_t pos = (size.x * (size.y - y) + x) * channels;
                 switch (channels) {
                     case 1:
@@ -202,5 +202,6 @@ int niffconv(int argc, char** argv) {
 
 NKTool niffconv_tool = {
     .command = "niffconv",
+    .description = "Converts to/from various image formats and NIFF",
     .tool = niffconv
 };

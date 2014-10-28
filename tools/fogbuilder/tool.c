@@ -293,5 +293,6 @@ int fogbuilder(int argc, char** argv) {
 
 NKTool fogbuilder_tool = {
     .command = "fogbuilder",
+    .description = "Generates 3D value noise",
     .tool = fogbuilder
 };

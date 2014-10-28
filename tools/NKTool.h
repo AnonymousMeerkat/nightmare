@@ -32,6 +32,7 @@
 
 NSTRUCT(NKTool, {
     char* command;
+    char* description;
     int (*tool)(int argc, char** argv);
 });
 

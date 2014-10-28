@@ -25,10 +25,12 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "NKTool.h"
+
 #include <NLog.h>
 #include <NDynamic_t.h>
-
-#include "NKTool.h"
+#include <stdio.h>
+#include <math.h>
 
 extern NKTool vecmathbuilder_tool;
 extern NKTool ngloptbuilder_tool;
@@ -47,16 +49,29 @@ int main(int argc, char** argv) {
 #endif
 
     if (argc < 2) {
-        Ninfo("Usage: %s tool [options]", argv[0]);
-        Nnewline();
-        Ninfo("Tools available:");
-        Nnewline();
-        N_indent++;
+        printf("Usage: %s tool [options]\n\n", argv[0]);
+        printf("Tools available:\n\n");
+
+        size_t maxsize = 0;
+
         for (size_t i = 0; i < tools.size; i++) {
-            Ninfo(tools.data[i].command);
+            size_t len = strlen(tools.data[i].command);
+            if (maxsize < len) {
+                maxsize = len;
+            }
         }
-        N_indent--;
-        Nnewline();
+
+        for (size_t i = 0; i < tools.size; i++) {
+            printf("    %s", tools.data[i].command);
+            size_t len = strlen(tools.data[i].command);
+            for (size_t j = 0; j < maxsize - len + 8; j++) {
+                putchar('.');
+            }
+            printf("%s\n", tools.data[i].description);
+        }
+
+        puts("");
+
         return 0;
     }
 

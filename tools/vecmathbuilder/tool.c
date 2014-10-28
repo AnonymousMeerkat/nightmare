@@ -566,5 +566,6 @@ int vecmathbuilder(int argc, char** argv) {
 
 NKTool vecmathbuilder_tool = {
     .command = "vecmathbuilder",
+    .description = "Generates the vector math library",
     .tool = vecmathbuilder
 };

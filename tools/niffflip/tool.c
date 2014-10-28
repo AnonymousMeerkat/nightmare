@@ -86,5 +86,6 @@ int niffflip(int argc, char** argv) {
 
 NKTool niffflip_tool = {
     .command = "niffflip",
+    .description = "Flips the Y axis of a NIFF file",
     .tool = niffflip
 };

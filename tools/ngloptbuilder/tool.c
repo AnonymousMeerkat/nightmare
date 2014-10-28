@@ -487,5 +487,6 @@ int ngloptbuilder(int argc, char** argv) {
 
 NKTool ngloptbuilder_tool = {
     .command = "ngloptbuilder",
+    .description = "Generates param.h from NGL.h (deprecated)",
     .tool = ngloptbuilder
 };
