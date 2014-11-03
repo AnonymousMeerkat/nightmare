@@ -282,7 +282,7 @@ int vecmathbuilder(int argc, char** argv) {
             // e.g. NVec2i_neg(NVec2i(x, y)) -> NVec2i(-x, -y)
 
             fprintf(output, "%s NVec%i%c_t NVec%i%c_neg(NVec%i%c_t v1) {\n",
-                func_def, i, types[y][0], i, types[y][0], i, types[y][0], i, types[y][0]);
+                func_def, i, types[y][0], i, types[y][0], i, types[y][0]);
             fprintf(output, "    NVec%i%c_t ret = {", i, types[y][0]);
             for (int j = 0; j < i; j++) {
                 fprintf(output, "-v1.%c", vec_names[0][j]);
@@ -432,7 +432,7 @@ int vecmathbuilder(int argc, char** argv) {
             // e.g. NVec2i_len(NVec2i(x, y), NVec2i(x1, y1))
 
             fprintf(output, "%s float NVec%i%c_len(NVec%i%c_t v1) {\n",
-                func_def, i, types[y][0], i, types[y][0], i, types[y][0]);
+                func_def, i, types[y][0], i, types[y][0]);
             fprintf(output, "    return sqrt(");
             for (int j = 0; j < i; j++) {
                 fprintf(output, "v1.%c * v1.%c", vec_names[0][j], vec_names[0][j]);
@@ -547,18 +547,160 @@ int vecmathbuilder(int argc, char** argv) {
             fprintf(output, "    return ret;\n");
             fprintf(output, "}\n\n");
 
+            if (i >= 3) {
+                // e.g. NMat3f_scale_3f()
+
+                for (int i1 = 3; i1 <= 4; i1++) {
+                    for (int y1 = 0; y1 < 2; y1++) {
+                        fprintf(output, "%s NMat%i%c_t NMat%i%c_scale_%i%c(NMat%i%c_t m1, NVec%i%c_t v1) {\n",
+                            func_def, i, types[y][0], i, types[y][0], i1, types[y1][0], i, types[y][0], i1, types[y1][0]);
+                        fprintf(output, "    return (NMat%i%c_t) {\n", i, types[y][0]);
+                        fprintf(output, "        ");
+                        for (int j = 0; j < i; j++) {
+                            fprintf(output, "m1.m0%i * v1.v[0], ", j);
+                        }
+                        fprintf(output, "\n");
+
+                        fprintf(output, "        ");
+                        for (int j = 0; j < i; j++) {
+                            fprintf(output, "m1.m1%i * v1.v[1], ", j);
+                        }
+                        fprintf(output, "\n");
+
+                        fprintf(output, "        ");
+                        for (int j = 0; j < i; j++) {
+                            fprintf(output, "m1.m2%i * v1.v[2]", j);
+                            if (i != 3 || j != 2) {
+                                fprintf(output, ", ");
+                            }
+                        }
+                        fprintf(output, "\n");
+
+                        if (i == 4) {
+                            fprintf(output, "        m1.m30, m1.m31, m1.m32, m1.m33\n");
+                        }
+
+                        fprintf(output, "    };\n");
+                        fprintf(output, "}\n\n");
+                    }
+                }
+
+                // e.g. NMat3f_rotation_3f()
+
+                for (int i1 = 3; i1 <= 4; i1++) {
+                    for (int y1 = 0; y1 < 2; y1++) {
+                        fprintf(output, "%s NMat%i%c_t NMat%i%c_rotation_%i%c(float radians, NVec%i%c_t v1) {\n",
+                            func_def, i, types[y][0], i, types[y][0], i1, types[y1][0], i1, types[y1][0]);
+                        fprintf(output, "    NVec%i%c_t v1_norm = NVec%i%c_norm(v1);\n", i1, types[y1][0], i1, types[y1][0]);
+                        fprintf(output, "    float radcos = cosf(radians);\n");
+                        fprintf(output, "    float invradcos = 1.f / cos_radians;\n");
+                        fprintf(output, "    float radsin = sinf(radians);\n");
+                        fprintf(output, "    %s v01 = v1.v[0] * v1.v[1];\n", types[y1]);
+                        fprintf(output, "    %s v02 = v1.v[0] * v1.v[2];\n", types[y1]);
+                        fprintf(output, "    %s v12 = v1.v[1] * v1.v[2];\n", types[y1]);
+                        fprintf(output, "    return (NMat%i%c_t) {\n", i, types[y][0]);
+                        fprintf(output, "        ");
+                        fprintf(output, "radcos + invradcos * v.v[0] * v.v[0], ");
+                        fprintf(output, "invradcos * v01 + v.v[2] * radsin, ");
+                        fprintf(output, "invradcos * v02 - v.v[1] * radsin, ");
+                        if (i == 4) fprintf(output, "0.f,\n"); else fprintf(output, "\n");
+
+                        fprintf(output, "        ");
+                        fprintf(output, "invradcos * v01 - v.v[2] * radsin, ");
+                        fprintf(output, "radcos + invradcos * v.v[1] * v.v[1], ");
+                        fprintf(output, "invradcos * v12 + v.v[0] * radsin, ");
+                        if (i == 4) fprintf(output, "0.f,\n"); else fprintf(output, "\n");
+
+                        fprintf(output, "        ");
+                        fprintf(output, "invradcos * v02 + v.v[1] * radsin, ");
+                        fprintf(output, "invradcos * v12 - v.v[0] * radsin, ");
+                        fprintf(output, "radcos + invradcos * v.v[2] * v.v[2]");
+                        if (i == 4) fprintf(output, ", 0.f,\n"); else fprintf(output, "\n");
+
+                        if (i == 4) {
+                            fprintf(output, "        0.f, 0.f, 0.f, 1.f\n");
+                        }
+
+                        fprintf(output, "    };\n");
+                        fprintf(output, "}\n\n");
+                    }
+                }
+
+                // e.g. NMat3f_rotate_3f()
+
+                for (int i1 = 3; i1 <= 4; i1++) {
+                    for (int y1 = 0; y1 < 2; y1++) {
+                        fprintf(output, "%s NMat%i%c_t NMat%i%c_rotate_%i%c(NMat%i%c_t m1, float radians, NVec%i%c_t v1) {\n",
+                            func_def, i, types[y][0], i, types[y][0], i1, types[y1][0], i, types[y][0], i1, types[y1][0]);
+                        fprintf(output, "    return NMat%i%c_mul(m1, NMat%i%c_rotation_%i%c(radians, v1));\n", i, types[y][0], i, types[y][0], i1, types[y1][0]);
+                        fprintf(output, "}\n\n");
+                    }
+                }
+            }
+
             if (i == 4 && types[y][0] == 'f') {
+                // e.g. NMat4f_translate()
+
+                for (int y1 = 0; y1 < 2; y1++) {
+                    fprintf(output, "%s NMat4f_t NMat4f_translate(NMat4f_t m1, NVec3%c_t v1) {\n", types[y1][0]);
+                    fprintf(output, "    return (NMat4f_t) {\n");
+                    fprintf(output, "        m1.m00, m1.m01, m1.m02, m1.m03,\n");
+                    fprintf(output, "        m1.m10, m1.m11, m1.m12, m1.m13,\n");
+                    fprintf(output, "        m1.m20, m1.m21, m1.m22, m1.m23,\n");
+                    fprintf(output, "        m1.m00 * v1.x + m1.m10 * v1.y + m1.m20 * v1.z + m1.m30,\n");
+                    fprintf(output, "        m1.m01 * v1.x + m1.m11 * v1.y + m1.m21 * v1.z + m1.m31,\n");
+                    fprintf(output, "        m1.m02 * v1.x + m1.m12 * v1.y + m1.m22 * v1.z + m1.m32,\n");
+                    fprintf(output, "        m1.m33\n");
+                    fprintf(output, "    };\n");
+                }
+
                 // e.g. NMat4f_perspective()
 
-                fprintf(output, "%s NMat4f_t NMat4f_perspective(float fov_rad, float aspect, float nearp, float farp) {\n",
+                fprintf(output, "%s NMat4f_t NMat4f_perspective(float fov_rad, float aspect, float nearZ, float farZ) {\n",
                     func_def);
-                fprintf(output, "    float cotan = 1.f / tanf(fov_rad / 2.f);\n");
-                fprintf(output, "    NMat%c_t m = { cotan / aspect, 0.f, 0.f, 0.f,\n", types[y][0]);
-                fprintf(output, "        0.f, cotan, 0.f, 0.f,\n");
-                fprintf(output, "        0.f, 0.f, (farp + nearp) / (nearp - farp), -1.f,\n");
-                fprintf(output, "        0.f, 0.f, (2.f * farp * nearp) / (nearp - farp), 0.f };\n");
+                fprintf(output, "    float arctan = 1.f / tanf(fov_rad / 2.f);\n");
+                fprintf(output, "    float invnf = 1.f / (nearZ - farZ);\n");
+                fprintf(output, "    return (NMat4f) {\n");
+                fprintf(output, "        arctan / aspect, 0.f, 0.f, 0.f,\n");
+                fprintf(output, "        0.f, arctan, 0.f, 0.f,\n");
+                fprintf(output, "        0.f, 0.f, (farZ + nearZ) * invnf, -1.f,\n");
+                fprintf(output, "        0.f, 0.f, (2.f * farZ * nearZ) * invnf, 0.f\n");
                 fprintf(output, "    };\n");
                 fprintf(output, "}\n\n");
+
+                // e.g. NMat4f_frustum()
+
+                fprintf(output, "%s NMat4f_t NMat4f_frustum(float left, float right, float bottom, float top, float nearZ, float farZ) {\n",
+                    func_def);
+                fprintf(output, "    float invrl = 1.f / (right - left);\n");
+                fprintf(output, "    float invtb = 1.f / (top - bottom);\n");
+                fprintf(output, "    float invfn = 1.f / (farZ - nearZ);\n");
+                fprintf(output, "    float 2n    = 2.f * nearZ;\n");
+                fprintf(output, "    return (NMat4f_t) {\n");
+                fprintf(output, "        2n * invrl, 0.f, 0.f, 0.f,\n");
+                fprintf(output, "        0.f, 2n * invtb, 0.f, 0.f,\n");
+                fprintf(output, "        (right + left) * invrl, (top + bottom) * invtb, -(farZ + nearZ) * invfn, -1.f,\n");
+                fprintf(output, "        0.f, 0.f, (-2n * farZ) * invfn, 0.f\n");
+                fprintf(output, "    };\n");
+                fprintf(output, "}\n\n");
+
+                // e.g. NMat4f_ortho()
+
+                fprintf(output, "%s NMat4f_t NMat4f_ortho(float left, float right, float bottom, float top, float nearZ, float farZ) {\n",
+                    func_def);
+                fprintf(output, "    float invrl = 1.f / (right - left);\n");
+                fprintf(output, "    float invtb = 1.f / (top - bottom);\n");
+                fprintf(output, "    float invfn = 1.f / (farZ - nearZ);\n");
+
+                fprintf(output, "    return (NMat4f_t){\n");
+                fprintf(output, "        2.f * invrl, 0.f, 0.f, 0.f,\n");
+                fprintf(output, "        0.f, 2.f * invtb, 0.f, 0.f,\n");
+                fprintf(output, "        0.f, 0.f, -2.f * invfn, 0.f,\n");
+                fprintf(output, "        -(right + left) * invrl, -(top + bottom) * invtb, -(farZ + nearZ) * invfn, 1.f\n");
+                fprintf(output, "    };\n");
+                fprintf(output, "}\n\n");
+
+                // TODO: Add LookAt function
             }
         }
     }
