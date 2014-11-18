@@ -39,11 +39,11 @@ const char versionstr_egl[] =
 "precision mediump float;\n";
 
 const char versionstr_gl[] =
-"#version 120\n"
+"#version 130\n"
 "#define lowp\n"
 "#define mediump\n"
 "#define highp\n"
-"#extension GL_EXT_gpu_shader4 : enable\n";
+"#extension GL_EXT_gpu_shader4: enable\n";
 
 void NShader_print_log(bool shader, GLuint handle, char* prefix) {
     GLsizei len_dont_use;
@@ -85,9 +85,9 @@ bool NShader_load(GLenum type, const GLchar* shader, GLuint* handle) {
     strcat(newsrc, N_shader_head);
     strcat(newsrc, shader);
     glShaderSource(i_handle, 1, (const GLchar* const*) &newsrc, NULL);
-    free(newsrc);
     Ndebug("Compiling shader");
     glCompileShader(i_handle);
+    free(newsrc);
     glGetShaderiv(i_handle, GL_COMPILE_STATUS, &status);
     NShader_print_log(true, i_handle, "Compilation");
     if (status != GL_TRUE) {
@@ -146,13 +146,12 @@ NShader* NShader_new(char* vertex, char* fragment, NShader_attrib* attribs) {
         glGetProgramiv(shader->shader_handle, GL_VALIDATE_STATUS, &status);
         if (status != GL_TRUE) {
             NShader_print_log(false, shader->shader_handle, "Validation");
+        } else {
+            return shader;
         }
     } else {
         NShader_print_log(false, shader->shader_handle, "Linking");
     }
-
-    ret = shader;
-    goto end;
 
 //deletefragment:
     glDeleteShader(shader->fragment_handle);
@@ -161,7 +160,7 @@ deletevertex:
 deleteshader:
     glDeleteProgram(shader->shader_handle);
 end:
-    return ret;
+    return NULL;
 }
 
 void NShader_destroy(NShader* shader) {
@@ -174,25 +173,36 @@ void NShader_destroy(NShader* shader) {
     free(shader);
 }
 
+#define getuniform() GLint uniform = glGetUniformLocation(shader->shader_handle, name); if (uniform < 0) {return;}
 
-void NShader_set_int(NShader* shader, char* name, int value) {
-    glUniform1i(glGetUniformLocation(shader->shader_handle, name), value);
+void NShader_set_int(NShader* shader, char* name, GLint value) {
+    getuniform();
+    glUniform1i(uniform, value);
 }
 
-void NShader_set_float(NShader* shader, char* name, float value) {
-    glUniform1f(glGetUniformLocation(shader->shader_handle, name), value);
+void NShader_set_uint(NShader* shader, char* name, GLuint value) {
+    getuniform();
+    glUniform1ui(uniform, value);
+}
+
+void NShader_set_float(NShader* shader, char* name, GLfloat value) {
+    getuniform();
+    glUniform1f(uniform, value);
 }
 
 void NShader_set_vec2(NShader* shader, char* name, GLKVector2 value) {
-    glUniform2fv(glGetUniformLocation(shader->shader_handle, name), 1, value.v);
+    getuniform();
+    glUniform2fv(uniform, 1, value.v);
 }
 
 void NShader_set_vec4(NShader* shader, char* name, GLKVector4 value) {
-    glUniform4fv(glGetUniformLocation(shader->shader_handle, name), 1, value.v);
+    getuniform();
+    glUniform4fv(uniform, 1, value.v);
 }
 
 void NShader_set_mat4(NShader* shader, char* name, GLKMatrix4 value) {
-    glUniformMatrix4fv(glGetUniformLocation(shader->shader_handle, name), 1, GL_FALSE, value.m);
+    getuniform();
+    glUniformMatrix4fv(uniform, 1, GL_FALSE, value.m);
 }
 
 void NShader_update_MVP(NShader* shader) {
@@ -202,9 +212,9 @@ void NShader_update_MVP(NShader* shader) {
 
 void NShader_run(NShader* shader) {
     glUseProgram(shader->shader_handle);
-    NShader_set_int(shader, "N_time", N_currtime);
-    NShader_set_int(shader, "N_rand", rand());
     N_shader = shader;
+    NShader_set_uint(shader, "N_time", N_currtime);
+    NShader_set_float(shader, "N_rand", (float)rand() / (float)RAND_MAX);
 }
 
 void NShader_stop() {

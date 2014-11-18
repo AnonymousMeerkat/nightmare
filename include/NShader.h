@@ -52,8 +52,9 @@ NSTRUCT(NShader, {
 NShader* NShader_new(char* vertex, char* fragment, NShader_attrib* attribs);
 void NShader_destroy(NShader* shader);
 
-void NShader_set_int(NShader* shader, char* name, int value);
-void NShader_set_float(NShader* shader, char* name, float value);
+void NShader_set_int(NShader* shader, char* name, GLint value);
+void NShader_set_uint(NShader* shader, char* name, GLuint value);
+void NShader_set_float(NShader* shader, char* name, GLfloat value);
 void NShader_set_vec2(NShader* shader, char* name, GLKVector2 vec);
 void NShader_set_vec4(NShader* shader, char* name, GLKVector4 vec);
 void NShader_set_mat4(NShader* shader, char* name, GLKMatrix4 matrix);

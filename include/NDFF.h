@@ -25,34 +25,50 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _NME_NIFF_H
-#define _NME_NIFF_H
+#ifndef _NME_NDFF_H
+#define _NME_NDFF_H
 
 #include <NUtil.h>
 #include <NTypes.h>
 
-#define NIFF_MAGIC 0x1EA19190
+#define NDFF_MAGIC 0x171DFFEF
 
-NSTRUCT(NIFF_t, {
-    uint32_t magic;
-    uint32_t x_size;
-    uint32_t y_size;
-    uint32_t z_size;
-    uint8_t channels;
-    uint8_t bpp;
-    uint32_t palette_size;
+#define NDFF_FILE 0
+#define NDFF_DIR 1
 
-    uchar contents[];
+NSTRUCT(NDFFR_t, {
+    int32_t magic;
+    char contents[];
 });
 
-#define NIFF_DATA_SIZE(x) ((x).x_size * (x).y_size * (x).z_size)
-#define NIFF_DATA_BSIZE(x) ((x).x_size * (x).y_size * (x).z_size * (x).bpp)
-#define NIFF_DATA_CSIZE(x) ((x).x_size * (x).y_size * (x).z_size * (x).channels)
-#define NIFF_PALETTE_BSIZE(x) ((x).palette_size * 4)
-#define NIFF_HEAD_SIZE(x) (sizeof(NIFF_t) + NIFF_PALETTE_BSIZE(x))
-#define NIFF_SIZE(x) (sizeof(NIFF_t) + NIFF_DATA_BSIZE(x) + NIFF_PALETTE_BSIZE(x))
+NSTRUCT(NDFFREntry_t, {
+    char type;
+    uint16_t namesize; // Size of the filename
+    uint32_t size; // Size of the contents
+    char contents[]; // NULL-terminated filename, then contents
+});
 
-NIFF_t* NIFF_from_raw(uchar* raw, uint8_t channels, uint32_t x_size, uint32_t y_size, uint32_t z_size);
-uchar* NIFF_to_raw(NIFF_t* niff);
+
+NTS(NDFFEntry_t);
+NSTRUCT(NDFFEntry_t, {
+    char type; // File or directory
+    char* name;
+    uint32_t size; // Filesize if file, number of entries if directory
+    union {
+        char* contents;
+        NDFFEntry_t** entries;
+    };
+});
+
+NDFFEntry_t* NDFFEntry_new(char type, char* name, uint32_t size, void* contents);
+bool NDFFEntry_destroy(NDFFEntry_t* entry);
+
+NDFFEntry_t* NDFFEntry_ls(NDFFEntry_t* entry);
+NDFFEntry_t* NDFFEntry_get(NDFFEntry_t* entry, char* name);
+bool NDFFEntry_add(NDFFEntry_t* parent, NDFFEntry_t* child);
+bool NDFFEntry_remove(NDFFEntry_t* parent, char* name);
+
+NDFFEntry_t* NDFF_read(NDFFR_t* ndff);
+NDFFR_t* NDFF_write(NDFFEntry_t* entry);
 
 #endif

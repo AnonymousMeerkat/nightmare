@@ -25,34 +25,19 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _NME_NIFF_H
-#define _NME_NIFF_H
+#ifndef _NME_NCRYPT_H
+#define _NME_NCRYPT_H
 
-#include <NUtil.h>
-#include <NTypes.h>
+#include "NTypes.h"
 
-#define NIFF_MAGIC 0x1EA19190
+typedef uchar NCrypt_key_t;
+typedef uchar NCrypt_chunk_t[2];
 
-NSTRUCT(NIFF_t, {
-    uint32_t magic;
-    uint32_t x_size;
-    uint32_t y_size;
-    uint32_t z_size;
-    uint8_t channels;
-    uint8_t bpp;
-    uint32_t palette_size;
+static inline void Ncrypt(NCrypt_key_t key, NCrypt_chunk_t text, NCrypt_chunk_t* ret) {
+    NCrypt_key_t nkey = ~key;
 
-    uchar contents[];
-});
-
-#define NIFF_DATA_SIZE(x) ((x).x_size * (x).y_size * (x).z_size)
-#define NIFF_DATA_BSIZE(x) ((x).x_size * (x).y_size * (x).z_size * (x).bpp)
-#define NIFF_DATA_CSIZE(x) ((x).x_size * (x).y_size * (x).z_size * (x).channels)
-#define NIFF_PALETTE_BSIZE(x) ((x).palette_size * 4)
-#define NIFF_HEAD_SIZE(x) (sizeof(NIFF_t) + NIFF_PALETTE_BSIZE(x))
-#define NIFF_SIZE(x) (sizeof(NIFF_t) + NIFF_DATA_BSIZE(x) + NIFF_PALETTE_BSIZE(x))
-
-NIFF_t* NIFF_from_raw(uchar* raw, uint8_t channels, uint32_t x_size, uint32_t y_size, uint32_t z_size);
-uchar* NIFF_to_raw(NIFF_t* niff);
+    (*ret)[0] = ((text[0] & nkey) | (text[1] & key));
+    (*ret)[1] = ((text[1] & nkey) | (text[0] & key));
+}
 
 #endif

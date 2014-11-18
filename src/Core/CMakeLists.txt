@@ -4,6 +4,7 @@ set(SOURCES
     NRsc.c
     NGlobals.c
     NIFF.c
+    NDFF.c
 )
 
 add_definitions(-DNCORE_BUILD)
