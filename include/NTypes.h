@@ -28,7 +28,6 @@
 #ifndef _NME_TYPES_H
 #define _NME_TYPES_H
 
-#include <GLKit/GLKMathTypes.h>
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>

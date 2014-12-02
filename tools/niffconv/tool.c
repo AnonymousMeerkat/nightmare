@@ -31,6 +31,7 @@
 #include <NLog.h>
 #include <NRsc.h>
 #include <NIFF.h>
+#include <NVecMath.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -48,7 +49,7 @@ int niffconv(int argc, char** argv) {
     bool argv2niff = ISNIFF(argv[2]);
 
     uchar* data;
-    NPos3i size;
+    NVec3i_t size;
     int channels;
 
     FreeImage_Initialise(TRUE);

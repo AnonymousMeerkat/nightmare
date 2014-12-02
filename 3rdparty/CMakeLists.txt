@@ -1,5 +1,4 @@
 add_subdirectory(gllg)
-add_subdirectory(GLKit)
 if(WAYLAND_FOUND)
 add_subdirectory(wl)
 endif(WAYLAND_FOUND)

@@ -29,7 +29,7 @@
 #define _NME_SQUARE_H
 
 #include "NUtil.h"
-#include "NPos.h"
+#include "NVecMath.h"
 #include "wrap/gl.h"
 #include "NTypes.h"
 
@@ -41,6 +41,6 @@ bool NSquare_init();
 void NSquare_destroy();
 
 void NSquare_draw_shape();
-void NSquare_draw(NPos2i pos, NPos2i size);
+void NSquare_draw(NVec2i_t pos, NVec2i_t size);
 
 #endif

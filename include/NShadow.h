@@ -29,11 +29,10 @@
 #define _NME_SHADOW_H
 
 #include "NUtil.h"
-#include "NPos.h"
 
 NTS(NLevel);
 NTS(NEntity);
 
-void NShadow_draw(NLevel* level, NEntity* entity, NPosz layer);
+void NShadow_draw(NLevel* level, NEntity* entity, int layer);
 
 #endif

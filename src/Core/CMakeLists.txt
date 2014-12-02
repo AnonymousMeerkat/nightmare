@@ -5,6 +5,7 @@ set(SOURCES
     NGlobals.c
     NIFF.c
     NDFF.c
+    NVecMath.c
 )
 
 add_definitions(-DNCORE_BUILD)

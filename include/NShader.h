@@ -30,6 +30,7 @@
 
 #include "NUtil.h"
 #include "NTypes.h"
+#include "NVecMath.h"
 
 #include "wrap/gl.h"
 
@@ -55,9 +56,9 @@ void NShader_destroy(NShader* shader);
 void NShader_set_int(NShader* shader, char* name, GLint value);
 void NShader_set_uint(NShader* shader, char* name, GLuint value);
 void NShader_set_float(NShader* shader, char* name, GLfloat value);
-void NShader_set_vec2(NShader* shader, char* name, GLKVector2 vec);
-void NShader_set_vec4(NShader* shader, char* name, GLKVector4 vec);
-void NShader_set_mat4(NShader* shader, char* name, GLKMatrix4 matrix);
+void NShader_set_vec2(NShader* shader, char* name, NVec2f_t vec);
+void NShader_set_vec4(NShader* shader, char* name, NVec4f_t vec);
+void NShader_set_mat4(NShader* shader, char* name, NMat4f_t matrix);
 void NShader_update_MVP(NShader* shader);
 
 void NShader_run(NShader* shader);

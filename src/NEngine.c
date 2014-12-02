@@ -32,6 +32,7 @@
 #include "NWMan.h"
 #include "NLog.h"
 
+#include "NVecMath.h"
 #include "NSquare.h"
 #include "NShader.h"
 #include "NRsc.h"
@@ -43,7 +44,6 @@
 #include "Game.h"
 
 #include "wrap/gl.h"
-#include <GLKit/GLKMath.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -88,9 +88,9 @@ bool NEngine_gl_init() {
     glLoadIdentity();
 
     // Programmable matrice setup
-    N_gl_projection = GLKMatrix4MakeOrtho(0.0f, N_game_size.x, N_game_size.y, 0.0f, -1, 1);
-    N_gl_view = GLKMatrix4Identity;
-    N_gl_model = GLKMatrix4Identity;
+    N_gl_projection = NMat4f_ortho(0.0f, N_game_size.x, N_game_size.y, 0.0f, -1, 1);
+    N_gl_view = NMat4f_identity();
+    N_gl_model = NMat4f_identity();
 
     return true;
 }

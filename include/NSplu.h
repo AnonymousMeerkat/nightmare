@@ -29,13 +29,14 @@
 #define _NME_SPLU_H
 
 #include "NTypes.h"
+#include "NVecMath.h"
 #include "NRect.h"
 #include "wrap/gl.h"
 
 NRectf Nsplu_calc_viewport();
 
-GLKMatrix4 Nsplu_calc_pos(GLKVector2 pos);
-GLKMatrix4 Nsplu_calc_rect(GLKVector2 pos, GLKVector2 size);
-GLKMatrix4 Nsplu_calc_mvp();
+NMat4f_t Nsplu_calc_pos(NVec2f_t pos);
+NMat4f_t Nsplu_calc_rect(NVec2f_t pos, NVec2f_t size);
+NMat4f_t Nsplu_calc_mvp();
 
 #endif

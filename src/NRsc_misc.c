@@ -35,6 +35,7 @@
 #include "NSpritesheet.h"
 #include "NLevel.h"
 #include "NDynamic_t.h"
+#include "NVecMath.h"
 
 #include <string.h>
 
@@ -139,7 +140,7 @@ NImage* NRsc_load_fog(char* name) {
         goto end;
     }
 
-    NPos3i size;
+    NVec3i_t size;
     size.x = data->width;
     size.y = data->height;
     size.z = data->breadth;
@@ -257,7 +258,7 @@ NLevel* NRsc_load_level(char* name, NLevel_layer_data* datas) {
     NLevel_layer* layers = malloc(sizeof(NLevel_layer) * (names_count + 1));
     int* numbers = malloc(sizeof(int) * names_count);
 
-    NPosz offset = 0x7F;
+    int offset = 0x7F;
 
     for (size_t i = 0; i < names_count; i++) {
         char* noext = NRsc_remove_ext(names[i]);

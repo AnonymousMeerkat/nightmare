@@ -30,7 +30,7 @@
 
 #include "NUtil.h"
 #include "NTypes.h"
-#include "NPos.h"
+#include "NVecTypes.h"
 #include "NRect.h"
 #include "NSpritesheet.h"
 
@@ -44,23 +44,23 @@ NENUM(NEntity_state, {
 });
 
 NSTRUCT(NEntity_info, {
-    NPos2i size;
+    NVec2i_t size;
     NSpritesheet* sheet;
-    NPosf walk_speed;
-    NPosf trot_speed;
+    float walk_speed;
+    float trot_speed;
 });
 
 NSTRUCT(NEntity, {
-    NPos2f pos;
-    NPosz z;
-    NPos2i size;
+    NVec2f_t pos;
+    int z;
+    NVec2i_t size;
 
     NEntity_state old_state;
     NEntity_state state;
     NSpritesheet* sheet;
 
-    NPosf walk_speed;
-    NPosf trot_speed;
+    float walk_speed;
+    float trot_speed;
     bool facing_left;
 
     void* data;
@@ -71,8 +71,8 @@ NSTRUCT(NEntity, {
 NEntity* NEntity_new(NEntity_info info);
 void NEntity_destroy(NEntity* entity);
 
-NPos2f NEntity_center(NEntity* entity);
-NPosi NEntity_distance(NEntity* entity, NEntity* other);
+NVec2f_t NEntity_center(NEntity* entity);
+int NEntity_distance(NEntity* entity, NEntity* other);
 bool NEntity_facing(NEntity* entity, NEntity* other);
 
 void NEntity_still(NEntity* entity);
@@ -89,10 +89,10 @@ void NEntity_move_towards(NEntity* entity, NEntity* other);
 void NEntity_update(NEntity* entity);
 
 struct NEntity_draw_args {
-    NPos2i size;
+    NVec2i_t size;
     float alpha;
 };
 void NEntity_draw(NEntity* entity, struct NEntity_draw_args args);
-#define NENTITY_DRAW(entity, ...) NEntity_draw(entity, (struct NEntity_draw_args){.size = N_Pos2i0, .alpha = 1., __VA_ARGS__})
+#define NENTITY_DRAW(entity, ...) NEntity_draw(entity, (struct NEntity_draw_args){.size = NVec2i0, .alpha = 1., __VA_ARGS__})
 
 #endif

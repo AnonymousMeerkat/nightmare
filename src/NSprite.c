@@ -66,6 +66,6 @@ bool NSprite_update(NSprite* sprite) {
     return sprite->id < old_id;
 }
 
-void NSprite_draw(NSprite* sprite, NPos2i pos, NPos2i size, bool flip, float alpha) {
+void NSprite_draw(NSprite* sprite, NVec2i_t pos, NVec2i_t size, bool flip, float alpha) {
     NIMAGE_DRAW(sprite->images[sprite->frames[sprite->id].image_id], .pos = pos, .size = size, .flip = flip, .alpha = alpha);
 }

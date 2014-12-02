@@ -30,7 +30,7 @@
 #include "NShader.h"
 #include "NGlobals.h"
 #include "NSplu.h"
-#include <GLKit/GLKMath.h>
+#include "NVecMath.h"
 
 GLuint square_id;
 
@@ -104,9 +104,9 @@ void NSquare_draw_shape() {
     glBindVertexArray(0);
 }
 
-void NSquare_draw(NPos2i pos, NPos2i size) {
-    N_gl_model = Nsplu_calc_rect(Npos2i_2f(pos), Npos2i_2f(size));
+void NSquare_draw(NVec2i_t pos, NVec2i_t size) {
+    N_gl_model = Nsplu_calc_rect(NVec2i_2f(pos), NVec2i_2f(size));
     NShader_update_MVP(N_shader);
     NSquare_draw_shape();
-    N_gl_model = GLKMatrix4Identity;
+    N_gl_model = NMat4f_identity();
 }

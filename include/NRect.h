@@ -29,28 +29,28 @@
 #define _NME_RECT_H
 
 #include "NUtil.h"
-#include "NPos.h"
+#include "NVecMath.h"
 
 NSTRUCT(NRectf, {
-    NPos2f pos;
-    NPos2f size;
+    NVec2f_t pos;
+    NVec2f_t size;
 });
 
 static const NRectf NRectf0;
 
-static inline NRectf Nrectf(NPos2f pos, NPos2f size) {
+static inline NRectf Nrectf(NVec2f_t pos, NVec2f_t size) {
     NRectf ret = {pos, size};
     return ret;
 }
 
 NSTRUCT(NRecti, {
-    NPos2i pos;
-    NPos2i size;
+    NVec2i_t pos;
+    NVec2i_t size;
 });
 
 static const NRecti NRecti0;
 
-static inline NRecti Nrecti(NPos2i pos, NPos2i size) {
+static inline NRecti Nrecti(NVec2i_t pos, NVec2i_t size) {
     NRecti ret = {pos, size};
     return ret;
 }

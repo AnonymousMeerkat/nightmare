@@ -30,7 +30,7 @@
 
 #include "NUtil.h"
 #include "NSprite.h"
-#include "NPos.h"
+#include "NVecTypes.h"
 #include "NTypes.h"
 
 NSTRUCT(NSpritesheet_data, {
@@ -52,6 +52,6 @@ NSpritesheet* NSpritesheet_new(NSpritesheet_data* sprites);
 void NSpritesheet_destroy(NSpritesheet* sheet);
 
 bool NSpritesheet_update(NSpritesheet* sheet, size_t id);
-void NSpritesheet_draw(NSpritesheet* sheet, size_t id, NPos2i pos, NPos2i size, bool flip, float alpha);
+void NSpritesheet_draw(NSpritesheet* sheet, size_t id, NVec2i_t pos, NVec2i_t size, bool flip, float alpha);
 
 #endif

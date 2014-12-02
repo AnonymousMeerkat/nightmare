@@ -30,7 +30,7 @@
 
 // Internal window manager API
 
-#include "NPos.h"
+#include "NVecTypes.h"
 #include "NUtil.h"
 #include "NTypes.h"
 
@@ -78,7 +78,7 @@ NSTRUCT(NWMan_event, {
     union {
         // Mouse
 
-        NPos2i mouse_pos;
+        NVec2i_t mouse_pos;
 
         struct {
             short id;

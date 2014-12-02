@@ -27,45 +27,44 @@
 
 #include "NShadow.h"
 
-#include "NPos.h"
 #include "NLevel.h"
 #include "NLog.h"
 #include "NEntity.h"
 #include "NShader.h"
-#include <GLKit/GLKMath.h>
+#include "NVecMath.h"
 
-void NShadow_draw(NLevel* level, NEntity* entity, NPosz layer) {
-    GLKVector3 light_pos = GLKVector3Make(400, 170, 75);
+void NShadow_draw(NLevel* level, NEntity* entity, int layer) {
+    NVec3f_t light_pos = NVec3f(400, 170, 75);
 
-    NPosf layer_z = NLevel_get_z(level, layer);
-    NPosf entity_z = NLevel_get_z(level, entity->z);
+    float layer_z = NLevel_get_z(level, layer);
+    float entity_z = NLevel_get_z(level, entity->z);
 
-    NPosf z_ratio = (light_pos.z - layer_z) / (light_pos.z - entity_z);
+    float z_ratio = (light_pos.z - layer_z) / (light_pos.z - entity_z);
 
-    GLKVector3 entity_pos = GLKVector3Make(entity->pos.x, entity->pos.y, entity_z);
-    GLKVector3 entity_size = GLKVector3Make(entity->pos.x + entity->size.x, entity->pos.y + entity->size.y, entity_z);
+    NVec3f_t entity_pos = NVec3f(entity->pos.x, entity->pos.y, entity_z);
+    NVec3f_t entity_size = NVec3f(entity->pos.x + entity->size.x, entity->pos.y + entity->size.y, entity_z);
 
 
-    GLKVector3 pos_dir = GLKVector3Subtract(entity_pos, light_pos);
-    GLKVector3 pos_projection = GLKVector3MultiplyScalar(pos_dir, z_ratio);
-    GLKVector3 pos_projected = GLKVector3Add(light_pos, pos_projection);
+    NVec3f_t pos_dir = NVec3f_sub(entity_pos, light_pos);
+    NVec3f_t pos_projection = NVec3f_muls(pos_dir, z_ratio);
+    NVec3f_t pos_projected = NVec3f_add(light_pos, pos_projection);
 
-    GLKVector3 size_dir = GLKVector3Subtract(entity_size, light_pos);
-    GLKVector3 size_projected = GLKVector3Add(light_pos, GLKVector3MultiplyScalar(size_dir, z_ratio));
+    NVec3f_t size_dir = NVec3f_sub(entity_size, light_pos);
+    NVec3f_t size_projected = NVec3f_add(light_pos, NVec3f_muls(size_dir, z_ratio));
 
-    GLKVector3 size = GLKVector3Subtract(size_projected, pos_projected);
+    NVec3f_t size = NVec3f_sub(size_projected, pos_projected);
     if (pos_projected.y + size.y < 203) {
         size.y = 203 - pos_projected.y;
     }
 
     // FIXME: This is a hack!
-    NPos2f old_pos = entity->pos;
-    entity->pos = Npos2f(pos_projected.x, pos_projected.y);
+    NVec2f_t old_pos = entity->pos;
+    entity->pos = NVec2f(pos_projected.x, pos_projected.y);
     NShader_run(N_shaders[2]);
-    NPosf angle = GLKVector3Length(pos_projection)/NABS(light_pos.z - layer_z);
+    float angle = NVec3f_len(pos_projection) / NABS(light_pos.z - layer_z);
     float alpha = (9-(NCLAMP(angle, 1, 10)-1))/9;
     NShader_set_float(N_shaders[2], "sample_dist", NCLAMP(1. - alpha, .2, .5));
-    NENTITY_DRAW(entity, .size = Npos2i(size.x, size.y), .alpha = alpha);
+    NENTITY_DRAW(entity, .size = NVec2i(size.x, size.y), .alpha = alpha);
     NShader_stop();
     entity->pos = old_pos;
 }

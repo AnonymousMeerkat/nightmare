@@ -29,7 +29,7 @@
 #define _NME_IMAGE_H
 
 #include "NUtil.h"
-#include "NPos.h"
+#include "NVecTypes.h"
 #include "NTypes.h"
 
 NENUM(NImage_type, {
@@ -41,16 +41,16 @@ NENUM(NImage_type, {
 NSTRUCT(NImage, {
     NImage_type type;
     uint id;
-    NPos3i size;
+    NVec3i_t size;
     void* data;
 });
 
 NImage* NImage_new(NImage_type type);
 void NImage_destroy(NImage* image);
 
-unsigned char* NImage_load_raw(char* path, NPos2i* size);
+unsigned char* NImage_load_raw(char* path, NVec2i_t* size);
 bool NImage_load(NImage* image, char* path);
-bool NImage_load_3D(NImage* image, NPos3i size, uchar* data, uchar channels);
+bool NImage_load_3D(NImage* image, NVec3i_t size, uchar* data, uchar channels);
 
 void NImage_record(NImage* image); // FBO
 void NImage_stoprecord();
@@ -60,13 +60,13 @@ void NImage_unbind();
 
 
 struct NImage_draw_args {
-    NPos2i pos;
-    NPos2i size;
-    NPosf z;
+    NVec2i_t pos;
+    NVec2i_t size;
+    float z;
     bool flip;
     float alpha;
 };
 void NImage_draw(NImage* image, struct NImage_draw_args args);
-#define NIMAGE_DRAW(img, ...) NImage_draw(img, (struct NImage_draw_args){.pos = N_Pos2i0, .size = N_Pos2i0, .z = 0., .flip = 0, .alpha = 1., __VA_ARGS__})
+#define NIMAGE_DRAW(img, ...) NImage_draw(img, (struct NImage_draw_args){.pos = NVec2i0, .size = NVec2i0, .z = 0., .flip = 0, .alpha = 1., __VA_ARGS__})
 
 #endif

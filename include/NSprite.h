@@ -30,7 +30,7 @@
 
 #include "NUtil.h"
 #include "NTypes.h"
-#include "NPos.h"
+#include "NVecTypes.h"
 
 NTS(NImage);
 
@@ -54,6 +54,6 @@ NSprite* NSprite_new(NImage** images, NSprite_framedata* frames);
 void NSprite_destroy(NSprite* sprite);
 
 bool NSprite_update(NSprite* sprite);
-void NSprite_draw(NSprite* sprite, NPos2i pos, NPos2i size, bool flip, float alpha);
+void NSprite_draw(NSprite* sprite, NVec2i_t pos, NVec2i_t size, bool flip, float alpha);
 
 #endif

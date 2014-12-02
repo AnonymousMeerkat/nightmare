@@ -28,14 +28,14 @@
 #include "NEntity.h"
 
 #include "NGlobals.h"
+#include "NVecMath.h"
 #include <stdlib.h>
-#include <GLKit/GLKMath.h>
 
 #define en_ds ((float)N_delta) * ((entity->state == NEntity_WALK) ? entity->walk_speed : entity->trot_speed)
 
 NEntity* NEntity_new(NEntity_info info) {
     NEntity* entity = malloc(sizeof(NEntity));
-    entity->pos = N_Pos2f0;
+    entity->pos = NVec2f0;
     entity->z = 0;
     entity->size = info.size;
     entity->sheet = info.sheet;
@@ -54,11 +54,11 @@ void NEntity_destroy(NEntity* entity) {
 }
 
 
-NPos2f NEntity_center(NEntity* entity) {
-    return GLKVector2Add(entity->pos, GLKVector2DivideScalar(Npos2i_2f(entity->size), 2));
+NVec2f_t NEntity_center(NEntity* entity) {
+    return NVec2f_add(entity->pos, NVec2f_divs(NVec2i_2f(entity->size), 2));
 }
 
-NPosi NEntity_distance(NEntity* entity, NEntity* other) {
+int NEntity_distance(NEntity* entity, NEntity* other) {
     return abs(entity->pos.x - other->pos.x);
 }
 
@@ -117,8 +117,8 @@ void NEntity_right(NEntity* entity) {
 }
 
 void NEntity_move_towards(NEntity* entity, NEntity* other) {
-    NPosf diff = other->pos.x - entity->pos.x;
-    NPosf delta_speed;
+    float diff = other->pos.x - entity->pos.x;
+    float delta_speed;
     if ((entity->facing_left && diff > 0) || (!entity->facing_left && diff < 0)) {
         NEntity_flip(entity);
     } else if ((delta_speed = en_ds) > diff) {
@@ -137,5 +137,5 @@ void NEntity_update(NEntity* entity) {
 }
 
 void NEntity_draw(NEntity* entity, struct NEntity_draw_args args) {
-    NSpritesheet_draw(entity->sheet, entity->state, Npos2f_2i(entity->pos), args.size, !entity->facing_left, args.alpha);
+    NSpritesheet_draw(entity->sheet, entity->state, NVec2f_2i(entity->pos), args.size, !entity->facing_left, args.alpha);
 }

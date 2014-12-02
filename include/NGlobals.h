@@ -35,7 +35,7 @@
 
 #include "NTypes.h"
 #include "NUtil.h"
-#include "NPos.h"
+#include "NVecTypes.h"
 
 // Exports
 NTS(NShader);
@@ -74,8 +74,8 @@ extern char** N_argv;
 // Window
 
 extern char* N_WMan_backend;
-extern NPos2i N_win_pos;
-extern NPos2i N_win_size;
+extern NVec2i_t N_win_pos;
+extern NVec2i_t N_win_size;
 
 /**
  * \brief Window title
@@ -94,9 +94,9 @@ extern char* N_rsc_path;
 
 // OpenGL
 
-extern GLKMatrix4 N_gl_projection;
-extern GLKMatrix4 N_gl_view;
-extern GLKMatrix4 N_gl_model;
+extern NMat4f_t N_gl_projection;
+extern NMat4f_t N_gl_view;
+extern NMat4f_t N_gl_model;
 
 // Shader
 
@@ -133,6 +133,6 @@ extern uint N_currtime;
 extern uint N_lastsecond;
 extern uint N_fps;
 
-extern NPos2i N_game_size;
+extern NVec2i_t N_game_size;
 
 #endif

@@ -28,23 +28,24 @@
 #include "NGlobals.h"
 
 #include "NDynamic_t.h"
+#include "NVecMath.h"
 
 
 int N_argc;
 char** N_argv;
 
 char* N_WMan_backend;
-NPos2i N_win_pos;
-NPos2i N_win_size;
+NVec2i_t N_win_pos;
+NVec2i_t N_win_size;
 //char* N_win_title;
 
 short N_indent;
 
 char* N_rsc_path;
 
-GLKMatrix4 N_gl_projection;
-GLKMatrix4 N_gl_view;
-GLKMatrix4 N_gl_model;
+NMat4f_t N_gl_projection;
+NMat4f_t N_gl_view;
+NMat4f_t N_gl_model;
 
 NShader** N_shaders;
 NImage** N_images;
@@ -65,15 +66,15 @@ uint N_currtime;
 uint N_lastsecond;
 uint N_fps;
 
-NPos2i N_game_size;
+NVec2i_t N_game_size;
 
 NShader* N_shader;
 
 
 void NGlobals_init() {
     N_WMan_backend = "";
-    N_win_pos = N_Pos2i0;
-    N_win_size = Npos2i(800, 600);
+    N_win_pos = (NVec2i_t) {0,0};
+    N_win_size = NVec2i(800, 600);
 
     N_indent = 0;
 
@@ -99,7 +100,7 @@ void NGlobals_init() {
     N_lastsecond = 0;
     N_fps = 0;
 
-    N_game_size = Npos2i(800, 256);
+    N_game_size = NVec2i(800, 256);
 
     N_shader = NULL;
 }

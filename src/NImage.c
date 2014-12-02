@@ -38,7 +38,6 @@
 
 #include "wrap/gl.h"
 #include <stdlib.h>
-#include <GLKit/GLKMath.h>
 
 // TODO: Maybe add the option for bilinear filtering instead of trilinear?
 
@@ -64,7 +63,7 @@ NSTRUCT(fbo_data, {
 
 bool NImage_new_fbo(NImage* image) {
     fbo_data* data = malloc(sizeof(fbo_data));
-    image->size = Npos2i_3i(N_game_size);
+    image->size = NVec2i_3i(N_game_size);
     glGenFramebuffers(1, &data->fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, data->fbo);
     glBindTexture(GL_TEXTURE_2D, image->id);
@@ -101,7 +100,7 @@ NImage* NImage_new(NImage_type type) {
     image->type = type;
     image->id = 0;
     image->data = NULL;
-    image->size = N_Pos3i0;
+    image->size = (NVec3i_t){0,0,0};
 
     glGenTextures(1, &image->id);
 
@@ -128,7 +127,7 @@ void NImage_destroy(NImage* image) {
 }
 
 
-unsigned char* NImage_load_niff(char* path, NPos3i* size) {
+unsigned char* NImage_load_niff(char* path, NVec3i_t* size) {
     char* read = NRsc_read_file_rp(path);
 
     NIFF_t* niff = (NIFF_t*)read;
@@ -165,7 +164,7 @@ end:
     return ret;
 }
 
-bool NImage_load_3D(NImage* image, NPos3i size, uchar* data, uchar channels) {
+bool NImage_load_3D(NImage* image, NVec3i_t size, uchar* data, uchar channels) {
     bool ret;
     if (!data) {
         ret = false;
@@ -228,7 +227,7 @@ void NImage_unbind() {
 }
 
 void NImage_draw(NImage* image, struct NImage_draw_args args) {
-    NPos2i size = Npos3i_2i(image->size);
+    NVec2i_t size = NVec3i_2i(image->size);
     if (args.size.x != 0 && args.size.y != 0) {
         size = args.size;
     }

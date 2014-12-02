@@ -190,17 +190,17 @@ void NShader_set_float(NShader* shader, char* name, GLfloat value) {
     glUniform1f(uniform, value);
 }
 
-void NShader_set_vec2(NShader* shader, char* name, GLKVector2 value) {
+void NShader_set_vec2(NShader* shader, char* name, NVec2f_t value) {
     getuniform();
     glUniform2fv(uniform, 1, value.v);
 }
 
-void NShader_set_vec4(NShader* shader, char* name, GLKVector4 value) {
+void NShader_set_vec4(NShader* shader, char* name, NVec4f_t value) {
     getuniform();
     glUniform4fv(uniform, 1, value.v);
 }
 
-void NShader_set_mat4(NShader* shader, char* name, GLKMatrix4 value) {
+void NShader_set_mat4(NShader* shader, char* name, NMat4f_t value) {
     getuniform();
     glUniformMatrix4fv(uniform, 1, GL_FALSE, value.m);
 }
