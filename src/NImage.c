@@ -153,7 +153,7 @@ bool NImage_load(NImage* image, char* path) {
 
     NImage_bind(image);
     NImage_2D_parameters();
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, image->size.x, image->size.y, 0,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image->size.x, image->size.y, 0,
         GL_RGBA, GL_UNSIGNED_BYTE, good_data);
     glGenerateMipmap(GL_TEXTURE_2D);
     NImage_unbind();

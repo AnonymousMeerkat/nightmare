@@ -25,11 +25,36 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _NME_WMAN_X11_H
-#define _NME_WMAN_X11_H
-
 #include <NWMan.h>
+#include <NUtil.h>
+#include "common.h"
+#include <wayland-client.h>
 
-extern NWMan N_WMan_X11;
 
-#endif
+extern const struct wl_pointer_listener _WL_pointer_listener;
+extern const struct wl_keyboard_listener _WL_keyboard_listener;
+
+static void _WLseat_handle_capabilities(void *data, struct wl_seat *seat, enum wl_seat_capability caps) {
+    NUNUSED(data);
+
+    if ((caps & WL_SEAT_CAPABILITY_POINTER) && !_WL_display.pointer) {
+        _WL_display.pointer = wl_seat_get_pointer(seat);
+        wl_pointer_add_listener(_WL_display.pointer, &_WL_pointer_listener, NULL);
+    } else if (!(caps & WL_SEAT_CAPABILITY_POINTER) && _WL_display.pointer) {
+        wl_pointer_destroy(_WL_display.pointer);
+        _WL_display.pointer = NULL;
+    }
+
+    if ((caps & WL_SEAT_CAPABILITY_KEYBOARD) && !_WL_display.keyboard) {
+        _WL_display.keyboard = wl_seat_get_keyboard(seat);
+        wl_keyboard_add_listener(_WL_display.keyboard, &_WL_keyboard_listener, NULL);
+    } else if (!(caps & WL_SEAT_CAPABILITY_KEYBOARD) && _WL_display.keyboard) {
+        wl_keyboard_destroy(_WL_display.keyboard);
+        _WL_display.keyboard = NULL;
+    }
+}
+
+const struct wl_seat_listener _WL_seat_listener = {
+    _WLseat_handle_capabilities,
+    NULL
+};

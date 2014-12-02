@@ -28,23 +28,65 @@
 #ifndef _NME_PORTING_H
 #define _NME_PORTING_H
 
-#if (defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)) && !defined(WIN32)
-#  define WIN32
+// This entire file is mostly an implementation of the macros defined at http://sourceforge.net/p/predef/wiki/Home/
+
+#if (defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__))
+#  define NPORTING_WINDOWS
 #elif defined(__APPLE__) || defined(__MACH__)
-#  define MACOSX
+#  define NPORTING_MACOSX
 #elif defined(__linux__) || defined(__linux)
-#  define LINUX
+#  define NPORTING_LINUX
 #elif defined(__FreeBSD__)
-#  define FREEBSD
+#  define NPORTING_FREEBSD
+#elif defined(__NetBSD__)
+#  define NPORTING_NETBSD
+#elif defined(__OpenBSD__)
+#  define NPORTING_OPENBSD
+#elif defined(__DragonFly__)
+#  define NPORTING_DRAGONFLY
+#elif defined(__gnu_hurd__)
+#  define NPORTING_HURD
+#elif defined(sun) || defined(__sun)
+#  if defined(__SVR4) || defined(__svr4__)
+#    define NPORTING_SOLARIS
+#  else
+#    define NPORTING_SUNOS
+#  endif
 #endif
 
-#ifdef WIN32
-#  define N_SLASH "\\"
+
+#if defined(__amd64__) || defined(__x86_64__) || defined(_M_X64) || defined(_M_AMD64)
+#  define NPORTING_AMD64
+#elif defined(__arm__) || defined(_ARM) || defined(_M_ARM)
+#  define NPORTING_ARM
+#  if defined(__thumb__) || defined(_M_ARMT)
+#    define NPORTING_ARM_THUMB
+#  endif
+#elif defined(__aarch64__)
+#  define NPORTING_ARM64
+#elif defined(i386) || defined(__i386__) || defined(__i386) || defined(__IA32__) || defined(_M_IX86) || defined(__X86__) || defined(_X86_) || defined(__THW_INTEL) || defined(__I86__) || defined(__INTEL__)
+#  define NPORTING_IA32
+#elif defined(__ia64__) || defined(__ia64) || defined(_M_IA64) || defined(__itanium__)
+#  define NPORTING_IA64
+#elif defined(__powerpc) || defined(_M_PPC) || defined(_ARCH_PPC) || defined(__PPCGECKO__) || defined(__PPCBROADWAY__) || defined(_XENON)
+#  define NPORTING_PPC
+#elif defined(__sparc__) || defined(__sparc)
+#  define NPORTING_SPARC
+#endif
+
+#if (__BYTE_ORDER == __BIG_ENDIAN) || defined(__BIG_ENDIAN__) || defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__) || defined(_MIPSEB) || defined(__MIPSEB) || defined(__MIPSEB__)
+#  define NPORTING_BIG_ENDIAN
+#else // Is this a good idea?
+#  define NPORTING_LITTLE_ENDIAN
+#endif
+
+#ifdef NPORTING_WINDOWS
+#  define NPORTING_SLASH "\\"
 #else
-#  define N_SLASH "/"
+#  define NPORTING_SLASH "/"
 #endif
 
-#if defined(WIN32) && !defined(NCORE_BUILD)
+#if defined(NPORTING_WINDOWS) && !defined(NCORE_BUILD)
 #  define main _main
 #  define Nwin_main WinMain
 int main(int argc, char** argv);

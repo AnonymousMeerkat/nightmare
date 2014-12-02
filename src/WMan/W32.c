@@ -25,7 +25,7 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "W32.h"
+#include <NWMah.h>
 
 #include "common.h"
 #include <NGlobals.h>
@@ -167,7 +167,7 @@ LRESULT APIENTRY WndProc(HWND hWndf, UINT message, WPARAM wParam, LPARAM lParam)
                 Ndebug("SHIIIIFT! %i %i", message == WM_KEYDOWN, e.type);
                 //key = VK_LSHIFT;
             }*/
-            e.keyboard.key = key;
+            e.keyboard.key = key; // Might want to use scancodes instead
             e.keyboard.state = message == WM_KEYDOWN;
             //keyspressed[key] = e.keyboard.state;
             break;

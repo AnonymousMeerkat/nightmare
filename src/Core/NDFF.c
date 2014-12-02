@@ -129,7 +129,7 @@ NDFFEntry_t* NDFF_read(NDFFR_t* ndff) {
     return _NDFF_read_entry((NDFFREntry_t*)ndff->contents);
 }
 
-
+// TODO: FINISH
 void _NDFF_write_entry(NDFFEntry_t* entry, NDFFREntry_t** ret, size_t entries) {
     size_t namesize = strlen(entry->name);
     size_t entrysize = entry->size;
@@ -148,6 +148,7 @@ void _NDFF_write_entry(NDFFEntry_t* entry, NDFFREntry_t** ret, size_t entries) {
     memcpy(our_entry->contents + namesize + 1, entry->contents, entry->size);
 }
 
+// TODO: FINISH
 NDFFR_t* NDFF_write(NDFFEntry_t* entry) {
     NDFFREntry_t** entries = NULL;
 

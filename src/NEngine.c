@@ -28,6 +28,7 @@
 #include "NEngine.h"
 
 #include "NGlobals.h"
+#include "NOSAPI.h"
 #include "NWMan.h"
 #include "NLog.h"
 
@@ -49,7 +50,7 @@
 NRectf viewport;
 
 void NEngine_update_time() {
-    N_currtime = N_WMan.get_millis();
+    N_currtime = N_OSAPI.get_millis();
     N_delta = N_currtime - N_lasttime;
     N_lasttime = N_currtime;
 }

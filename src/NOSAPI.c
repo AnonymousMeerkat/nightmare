@@ -25,12 +25,31 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _NME_WMAN_SDL2_H
-#define _NME_WMAN_SDL2_H
+#include "NOSAPI.h"
 
-#include <NWMan.h>
+#include "NPorting.h"
+#include "NLog.h"
 
-extern NWMan N_WMan_SDL2;
-void NWMan_SDL2_init();
+NOSAPI_t N_OSAPI;
 
+bool NOSAPI_init() {
+#define setapi(x) {\
+    extern NOSAPI_t N_OSAPI_##x;\
+    N_OSAPI = N_OSAPI_##x;\
+    Ndebug("Detected "#x);\
+}
+#if defined(NPORTING_LINUX)
+    setapi(Linux);
+#elif defined(NPORTING_WINDOWS)
+    setapi(Windows);
+#else
+    Nerror("Failed to detect your OS!");
+    return false;
 #endif
+
+    return N_OSAPI.init();
+}
+
+bool NOSAPI_destroy() {
+    return N_OSAPI.destroy();
+}

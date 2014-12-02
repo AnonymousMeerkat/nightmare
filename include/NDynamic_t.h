@@ -160,12 +160,16 @@ typedef NLIST(int) NINTLIST;
     NLIST_DUPLICATE((name), (newname));\
 }
 
+
 // String functions
 
-static inline bool Nstreq(char* str1, char* str2) {
-    bool ret = true;
-    for (size_t i = 0; ((str1[i] == str2[i]) || (ret = false)) && str1[i] != 0; i++);
-    return ret;
+static inline bool Nstreq(register const char* str1, register const char* str2) {
+    register char c1 = *str1, c2 = *str2;
+    while (c1 && (c1 == c2)) {
+        c1 = *str1++;
+        c2 = *str2++;
+    }
+    return c1 == c2;
 }
 
 #endif

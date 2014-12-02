@@ -38,12 +38,12 @@
 #include "NDynamic_t.h"
 #include <dirent.h>
 
-#if defined(WIN32)
+#if defined(NPORTING_WINDOWS)
 #  define WIN32_LEAN_AND_MEAN
 #  include <windows.h>
-#elif defined(MACOSX)
+#elif defined(NPORTING_MACOSX)
 #  include <mach-o/dyld.h>
-#elif defined(FREEBSD)
+#elif defined(NPORTING_FREEBSD)
 #  include <sys/types.h>
 #  include <sys/sysctl.h>
 #endif
@@ -55,20 +55,20 @@
 bool NRsc_init() {
     char exepath[PATH_MAX];
 
-#if defined(WIN32)
+#if defined(NPORTING_WINDOWS)
     GetModuleFileName(GetModuleHandle(NULL), exepath, PATH_MAX);
-#elif defined(LINUX)
+#elif defined(NPORTING_LINUX)
     char* result = realpath("/proc/self/exe", exepath);
     if (!result) {
         Nerror("Can't figure out self path!");
         return false;
     }
-#elif defined(MACOSX)
+#elif defined(NPORTING_MACOSX)
     int size = PATH_MAX;
     if (_NSGetExecutablePath(exepath, &size)) {
         Nerror("Path buffer of size %i too small!", PATH_MAX);
     }
-#elif defined(FREEBSD)
+#elif defined(NPORTING_FREEBSD)
     int mib[4];
     mib[0] = CTL_KERN;
     mib[1] = KERN_PROC;
@@ -81,7 +81,7 @@ bool NRsc_init() {
     char* toppath = dirname(dirname(exepath));
     N_rsc_path = malloc(strlen(toppath) + 7);
     strcpy(N_rsc_path, toppath);
-    strcat(N_rsc_path, N_SLASH "game");
+    strcat(N_rsc_path, NPORTING_SLASH "game");
     Ndebug("Game data directory: %s", N_rsc_path);
     return true;
 }
@@ -94,7 +94,7 @@ void NRsc_destroy() {
 char* NRsc_join_paths(char* path1, char* path2) {
     char* newpath = malloc(strlen(path1) + strlen(path2) + 2);
     strcpy(newpath, path1);
-    strcat(newpath, N_SLASH);
+    strcat(newpath, NPORTING_SLASH);
     strcat(newpath, path2);
     return newpath;
 }
@@ -122,7 +122,7 @@ char* NRsc_get_ext(char* path) {
 char* NRsc_get_path(char* simplepath) {
     char* newpath = malloc(strlen(N_rsc_path) + strlen(simplepath) + 2);
     strcpy(newpath, N_rsc_path);
-    strcat(newpath, N_SLASH);
+    strcat(newpath, NPORTING_SLASH);
     strcat(newpath, simplepath);
     return newpath;
 }

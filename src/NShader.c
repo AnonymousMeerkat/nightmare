@@ -34,7 +34,7 @@
 #include <string.h>
 
 const char versionstr_egl[] =
-"#version 100\n"
+"#version 300 es\n"
 "#extension GL_OES_texture_3D : enable\n"
 "precision mediump float;\n";
 

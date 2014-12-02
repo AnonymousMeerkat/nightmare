@@ -154,14 +154,6 @@ nextevent:
     return true;
 }
 
-uint WMSDL_get_millis() {
-    return SDL_GetTicks();
-}
-
-void WMSDL_sleep(uint millis) {
-    SDL_Delay(millis);
-}
-
 
 void NWMan_SDL_init() {
 #define var N_WMan_SDL
@@ -174,9 +166,6 @@ void NWMan_SDL_init() {
     var.swap_buffers = WMSDL_swap_buffers;
 
     var.next_event = WMSDL_next_event;
-
-    var.get_millis = WMSDL_get_millis;
-    var.sleep = WMSDL_sleep;
 
     var.lshift_key = SDLK_LSHIFT;
     var.rshift_key = SDLK_RSHIFT;

@@ -199,14 +199,6 @@ nextevent:
     return true;
 }
 
-uint sdl2_get_millis() {
-    return SDL_GetTicks();
-}
-
-void sdl2_sleep(uint millis) {
-    SDL_Delay(millis);
-}
-
 
 void NWMan_SDL2_init() {
     N_WMan_SDL2.init = sdl2_init;
@@ -218,9 +210,6 @@ void NWMan_SDL2_init() {
     N_WMan_SDL2.swap_buffers = sdl2_swap_buffers;
 
     N_WMan_SDL2.next_event = sdl2_next_event;
-
-    N_WMan_SDL2.get_millis = sdl2_get_millis;
-    N_WMan_SDL2.sleep = sdl2_sleep;
 
     N_WMan_SDL2.shift_key = SDLK_LSHIFT;
     N_WMan_SDL2.left_key = SDLK_LEFT;

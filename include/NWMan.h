@@ -51,10 +51,6 @@ NSTRUCT(NWMan, {
     void (*get_events)();
     bool (*next_event)(NWMan_event* event);
 
-    // Time stuff
-    uint (*get_millis)();
-    void (*sleep)(uint millis);
-
     // Info
     int shift_key;
     int left_key;

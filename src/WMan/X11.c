@@ -25,7 +25,7 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "X11.h"
+#include <NWMan.h>
 
 #include "common.h"
 #include <NLog.h>
@@ -348,18 +348,6 @@ end:
     return true;
 }
 
-uint X11_get_millis() {
-    struct timeval tv;
-    gettimeofday(&tv, NULL); /// Replace to clock_gettime()
-                              // FreeBSD: CLOCK_UPTIME_FAST or CLOCK_MONOTONIC_FAST
-                              // Linux: CLOCK_MONOTONIC_RAW, then CLOCK_MONOTONIC_COARSE
-    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
-}
-
-void X11_sleep(uint millis) {
-    usleep(millis * 1000);
-}
-
 
 NWMan N_WMan_X11 = {
     .init = X11_init,
@@ -372,9 +360,6 @@ NWMan N_WMan_X11 = {
 
     .get_events = X11_get_events,
     .next_event = X11_next_event,
-
-    .get_millis = X11_get_millis,
-    .sleep = X11_sleep,
 
     .shift_key = SHIFT_K,
     .left_key = LEFT_K,

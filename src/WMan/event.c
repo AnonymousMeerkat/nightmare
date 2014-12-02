@@ -25,11 +25,33 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _NME_WMAN_WL_H
-#define _NME_WMAN_WL_H
-
+#include "event.h"
 #include <NWMan.h>
+#include <NDynamic_t.h>
 
-extern NWMan N_WMan_WL;
+_NWMan_events_t _NWMan_events;
 
-#endif
+bool NWMan_events_init() {
+    NLIST_INIT(NWMan_event, _NWMan_events);
+    return true;
+}
+
+bool NWMan_events_destroy() {
+    NLIST_DESTROY(_NWMan_events);
+    return true;
+}
+
+
+void NWMan_events_push(NWMan_event event) {
+    NLIST_PUSH(_NWMan_events, event);
+}
+
+NWMan_event NWMan_events_peek() {
+    return _NWMan_events.data[0];
+}
+
+NWMan_event NWMan_events_pop() {
+    NWMan_event event = NWMan_events_peek();
+    NLIST_REMOVE(_NWMan_events, 0);
+    return event;
+}

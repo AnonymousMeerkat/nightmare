@@ -1,8 +1,10 @@
 add_subdirectory(Core)
+add_subdirectory(NOSAPI)
 add_subdirectory(WMan)
 
 set(SOURCES
     NPorting.c
+    NOSAPI.c
     NWMan.c
     NRsc_misc.c
     NSplu.c
@@ -21,4 +23,4 @@ set(SOURCES
 include_directories(${INCLUDES})
 
 add_executable(nightmare ${SOURCES})
-target_link_libraries(nightmare NCore NWMan ${LIBRARIES} gllg GLKit ${OPENGL_LIBRARIES} game)
+target_link_libraries(nightmare NCore NOSAPI NWMan ${LIBRARIES} gllg GLKit ${OPENGL_LIBRARIES} game)

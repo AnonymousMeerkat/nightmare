@@ -27,12 +27,6 @@
 
 #include "NWMan.h"
 
-#include "WMan/SDL.h"
-#include "WMan/SDL2.h"
-#include "WMan/W32.h"
-#include "WMan/X11.h"
-#include "WMan/WL.h"
-
 #include "NLog.h"
 #include <NDynamic_t.h>
 
@@ -57,18 +51,21 @@ bool NWMan_init() {
     bool ret = false;
     NLIST_NEW(struct NWMan_backend, backends);
 
+#define addbackend(name, check, egl, wman) {\
+    extern NWMan N_WMan_##wman;\
+    struct NWMan_backend wman##_backend = {name, check, egl, &N_WMan_##wman};\
+    NLIST_PUSH(backends, wman##_backend);\
+}
+
 #ifdef WL_FOUND
-    struct NWMan_backend wl_backend = {"Wayland", NSTRIEQ(N_WMan_backend, "wayland"), true, &N_WMan_WL};
-    NLIST_PUSH(backends, wl_backend);
+    addbackend("Wayland", NSTRIEQ(N_WMan_backend, "wayland"), true, WL);
 #endif
 #ifdef X11_FOUND
-    struct NWMan_backend x11_backend = {"X11", NSTRIEQ(N_WMan_backend, "x11"), false, &N_WMan_X11};
-    NLIST_PUSH(backends, x11_backend;);
+    addbackend("X11", NSTRIEQ(N_WMan_backend, "x11"), false, X11);
 #endif
-#ifdef WIN32
-    struct NWMan_backend w32_backend = {"Windows", NSTRIEQ(N_WMan_backend, "w32") ||
-                          NSTRIEQ(N_WMan_backend, "windows"), false, &N_WMan_W32};
-    NLIST_PUSH(backends, w32_backend);
+#ifdef NPORTING_WINDOWS
+    addbackend("Windows", NSTRIEQ(N_WMan_backend, "w32") ||
+                          NSTRIEQ(N_WMan_backend, "windows"), false, W32);
 #endif
 
     bool has_preference = (N_WMan_backend[0] != 0);

@@ -27,12 +27,14 @@
 
 #include "NGlobals.h"
 #include "NLog.h"
+#include "NOSAPI.h"
 #include "NWMan.h"
 #include "wrap/gl.h"
 #include "NRsc.h"
 #include "NEngine.h"
 #include "NPorting.h"
 #include "NArgs.h"
+#include "NDynamic_t.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -60,6 +62,8 @@ void parse_args() {
     free(args);
 }
 
+#include <math.h>
+
 int main(int argc, char** argv) {
     int ret = 0;
 
@@ -75,6 +79,14 @@ int main(int argc, char** argv) {
 
     Ndebug("Parsing arguments");
     NINDENT(parse_args());
+
+    Ndebug("Initializing OS abstraction library");
+    NINDENT(okay = NOSAPI_init());
+
+    if (!okay) {
+        Nerror("Error initializing OS abstraction library!");
+        return 1;
+    }
 
     Ndebug("Initializing window manager");
     NINDENT(okay = NWMan_init());

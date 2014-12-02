@@ -25,61 +25,22 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _NME_RSC_H
-#define _NME_RSC_H
+#ifndef _NME_WMAN_EVENT_H
+#define _NME_WMAN_EVENT_H
 
-#include "NPorting.h"
-#include "NUtil.h"
-#include "NTypes.h"
+#include <NWMan.h>
+#include <NDynamic_t.h>
 
-NTS(NShader);
-NTS(NShader_attrib);
-NTS(NShader_info);
-NTS(NImage);
-NTS(NSprite);
-NTS(NSpritesheet);
-NTS(NLevel);
-NTS(NSprite_framedata);
-NTS(NSpritesheet_data);
-NTS(NSpritesheet_info);
-NTS(NLevel_layer_data);
-NTS(NLevel_info);
 
-bool NRsc_init();
-void NRsc_destroy();
+typedef NLIST(NWMan_event) _NWMan_events_t;
+extern _NWMan_events_t _NWMan_events;
 
-#define NRSC_JOIN_PATHS(path1, path2) path1 NPORTING_SLASH path2
 
-char* NRsc_join_paths(char* path1, char* path2); // FREE
-char* NRsc_remove_ext(char* path); // FREE
-char* NRsc_get_ext(char* path);
+bool NWMan_events_init();
+bool NWMan_events_destroy();
 
-// All of these functions ONLY accept simple paths
-char* NRsc_get_path(char* simplepath); // FREE
-char** NRsc_ls(char* path); \
-void NRsc_ls_free(char** lsd);
-char* NRsc_read_file(char* simplepath);
-
-char* NRsc_read_file_rp(char* path);
-
-// Misc
-bool NRsc_load_shader_head();
-NShader* NRsc_load_shader(char* name, NShader_attrib* attribs);
-NImage* NRsc_load_image(char* name);
-NImage* NRsc_load_fog(char* name);
-NSprite* NRsc_load_sprite(char** paths, NSprite_framedata* framedata);
-NSprite* NRsc_load_sprite_dir(char* path, NSprite_framedata* framedata);
-NSpritesheet* NRsc_load_spritesheet(char* name, NSpritesheet_data* datas);
-NLevel* NRsc_load_level(char* name, NLevel_layer_data* info);
-
-bool NRsc_load_shaders(NShader_info* infos);
-bool NRsc_load_images(char** names);
-bool NRsc_load_spritesheets(NSpritesheet_info* infos);
-bool NRsc_load_levels(NLevel_info* infos);
-
-void NRsc_free_shaders();
-void NRsc_free_images();
-void NRsc_free_spritesheets();
-void NRsc_free_levels();
+void NWMan_events_push(NWMan_event event);
+NWMan_event NWMan_events_peek();
+NWMan_event NWMan_events_pop();
 
 #endif

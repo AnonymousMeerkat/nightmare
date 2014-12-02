@@ -23,6 +23,7 @@
 *libniffconv.a
 *libniffflip.a
 *libgllg.a
+*libxdg_shell.a
 #*rscdata.c
 *params.h
 

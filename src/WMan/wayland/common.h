@@ -25,11 +25,47 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _NME_WMAN_W32_H
-#define _NME_WMAN_W32_H
+#ifndef _NME_WMAN_WAYLAND_COMMON_H
+#define _NME_WMAN_WAYLAND_COMMON_H
 
-#include <NWMan.h>
+#include <NTypes.h>
 
-extern NWMan N_WMan_W32;
+#include <wayland-client.h>
+#include <wayland-egl.h>
+#include <wayland-cursor.h>
+#include <wl/xdg-shell-client-protocol.h>
+
+#include <GLES2/gl2.h>
+#include <EGL/egl.h>
+
+struct WL_egl {
+    EGLDisplay display;
+    EGLContext context;
+    EGLConfig config;
+};
+
+struct WL_window {
+    struct wl_egl_window* native;
+    struct wl_surface* surface;
+    struct xdg_surface* xdg_surface;
+    EGLSurface egl_surface;
+    bool opaque;
+    int buffer_size;
+};
+
+struct WL_display {
+    struct wl_display* display;
+    struct wl_registry* registry;
+    struct xdg_shell* shell;
+    struct wl_compositor* compositor;
+    struct wl_seat *seat;
+    struct wl_pointer *pointer;
+    struct wl_keyboard *keyboard;
+    struct WL_window window;
+    struct WL_egl egl;
+    bool running;
+};
+
+extern struct WL_display _WL_display;
 
 #endif

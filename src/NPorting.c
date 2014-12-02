@@ -29,7 +29,7 @@
 
 #include "NUtil.h"
 
-#ifdef WIN32
+#ifdef NPORTING_WINDOWS
 
 #include <windows.h>
 

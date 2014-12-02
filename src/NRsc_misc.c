@@ -54,18 +54,18 @@ NShader* NRsc_load_shader(char* name, NShader_attrib* attribs) {
 
     size_t pathlen = strlen(name) + 6;
     char* base_path = malloc(pathlen);
-    strcpy(base_path, "glsl" N_SLASH);
+    strcpy(base_path, "glsl" NPORTING_SLASH);
     strcat(base_path, name);
 
     char* vertex_path = malloc(pathlen + 12);
     strcpy(vertex_path, base_path);
-    strcat(vertex_path, N_SLASH "vertex.glsl");
+    strcat(vertex_path, NPORTING_SLASH "vertex.glsl");
     char* vertex_file = NRsc_read_file(vertex_path);
     free(vertex_path);
 
     char* fragment_path = malloc(pathlen + 14);
     strcpy(fragment_path, base_path);
-    strcat(fragment_path, N_SLASH "fragment.glsl");
+    strcat(fragment_path, NPORTING_SLASH "fragment.glsl");
     char* fragment_file = NRsc_read_file(fragment_path);
     free(fragment_path);
 
@@ -318,7 +318,7 @@ bool NRsc_load_shaders(NShader_info* infos) {
 bool NRsc_load_images(char** names) {
     NLIST_NEW_FROM_ARR(NImage*, images, N_images);
     for (size_t i = 0; names[i]; i++) {
-        char* path = NRsc_join_paths("img" N_SLASH, names[i]);
+        char* path = NRsc_join_paths("img" NPORTING_SLASH, names[i]);
         NImage* image = NRsc_load_image(path);
         if (!image) {
             return false;

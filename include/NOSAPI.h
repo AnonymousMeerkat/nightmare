@@ -25,12 +25,23 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _NME_WMAN_SDL_H
-#define _NME_WMAN_SDL_H
+#ifndef _NME_NOSAPI_H
+#define _NME_NOSAPI_H
 
-#include <NWMan.h>
+#include "NUtil.h"
+#include "NTypes.h"
 
-extern NWMan N_WMan_SDL;
-void NWMan_SDL_init();
+NSTRUCT(NOSAPI_t, {
+    bool (*init)();
+    bool (*destroy)();
+
+    uint (*get_millis)();
+    void (*sleep)(uint millis);
+});
+
+bool NOSAPI_init();
+bool NOSAPI_destroy();
+
+extern NOSAPI_t N_OSAPI;
 
 #endif
