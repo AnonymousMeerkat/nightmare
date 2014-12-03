@@ -137,5 +137,9 @@ void NEntity_update(NEntity* entity) {
 }
 
 void NEntity_draw(NEntity* entity, struct NEntity_draw_args args) {
-    NSpritesheet_draw(entity->sheet, entity->state, NVec2f_2i(entity->pos), args.size, !entity->facing_left, args.alpha);
+    NVec2i_t pos = NVec2f_2i(entity->pos);
+    if (args.pos.x != -1) {
+        pos = args.pos;
+    }
+    NSpritesheet_draw(entity->sheet, entity->state, pos, args.size, !entity->facing_left, args.alpha);
 }

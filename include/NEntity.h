@@ -89,10 +89,11 @@ void NEntity_move_towards(NEntity* entity, NEntity* other);
 void NEntity_update(NEntity* entity);
 
 struct NEntity_draw_args {
+    NVec2i_t pos;
     NVec2i_t size;
     float alpha;
 };
 void NEntity_draw(NEntity* entity, struct NEntity_draw_args args);
-#define NENTITY_DRAW(entity, ...) NEntity_draw(entity, (struct NEntity_draw_args){.size = NVec2i0, .alpha = 1., __VA_ARGS__})
+#define NENTITY_DRAW(entity, ...) NEntity_draw(entity, (struct NEntity_draw_args){.pos = NVec2im1, .size = NVec2i0, .alpha = 1., __VA_ARGS__})
 
 #endif

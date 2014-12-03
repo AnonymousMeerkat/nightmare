@@ -26,8 +26,32 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 #include "NVecTypes.h"
 
 NVec2i_t NVec2i0;
+NVec2i_t NVec2im1 = {
+    -1, -1
+};
+
 NVec2f_t NVec2f0;
+NVec2f_t NVec2fm1 = {
+    -1, -1
+};
+
 NVec3i_t NVec3i0;
+NVec3i_t NVec3im1 = {
+    -1, -1, -1
+};
+
 NVec3f_t NVec3f0;
+NVec3f_t NVec3fm1 = {
+    -1, -1, -1
+};
+
 NVec4i_t NVec4i0;
+NVec4i_t NVec4im1 = {
+    -1, -1, -1, -1
+};
+
 NVec4f_t NVec4f0;
+NVec4f_t NVec4fm1 = {
+    -1, -1, -1, -1
+};
+

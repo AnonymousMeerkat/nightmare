@@ -24,6 +24,7 @@
 *libniffflip.a
 *libgllg.a
 *libxdg_shell.a
+*libNOSAPI.a
 #*rscdata.c
 *params.h
 

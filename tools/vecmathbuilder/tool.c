@@ -128,6 +128,16 @@ int vecmathbuilder(int argc, char** argv) {
             fprintf(types_output, "extern NVec%i%c_t NVec%i%c0;\n\n", i, types[y][0], i, types[y][0]);
             fprintf(source_output, "NVec%i%c_t NVec%i%c0;\n", i, types[y][0], i, types[y][0]);
 
+            fprintf(types_output, "extern NVec%i%c_t NVec%i%cm1;\n\n", i, types[y][0], i, types[y][0]);
+            fprintf(source_output, "NVec%i%c_t NVec%i%cm1 = {\n    ", i, types[y][0], i, types[y][0]);
+            for (int j = 0; j < i; j++) {
+                fprintf(source_output, "-1");
+                if ((j + 1) < i) {
+                    fprintf(source_output, ", ");
+                }
+            }
+            fprintf(source_output, "\n};\n\n");
+
             // Matrices
 
             fprintf(types_output, "union _NMat%i%c_t {\n", i, types[y][0]);

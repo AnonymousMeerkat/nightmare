@@ -45,6 +45,8 @@ typedef union _NVec2i_t NVec2i_t;
 
 extern NVec2i_t NVec2i0;
 
+extern NVec2i_t NVec2im1;
+
 union _NMat2i_t {
     struct {
         int m00;
@@ -75,6 +77,8 @@ union _NVec2f_t {
 typedef union _NVec2f_t NVec2f_t;
 
 extern NVec2f_t NVec2f0;
+
+extern NVec2f_t NVec2fm1;
 
 union _NMat2f_t {
     struct {
@@ -109,6 +113,8 @@ union _NVec3i_t {
 typedef union _NVec3i_t NVec3i_t;
 
 extern NVec3i_t NVec3i0;
+
+extern NVec3i_t NVec3im1;
 
 union _NMat3i_t {
     struct {
@@ -148,6 +154,8 @@ union _NVec3f_t {
 typedef union _NVec3f_t NVec3f_t;
 
 extern NVec3f_t NVec3f0;
+
+extern NVec3f_t NVec3fm1;
 
 union _NMat3f_t {
     struct {
@@ -190,6 +198,8 @@ union _NVec4i_t {
 typedef union _NVec4i_t NVec4i_t;
 
 extern NVec4i_t NVec4i0;
+
+extern NVec4i_t NVec4im1;
 
 union _NMat4i_t {
     struct {
@@ -239,6 +249,8 @@ union _NVec4f_t {
 typedef union _NVec4f_t NVec4f_t;
 
 extern NVec4f_t NVec4f0;
+
+extern NVec4f_t NVec4fm1;
 
 union _NMat4f_t {
     struct {

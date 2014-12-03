@@ -57,14 +57,11 @@ void NShadow_draw(NLevel* level, NEntity* entity, int layer) {
         size.y = 203 - pos_projected.y;
     }
 
-    // FIXME: This is a hack!
-    NVec2f_t old_pos = entity->pos;
-    entity->pos = NVec2f(pos_projected.x, pos_projected.y);
-    NShader_run(N_shaders[2]);
     float angle = NVec3f_len(pos_projection) / NABS(light_pos.z - layer_z);
-    float alpha = (9-(NCLAMP(angle, 1, 10)-1))/9;
+    float alpha = (9 - (NCLAMP(angle, 1, 10) - 1)) / 9;
+
+    NShader_run(N_shaders[2]);
     NShader_set_float(N_shaders[2], "sample_dist", NCLAMP(1. - alpha, .2, .5));
-    NENTITY_DRAW(entity, .size = NVec2i(size.x, size.y), .alpha = alpha);
+    NENTITY_DRAW(entity, .pos = NVec3f_2i(pos_projected), .size = NVec3f_2i(size), .alpha = alpha);
     NShader_stop();
-    entity->pos = old_pos;
 }
