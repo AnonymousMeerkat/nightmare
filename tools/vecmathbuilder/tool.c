@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2014,  Anonymous Meerkat<meerkatanonymous@gmail.com>
+    Copyright (c) 2014, Anonymous Meerkat <meerkatanonymous@gmail.com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ char* fwd_def = "static";
 
 void writelicense(FILE* fp) {
     fputs(
-"/* Copyright (c) 2014,  Anonymous Meerkat<meerkatanonymous@gmail.com>\n"
+"/* Copyright (c) 2014, Anonymous Meerkat <meerkatanonymous@gmail.com>\n"
 "All rights reserved.\n"
 "\n"
 "Redistribution and use in source and binary forms, with or without\n"

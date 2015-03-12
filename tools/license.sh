@@ -1,6 +1,6 @@
 cat << EOF > tmpfile && cat $1 >> tmpfile && mv tmpfile $1
 /*
-    Copyright (c) 2014,  Anonymous Meerkat<meerkatanonymous@gmail.com>
+    Copyright (c) 2014, Anonymous Meerkat <meerkatanonymous@gmail.com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
